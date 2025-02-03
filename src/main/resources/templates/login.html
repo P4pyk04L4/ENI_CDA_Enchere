@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!-- Mise en place du layout -->
+<html xmlns:th="http://www.thymeleaf.org"
+      data-th-replace="~{layout/layout :: layout(titrePage=~{:: title},
+contenuPage=~{:: main},
+ressources=~{:: #ressources-css})}">
+<head>
+    <meta charset="UTF-8">
+    <!-- Accueil comme titre de page -->
+    <title data-th-text="Connexion"></title>
+    <!-- Ajout de CSS demo-form.css -->
+</head>
+
+<body>
+<main >
+    <form th:action="@{/login}" method="post">
+        <h1 data-th-text="Connexion"></h1>
+        <div class="cards" th:if="${param.error}" data-th-text="Errors"></div>
+        <div th:if="${param.logout}" data-th-text="Déconnexion"></div>
+        <ul class="flex-outer">
+            <li>
+                <label for="inputUsername" data-th-text="Username"></label>
+                <input id="inputUsername" type="text" name="username" />
+            </li>
+            <li>
+                <label for="inputPwd" data-th-text="Pwd"></label>
+                <input id="inputPwd" type="password" name="password" />
+            </li>
+            <li>
+                <button type="submit" data-th-text="Connexion" ></button>
+            </li>
+        </ul>
+    </form>
+</main>
+</body>
+</html>

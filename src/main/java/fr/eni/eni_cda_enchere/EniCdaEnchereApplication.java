@@ -9,5 +9,4 @@ public class EniCdaEnchereApplication {
     public static void main(String[] args) {
         SpringApplication.run(EniCdaEnchereApplication.class, args);
     }
-
 }
