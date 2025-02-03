@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org" data-th-fragment="layout(contenuPage, titrePage, ressources)">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+        <title data-th-replace="${titrePage}"></title>
+    </head>
+    <body>
+        <!-- Intégration du fragment d'entête – avec le paramètre de la barre de navigation variable -->
+        <div data-th-replace="~{fragments/header :: frag-header(
+    ~{fragments/navigation/navigation :: frag-nav})}"></div>
+
+
+        <main data-th-replace="${contenuPage}">
+
+        </main>
+
+        <footer data-th-replace="~{fragments/footer :: frag-footer}"></footer>
+    </body>
+</html>

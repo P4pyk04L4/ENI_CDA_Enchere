@@ -1,0 +1,14 @@
+<!-- Affichage d'un message global s'il y a des erreurs
+
+ La conditionnelle du th:if vérifie qu'il y a des erreurs au global avec fields.hasErrors
+* vérifie sur tous les champs au lieu de vérifier sur un champ unique
+ -->
+<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-errors"
+     class="cards" th:if="${#fields.hasErrors('*')}">
+    <h2>Veuillez vérifier vos champs</h2>
+    <!-- on utilise #{${}} car on récupère d'abord la variable ${error} qui correspond à une clé du fichier messages
+     qui doit être lu avec un # {  } -->
+    <p data-th-each="error : ${#fields.errors('global')}" data-th-text="#{${error}}"></p>
+</div>
+
+

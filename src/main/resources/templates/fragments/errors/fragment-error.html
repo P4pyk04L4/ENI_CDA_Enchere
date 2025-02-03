@@ -1,0 +1,11 @@
+<!-- Affichage de la liste des messages d'erreur liée au champ courant
+
+Ici on a la même technique conditionnelle, sauf qu'on passe en paramètre du hasErrors, le champ
+qu'on a reçu en paramètre du fragment.
+Ensuite on boucle sur le nombre d'erreurs, et on fait un li qui affiche l'erreur pour chaque erreur
+-->
+<ul xmlns:th="http://www.thymeleaf.org"
+    data-th-fragment="frag-error(inputName)" class="cards"
+    data-th-if="${#fields.hasErrors(inputName)}">
+    <li data-th-each="err: ${#fields.errors(inputName)}" data-th-text="${err}"></li>
+</ul>
