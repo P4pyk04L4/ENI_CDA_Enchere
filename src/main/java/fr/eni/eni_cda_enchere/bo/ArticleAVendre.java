@@ -11,11 +11,12 @@ public class ArticleAVendre implements Serializable {
     private long no_article;
     private String nom_article;
     private String description;
+    private String photo;
     private LocalDate date_debut_encheres;
-    private LocalDate dat_fin_encheres;
+    private LocalDate date_fin_encheres;
     private int statut_enchere;
     private int prix_initial;
-    private int prix_vente;
+    private Integer prix_vente;
 
     private Adresse retrait;
     private Utilisateur vendeur;
@@ -55,12 +56,12 @@ public class ArticleAVendre implements Serializable {
         this.date_debut_encheres = date_debut_encheres;
     }
 
-    public LocalDate getDat_fin_encheres() {
-        return dat_fin_encheres;
+    public LocalDate getDate_fin_encheres() {
+        return date_fin_encheres;
     }
 
-    public void setDat_fin_encheres(LocalDate dat_fin_encheres) {
-        this.dat_fin_encheres = dat_fin_encheres;
+    public void setDate_fin_encheres(LocalDate date_fin_encheres) {
+        this.date_fin_encheres = date_fin_encheres;
     }
 
     public int getStatut_enchere() {
@@ -79,11 +80,11 @@ public class ArticleAVendre implements Serializable {
         this.prix_initial = prix_initial;
     }
 
-    public int getPrix_vente() {
+    public Integer getPrix_vente() {
         return prix_vente;
     }
 
-    public void setPrix_vente(int prix_vente) {
+    public void setPrix_vente(Integer prix_vente) {
         this.prix_vente = prix_vente;
     }
 
@@ -118,7 +119,7 @@ public class ArticleAVendre implements Serializable {
                 ", nom='" + nom_article + '\'' +
                 ", description='" + description + '\'' +
                 ", dateDebutEncheres=" + date_debut_encheres +
-                ", dateFinEncheres=" + dat_fin_encheres +
+                ", dateFinEncheres=" + date_fin_encheres +
                 ", statut=" + statut_enchere +
                 ", prixInitial=" + prix_initial +
                 ", prixVente=" + prix_vente +
