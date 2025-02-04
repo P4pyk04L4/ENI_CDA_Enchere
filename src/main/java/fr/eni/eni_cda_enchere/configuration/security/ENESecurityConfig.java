@@ -17,9 +17,9 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
-public class ENEScurityConfig {
+public class ENESecurityConfig {
 
-    protected Log logger = LogFactory.getLog(ENEScurityConfig.class);
+    protected Log logger = LogFactory.getLog(ENESecurityConfig.class);
 
     @Bean
     UserDetailsManager userDetailsManager(DataSource ds) {
