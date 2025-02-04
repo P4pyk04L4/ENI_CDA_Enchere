@@ -7,7 +7,7 @@ import java.util.List;
 public interface CategorieService {
     Categorie findByNoCategory(long no_categorie);
     List<Categorie> findAllCategories();
-    void saveCategory(String libelle);
+    void saveCategory(Categorie cat);
     void deleteCategory(long no_categorie);
     void updateCategory(Categorie cat);
 }

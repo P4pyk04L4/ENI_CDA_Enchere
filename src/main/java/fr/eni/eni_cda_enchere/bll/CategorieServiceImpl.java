@@ -25,8 +25,8 @@ public class CategorieServiceImpl implements CategorieService{
     }
 
     @Override
-    public void saveCategory(String libelle) {
-        categorieDAO.createCategory(libelle);
+    public void saveCategory(Categorie cat) {
+        categorieDAO.createCategory(cat);
     }
 
     @Override

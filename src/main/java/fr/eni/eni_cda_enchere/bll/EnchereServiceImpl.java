@@ -4,7 +4,6 @@ import fr.eni.eni_cda_enchere.bo.Enchere;
 import fr.eni.eni_cda_enchere.dal.EnchereDAO;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -36,7 +35,7 @@ public class EnchereServiceImpl implements EnchereService {
     }
 
     @Override
-    public void createEnchere(String id_utilisateur, long no_article, int montant, LocalDateTime date_enchere) {
-        enchereDAO.create(id_utilisateur, no_article, montant, date_enchere);
+    public void createEnchere(Enchere enchere) {
+        enchereDAO.create(enchere);
     }
 }

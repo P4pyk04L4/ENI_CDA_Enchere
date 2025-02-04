@@ -51,13 +51,13 @@ public class EnchereDAOImpl implements EnchereDAO {
     }
 
     @Override
-    public void create(String id_utilisateur, long no_article, int montant, LocalDateTime date) {
+    public void create(Enchere enchere) {
         String sql = "INSERT INTO enchere(id_utilisateur, id_article, montant, date_enchere) VALUES (?, ?, ?)";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("id_utilisateur", id_utilisateur);
-        namedParameters.addValue("no_article", no_article);
-        namedParameters.addValue("montant", montant);
-        namedParameters.addValue("date_enchere", date);
+        namedParameters.addValue("id_utilisateur", enchere.getId_utilisateur());
+        namedParameters.addValue("no_article", enchere.getNo_article());
+        namedParameters.addValue("montant", enchere.getMontant());
+        namedParameters.addValue("date_enchere", enchere.getDate());
         jdbc.update(sql, namedParameters);
     }
 }

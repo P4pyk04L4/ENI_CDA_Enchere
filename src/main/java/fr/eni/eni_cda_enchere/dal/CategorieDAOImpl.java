@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,11 +33,17 @@ public class CategorieDAOImpl implements CategorieDAO {
     }
 
     @Override
-    public void createCategory(String libelle) {
+    public void createCategory(Categorie cat) {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
         String sql = "INSERT INTO Categorie (libelle) VALUES (:libelle)";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("libelle", libelle);
+        namedParameters.addValue("libelle", cat.getLibelle());
         jdbc.update(sql, namedParameters);
+
+        if(keyHolder.getKey() != null) {
+            cat.setId(keyHolder.getKey().longValue());
+        }
     }
 
     @Override

@@ -9,7 +9,7 @@ public interface CategorieDAO {
 
     List<Categorie> findAll();
 
-    void createCategory(String libelle);
+    void createCategory(Categorie cat);
 
     void updateCategory(Categorie cat);
 
