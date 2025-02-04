@@ -39,8 +39,18 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
     }
 
     @Override
-    public List<ArticleAVendre> getFilteredArticleAVendre(ArticleAVendre articleAVendre) {
-        return List.of();
+    public List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nom) {
+        String sql = "select * from ARTICLES_A_VENDRE where 1=1";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        if(noCategorie != 0){
+            sql += " and no_categorie = :noCategorie";
+            params.addValue("noCategorie", noCategorie);
+        }
+        if(nom != null){
+            sql += " and nom = :nom";
+            params.addValue("nom", nom);
+        }
+        return namedParameterJdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(ArticleAVendre.class));
     }
 
     @Override
@@ -69,7 +79,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
     // A COMPLETER
     @Override
     public void updateArticleAVendre(ArticleAVendre articleAVendre) {
-        String sql = "UDPATE ARTICLES_A_VENDRE SET " +
+        String sql = "UPDATE ARTICLES_A_VENDRE SET " +
                 "nom_article = :nom_article, " +
                 "description = :description, " +
                 "date_debut_encheres = :date_debut_encheres, " +
@@ -90,6 +100,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
         params.addValue("prix_vente", articleAVendre.getPrixVente());
         params.addValue("id_utilisateur", articleAVendre.getVendeur().getPseudo());
         params.addValue("no_categorie", articleAVendre.getCategorie().getId());
+        namedParameterJdbcTemplate.update(sql, params);
     }
 
     @Override
