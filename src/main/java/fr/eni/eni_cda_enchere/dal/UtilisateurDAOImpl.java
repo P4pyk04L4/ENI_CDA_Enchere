@@ -14,15 +14,15 @@ import java.util.Optional;
 public class UtilisateurDAOImpl implements UtilisateurDAO {
 
     private final String INSERT = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe, credit, administrateur, no_adresse) " +
-            "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse, :credit, :admin, :noAdresse)";
+                        "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse, :credit, :admin, :noAdresse)";
     private final String FIND_ALL_UTILISATEUR = "SELECT * FROM UTILISATEURS";
     private final String FIND_BY_PSEUDO = "SELECT pseudo, nom, prenom, email, telephone, mot_de_passe, credit, administrateur, no_adresse " +
-            "FROM UTILISATEURS " +
-            "WHERE pseudo = :pseudo";
+                        "FROM UTILISATEURS " +
+                        "WHERE pseudo = :pseudo";
     private final String DELETE_BY_PSEUDO = "DELETE FROM UTILISATEURS WHERE pseudo = :pseudo";
     private final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET nom = :nom, prenom = :prenom, email = :email, " +
-        "telephone = :telephone, mot_de_passe = :motDePasse, credit = :credit, administrateur = :admin, no_adresse = :noAdresse, "+
-    "WHERE pseudo = :pseudo";
+                        "telephone = :telephone, mot_de_passe = :motDePasse, credit = :credit, administrateur = :admin, no_adresse = :noAdresse, "+
+                        "WHERE pseudo = :pseudo";
 
 
     public UtilisateurDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -34,7 +34,6 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
 
     @Override
     public void create(Utilisateur utilisateur) {
-
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("pseudo", utilisateur.getPseudo());
         params.addValue("nom", utilisateur.getNom());

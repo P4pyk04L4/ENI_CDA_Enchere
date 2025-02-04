@@ -10,5 +10,5 @@ public interface EnchereService {
     List<Enchere> findAllEncheresFromUserAndArticle(String id_utilisateur, long no_article);
     List<Enchere> findAllEncheresFromUser(String id_utilisateur);
     List<Enchere> findAllEncheresFromArticle(long no_article);
-    void createEnchere(String id_utilisateur, long no_article, int montant, LocalDateTime date_enchere);
+    void createEnchere(Enchere enchere);
 }
