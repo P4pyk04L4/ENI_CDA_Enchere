@@ -26,19 +26,22 @@ public class ENESecurityConfig {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(ds);
 
         jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT pseudo, mot_de_passe, 1 FROM utilisateurs WHERE pseudo=?");
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT pseudo, role FROM roles WHERE pseudo=?");
+        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT utilisateurs.pseudo, roles.role FROM utilisateurs " +
+                "JOIN roles ON utilisateurs.administrateur = roles.is_admin " +
+                "WHERE utilisateurs.pseudo=?");
 
         return jdbcUserDetailsManager;
     }
 
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http.authorizeHttpRequests(auth -> {
-            auth.requestMatchers("/*").permitAll();
-            auth.requestMatchers("/css/*").permitAll();
-            auth.requestMatchers("/images/*").permitAll();
-            auth.anyRequest().denyAll();
+            auth.requestMatchers("/**").permitAll();
+            auth.requestMatchers("/css/**").permitAll();
+            auth.requestMatchers("/images/**").permitAll();
+            auth.requestMatchers("/js/**").permitAll();
+            auth.anyRequest().authenticated();
         });
 
         http.formLogin(formLogin -> {
