@@ -1,20 +1,15 @@
-<header xmlns:th="http://www.thymeleaf.org"
+<header xmlns:th="http://www.thymeleaf.org" class="header"
         data-th-fragment="frag-header(navigation)">
-    <section id="nav-title">
-        <h1><a href="/" data-th-text="ECE"></a></h1>
-
-        <!-- Pseudo et rôles de l'utilisateur via Spring Security Dialect -->
-        <!-- Uniquement si un utilisateur est connecté -->
-        <div class="header-card" data-th-if="${#authorization.expression('isAuthenticated()')}">
-            <span data-th-text="'Pseudo : ' + ${#authentication.name}"></span>
-            <span data-th-text="'Role : ' + ${#authentication.principal.authorities}"></span>
+    <div class="container">
+        <div  class="d-flex flex-wrap justify-content-center py-3">
+            <section class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+                <span><img th:src="@{/images/logoECE.png}" alt="Logo ECE" height="100" width="100" class="logoSite"></span>
+                <span><h3 class="m-2">ENI - CDA - Enchères</h3></span>
+            </section>
+            <!-- Intégration du fragment de navigation -->
+            <section class="d-flex align-items-center justify-content-center">
+                <nav data-th-replace="${navigation}"></nav>
+            </section>
         </div>
-
-        <div>
-            <a href="/?language=fr"><img alt="Français" src="/images/French.webp"></a>
-            <a href="/?language=en"><img alt="English" src="/images/English.webp"></a>
-        </div>
-    </section>
-    <!-- Intégration du fragment de navigation -->
-    <nav data-th-replace="${navigation}"></nav>
+    </div>
 </header>
