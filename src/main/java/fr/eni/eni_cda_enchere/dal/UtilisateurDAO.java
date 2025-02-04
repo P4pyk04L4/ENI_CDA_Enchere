@@ -7,14 +7,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UtilisateurDAO {
-    void create(Utilisateur utilisateur);
 
-    Optional<Utilisateur> findByPseudo(String pseudo);
+    void INSERT(Utilisateur utilisateur);//creat
 
-    List<Utilisateur> findAll();
+    Optional<Utilisateur> findByPseudo(String pseudo);//read
 
-    void update(Utilisateur utilisateur);
+    List<Utilisateur> findAll();//readAll
 
-    void delete(String pseudo);
+    void UPDATE(Utilisateur utilisateur);//update
+
+    void DELETE(String pseudo);//delete
 
 }
