@@ -36,11 +36,11 @@ public class Enchere implements Serializable {
     }
 
     public LocalDateTime getDate() {
-        return date;
+        return date_enchere;
     }
 
     public void setDate(LocalDateTime date) {
-        this.date = date;
+        this.date_enchere = date;
     }
 
     public int getMontant() {
