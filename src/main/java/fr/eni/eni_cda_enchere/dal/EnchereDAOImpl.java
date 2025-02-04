@@ -1,15 +1,18 @@
 package fr.eni.eni_cda_enchere.dal;
 
 import fr.eni.eni_cda_enchere.bo.Enchere;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Repository
 public class EnchereDAOImpl implements EnchereDAO {
-
+    @Autowired
     private NamedParameterJdbcTemplate jdbc;
 
     @Override
