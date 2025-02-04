@@ -30,13 +30,13 @@ public class AdresseDAOImpl implements AdresseDAO {
         String sql = "INSERT INTO ADRESSES (rue, code_postal, ville, adresse_eni) VALUES (:rue, :code_postal, :ville, :adresse_eni)";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("rue", adresse.getRue());
-        params.addValue("code_postal", adresse.getCodePostal());
+        params.addValue("code_postal", adresse.getCode_postal());
         params.addValue("ville", adresse.getVille());
         params.addValue("adresse_eni", 0);
         namedParameterJdbcTemplate.update(sql, params, keyHolder);
 
         if(keyHolder.getKey() != null) {
-            adresse.setId(keyHolder.getKey().intValue());
+            adresse.setNo_adresse(keyHolder.getKey().intValue());
         }
     }
 
@@ -45,7 +45,7 @@ public class AdresseDAOImpl implements AdresseDAO {
         String sql = "Update ADRESSES SET rue = :rue, code_postal = :code_postal, ville = :ville, adresse_eni = :adresse_eni WHERE no_adresse = :no_adresse";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("rue", adresse.getRue());
-        params.addValue("code_postal", adresse.getCodePostal());
+        params.addValue("code_postal", adresse.getCode_postal());
         params.addValue("ville", adresse.getVille());
         params.addValue("adresse_eni", 0);
         namedParameterJdbcTemplate.update(sql, params);
@@ -55,7 +55,7 @@ public class AdresseDAOImpl implements AdresseDAO {
     public void deleteAdresse(Adresse adresse) {
         String sql = "delete from ADRESSES where no_adresse = :no_adresse";
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("no_adresse", adresse.getId());
+        params.addValue("no_adresse", adresse.getNo_adresse());
         namedParameterJdbcTemplate.update(sql, params);
     }
 }

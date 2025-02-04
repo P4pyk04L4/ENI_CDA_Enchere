@@ -10,17 +10,18 @@ public class Adresse implements Serializable {
     public Adresse() {
     }
 
-    private long id;
+    private long no_adresse;
     private String rue;
-    private String codePostal;
+    private String code_postal;
     private String ville;
+    private boolean adresse_eni;
 
-    public long getId() {
-        return id;
+    public long getNo_adresse() {
+        return no_adresse;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setNo_adresse(long no_adresse) {
+        this.no_adresse = no_adresse;
     }
 
     public String getRue() {
@@ -31,12 +32,12 @@ public class Adresse implements Serializable {
         this.rue = rue;
     }
 
-    public String getCodePostal() {
-        return codePostal;
+    public String getCode_postal() {
+        return code_postal;
     }
 
-    public void setCodePostal(String codePostal) {
-        this.codePostal = codePostal;
+    public void setCode_postal(String code_postal) {
+        this.code_postal = code_postal;
     }
 
     public String getVille() {
@@ -47,12 +48,20 @@ public class Adresse implements Serializable {
         this.ville = ville;
     }
 
+    public boolean isAdresse_eni() {
+        return adresse_eni;
+    }
+
+    public void setAdresse_eni(boolean adresse_eni) {
+        this.adresse_eni = adresse_eni;
+    }
+
     @Override
     public String toString() {
         return "Adresse{" +
-                "id=" + id +
+                "id=" + no_adresse +
                 ", rue='" + rue + '\'' +
-                ", codePostal='" + codePostal + '\'' +
+                ", codePostal='" + code_postal + '\'' +
                 ", ville='" + ville + '\'' +
                 '}';
     }

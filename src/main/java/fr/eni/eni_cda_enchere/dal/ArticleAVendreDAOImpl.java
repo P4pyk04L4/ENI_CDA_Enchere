@@ -59,20 +59,20 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 
         String sql = "INSERT INTO ARTICLES_A_VENDRE (nom_article, description, date_debut_encheres, date_fin_encheres, statut_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait) VALUES (:nom_article, :description, :date_debut_encheres,:date_fin_encheres, :statut_enchere, :prix_initial, :prix_vente, :id_utilisateur, :no_categorie, :no_adresse_retrait)";
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("nom_article", articleAVendre.getNom());
+        params.addValue("nom_article", articleAVendre.getNom_article());
         params.addValue("description", articleAVendre.getDescription());
-        params.addValue("date_debut_encheres", articleAVendre.getDateDebutEncheres());
-        params.addValue("date_fin_encheres", articleAVendre.getDateFinEncheres());
-        params.addValue("statut_enchere", articleAVendre.getStatut());
-        params.addValue("prix_initial", articleAVendre.getPrixInitial());
-        params.addValue("prix_vente", articleAVendre.getPrixVente());
+        params.addValue("date_debut_encheres", articleAVendre.getDate_debut_encheres());
+        params.addValue("date_fin_encheres", articleAVendre.getDat_fin_encheres());
+        params.addValue("statut_enchere", articleAVendre.getStatut_enchere());
+        params.addValue("prix_initial", articleAVendre.getPrix_initial());
+        params.addValue("prix_vente", articleAVendre.getPrix_vente());
         params.addValue("id_utilisateur", utilisateur.getPseudo());
         params.addValue("no_categorie", articleAVendre.getCategorie().getId());
-        params.addValue("adresse_retrait", adresse.getId());
+        params.addValue("adresse_retrait", adresse.getNo_adresse());
         namedParameterJdbcTemplate.update(sql, params, keyHolder);
 
         if(keyHolder.getKey() != null) {
-            articleAVendre.setId(keyHolder.getKey().intValue());
+            articleAVendre.setNo_article(keyHolder.getKey().intValue());
         }
     }
 
@@ -91,13 +91,13 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "no_categorie = :no_categorie, " +
                 "no_adresse_retrait = :no_adresse_retrait";
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("nom_article", articleAVendre.getNom());
+        params.addValue("nom_article", articleAVendre.getNom_article());
         params.addValue("description", articleAVendre.getDescription());
-        params.addValue("date_debut_encheres", articleAVendre.getDateDebutEncheres());
-        params.addValue("date_fin_encheres", articleAVendre.getDateFinEncheres());
-        params.addValue("statut_enchere", articleAVendre.getStatut());
-        params.addValue("prix_initial", articleAVendre.getPrixInitial());
-        params.addValue("prix_vente", articleAVendre.getPrixVente());
+        params.addValue("date_debut_encheres", articleAVendre.getDate_debut_encheres());
+        params.addValue("date_fin_encheres", articleAVendre.getDat_fin_encheres());
+        params.addValue("statut_enchere", articleAVendre.getStatut_enchere());
+        params.addValue("prix_initial", articleAVendre.getPrix_initial());
+        params.addValue("prix_vente", articleAVendre.getPrix_vente());
         params.addValue("id_utilisateur", articleAVendre.getVendeur().getPseudo());
         params.addValue("no_categorie", articleAVendre.getCategorie().getId());
         namedParameterJdbcTemplate.update(sql, params);
