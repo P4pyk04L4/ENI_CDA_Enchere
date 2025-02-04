@@ -19,6 +19,10 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    public ArticleAVendreDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
     @Override
     public ArticleAVendre getArticleAVendre(int id) {
         String sql = "select * from ARTICLES_A_VENDRE where no_article = :id";
@@ -62,7 +66,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
         params.addValue("nom_article", articleAVendre.getNom_article());
         params.addValue("description", articleAVendre.getDescription());
         params.addValue("date_debut_encheres", articleAVendre.getDate_debut_encheres());
-        params.addValue("date_fin_encheres", articleAVendre.getDat_fin_encheres());
+        params.addValue("date_fin_encheres", articleAVendre.getDate_fin_encheres());
         params.addValue("statut_enchere", articleAVendre.getStatut_enchere());
         params.addValue("prix_initial", articleAVendre.getPrix_initial());
         params.addValue("prix_vente", articleAVendre.getPrix_vente());
@@ -76,7 +80,6 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
         }
     }
 
-    // A COMPLETER
     @Override
     public void updateArticleAVendre(ArticleAVendre articleAVendre) {
         String sql = "UPDATE ARTICLES_A_VENDRE SET " +
@@ -94,7 +97,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
         params.addValue("nom_article", articleAVendre.getNom_article());
         params.addValue("description", articleAVendre.getDescription());
         params.addValue("date_debut_encheres", articleAVendre.getDate_debut_encheres());
-        params.addValue("date_fin_encheres", articleAVendre.getDat_fin_encheres());
+        params.addValue("date_fin_encheres", articleAVendre.getDate_fin_encheres());
         params.addValue("statut_enchere", articleAVendre.getStatut_enchere());
         params.addValue("prix_initial", articleAVendre.getPrix_initial());
         params.addValue("prix_vente", articleAVendre.getPrix_vente());
