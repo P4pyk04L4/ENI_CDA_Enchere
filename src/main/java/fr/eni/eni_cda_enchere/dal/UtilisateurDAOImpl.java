@@ -20,18 +20,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
             "FROM UTILISATEURS " +
             "WHERE pseudo = :pseudo";
     private final String DELETE_BY_PSEUDO = "DELETE FROM UTILISATEURS WHERE pseudo = :pseudo";
-    private final String UPDATE_UTILISATEUR = """
-    UPDATE UTILISATEURS 
-    SET nom = :nom, 
-        prenom = :prenom, 
-        email = :email, 
-        telephone = :telephone, 
-        mot_de_passe = :motDePasse, 
-        credit = :credit, 
-        administrateur = :admin, 
-        no_adresse = :noAdresse
-    WHERE pseudo = :pseudo
-""";
+    private final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET nom = :nom, prenom = :prenom, email = :email, " +
+        "telephone = :telephone, mot_de_passe = :motDePasse, credit = :credit, administrateur = :admin, no_adresse = :noAdresse, "+
+    "WHERE pseudo = :pseudo";
 
 
     public UtilisateurDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -42,7 +33,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public void INSERT(Utilisateur utilisateur) {
+    public void create(Utilisateur utilisateur) {
 
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("pseudo", utilisateur.getPseudo());
@@ -75,7 +66,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     }
 
     @Override
-    public void UPDATE(Utilisateur utilisateur) {
+    public void update(Utilisateur utilisateur) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("pseudo", utilisateur.getPseudo());
         namedParameters.addValue("nom", utilisateur.getNom());
@@ -90,7 +81,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     }
 
     @Override
-    public void DELETE(String pseudo) {
+    public void delete(String pseudo) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("pseudo", pseudo);
 
