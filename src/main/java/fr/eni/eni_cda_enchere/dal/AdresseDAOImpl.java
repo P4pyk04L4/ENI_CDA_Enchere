@@ -9,6 +9,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class AdresseDAOImpl implements AdresseDAO {
 
@@ -21,6 +23,12 @@ public class AdresseDAOImpl implements AdresseDAO {
         MapSqlParameterSource params = new MapSqlParameterSource("id", id);
         params.addValue("id", id);
         return namedParameterJdbcTemplate.queryForObject(sql, params, new BeanPropertyRowMapper<>(Adresse.class));
+    }
+
+    @Override
+    public List<Adresse> getAdresses() {
+        String sql = "select * from ADRESSES";
+        return namedParameterJdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Adresse.class));
     }
 
     @Override
