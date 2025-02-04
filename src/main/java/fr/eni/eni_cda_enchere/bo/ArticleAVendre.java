@@ -8,14 +8,14 @@ public class ArticleAVendre implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private long id;
-    private String nom;
+    private long no_article;
+    private String nom_article;
     private String description;
-    private LocalDate dateDebutEncheres;
-    private LocalDate dateFinEncheres;
-    private int statut;
-    private int prixInitial;
-    private int prixVente;
+    private LocalDate date_debut_encheres;
+    private LocalDate dat_fin_encheres;
+    private int statut_enchere;
+    private int prix_initial;
+    private int prix_vente;
 
     private Adresse retrait;
     private Utilisateur vendeur;
@@ -23,20 +23,20 @@ public class ArticleAVendre implements Serializable {
 
     public ArticleAVendre() {}
 
-    public long getId() {
-        return id;
+    public long getNo_article() {
+        return no_article;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setNo_article(long no_article) {
+        this.no_article = no_article;
     }
 
-    public String getNom() {
-        return nom;
+    public String getNom_article() {
+        return nom_article;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNom_article(String nom_article) {
+        this.nom_article = nom_article;
     }
 
     public String getDescription() {
@@ -47,44 +47,44 @@ public class ArticleAVendre implements Serializable {
         this.description = description;
     }
 
-    public LocalDate getDateDebutEncheres() {
-        return dateDebutEncheres;
+    public LocalDate getDate_debut_encheres() {
+        return date_debut_encheres;
     }
 
-    public void setDateDebutEncheres(LocalDate dateDebutEncheres) {
-        this.dateDebutEncheres = dateDebutEncheres;
+    public void setDate_debut_encheres(LocalDate date_debut_encheres) {
+        this.date_debut_encheres = date_debut_encheres;
     }
 
-    public LocalDate getDateFinEncheres() {
-        return dateFinEncheres;
+    public LocalDate getDat_fin_encheres() {
+        return dat_fin_encheres;
     }
 
-    public void setDateFinEncheres(LocalDate dateFinEncheres) {
-        this.dateFinEncheres = dateFinEncheres;
+    public void setDat_fin_encheres(LocalDate dat_fin_encheres) {
+        this.dat_fin_encheres = dat_fin_encheres;
     }
 
-    public int getStatut() {
-        return statut;
+    public int getStatut_enchere() {
+        return statut_enchere;
     }
 
-    public void setStatut(int statut) {
-        this.statut = statut;
+    public void setStatut_enchere(int statut_enchere) {
+        this.statut_enchere = statut_enchere;
     }
 
-    public int getPrixInitial() {
-        return prixInitial;
+    public int getPrix_initial() {
+        return prix_initial;
     }
 
-    public void setPrixInitial(int prixInitial) {
-        this.prixInitial = prixInitial;
+    public void setPrix_initial(int prix_initial) {
+        this.prix_initial = prix_initial;
     }
 
-    public int getPrixVente() {
-        return prixVente;
+    public int getPrix_vente() {
+        return prix_vente;
     }
 
-    public void setPrixVente(int prixVente) {
-        this.prixVente = prixVente;
+    public void setPrix_vente(int prix_vente) {
+        this.prix_vente = prix_vente;
     }
 
     public Adresse getRetrait() {
@@ -114,14 +114,14 @@ public class ArticleAVendre implements Serializable {
     @Override
     public String toString() {
         return "ArticleAVendre{" +
-                "id=" + id +
-                ", nom='" + nom + '\'' +
+                "id=" + no_article +
+                ", nom='" + nom_article + '\'' +
                 ", description='" + description + '\'' +
-                ", dateDebutEncheres=" + dateDebutEncheres +
-                ", dateFinEncheres=" + dateFinEncheres +
-                ", statut=" + statut +
-                ", prixInitial=" + prixInitial +
-                ", prixVente=" + prixVente +
+                ", dateDebutEncheres=" + date_debut_encheres +
+                ", dateFinEncheres=" + dat_fin_encheres +
+                ", statut=" + statut_enchere +
+                ", prixInitial=" + prix_initial +
+                ", prixVente=" + prix_vente +
                 ", retrait=" + retrait +
                 ", vendeur=" + vendeur.getPseudo() +
                 ", categorie=" + categorie.getLibelle() +
