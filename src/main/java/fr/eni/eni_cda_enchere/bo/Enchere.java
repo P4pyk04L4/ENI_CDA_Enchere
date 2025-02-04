@@ -8,11 +8,29 @@ public class Enchere implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private LocalDateTime date;
+    private LocalDateTime date_enchere;
     private int montant;
+    private String id_utilisateur;
+    private long no_article;
 
     private Utilisateur acquereur;
     private ArticleAVendre articleAVendre;
+
+    public String getId_utilisateur() {
+        return id_utilisateur;
+    }
+
+    public void setId_utilisateur(String id_utilisateur) {
+        this.id_utilisateur = id_utilisateur;
+    }
+
+    public long getNo_article() {
+        return no_article;
+    }
+
+    public void setNo_article(long no_article) {
+        this.no_article = no_article;
+    }
 
     public Enchere() {
     }
@@ -52,8 +70,10 @@ public class Enchere implements Serializable {
     @Override
     public String toString() {
         return "Enchere{" +
-                "date=" + date +
+                "date=" + date_enchere +
                 ", montant=" + montant +
+                ", id_utilisateur='" + id_utilisateur + '\'' +
+                ", no_article=" + no_article +
                 ", acquereur=" + acquereur +
                 ", articleAVendre=" + articleAVendre +
                 '}';
