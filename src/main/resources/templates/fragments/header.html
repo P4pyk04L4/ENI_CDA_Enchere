@@ -5,7 +5,7 @@
             <section class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
                 <span>
                     <a th:href="@{/}">
-                        <img th:src="@{/images/logoECE.png}" alt="Logo ECE" height="100" width="100" class="logoSite">
+                        <img th:src="@{/images/logoECE.png}" alt="Logo ECE" height="60" width="60" class="logoSite">
                     </a>
                 </span>
                 <span>
@@ -15,6 +15,16 @@
             <!-- Intégration du fragment de navigation -->
             <section class="d-flex align-items-center justify-content-center">
                 <nav data-th-replace="${navigation}"></nav>
+            </section>
+
+            <section class="d-flex align-items-center justify-content-center">
+                <div class="headerInfoBox">
+                    <span><strong>Aujourd'hui : </strong><span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span></span>
+                    <th:block th:if="${#authorization.expression('isAuthenticated()')}">
+                        <span><strong>Pseudo :</strong><span data-th-text="${' ' + #authentication.name}"></span></span>
+                    </th:block>
+                </div>
+
             </section>
         </div>
     </div>
