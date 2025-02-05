@@ -2,18 +2,19 @@
     <li class="nav-item">
         <a th:href="@{/}" class="nav-link active">Accueil</a>
     </li>
+    <th:block th:if="${#authorization.expression('isAuthenticated()')}">
     <li class="nav-item">
         <a href="#" class="nav-link">Vendre un article</a>
     </li>
     <li class="nav-item">
         <!-- Accès statique temporaire jusqu'à la mise en place du code dynamique -->
-        <a th:href="@{/utilisateurs/profilpseudo(pseudo='coach_tata')}" class="nav-link">Mon profil</a>
+        <a th:href="@{/utilisateurs/myProfile}" class="nav-link">Mon profil</a>
     </li>
     <li class="nav-item">
         <a th:href="@{/logout}" class="nav-link">Se déconnecter</a>
     </li>
-
-    <th:block th:if="${membreSession == null}">
+    </th:block>
+    <th:block th:if="${!#authorization.expression('isAuthenticated()')}">
         <li class="nav-item">
             <a th:href="@{/login}" class="nav-link">S'inscrire - Se connecter</a>
         </li>

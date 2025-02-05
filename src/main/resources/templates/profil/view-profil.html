@@ -3,39 +3,33 @@
                                                                         , titrePage=~{:: title}
                                                                         , ressources=~{})}">
 <head>
-    <title>Profil utilisateur</title>
+    <title th:text="${#authentication.name}"></title>
 </head>
 <body>
 <main class="container my-4">
-    <h1 class="text-center mb-4">Profil</h1>
+    <h1 class="text-center mb-4" th:text="${#authentication.name}"></h1>
 
     <div th:if="${utilisateur != null}">
         <table class="table table-striped table-bordered">
-            <thead>
             <tr>
-                <th scope="col">Pseudo</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Prénom</th>
-                <th scope="col">Email</th>
-                <th scope="col">Téléphone</th>
-                <th scope="col">Crédit</th>
-                <th scope="col">Administrateur</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td th:text="${utilisateur.pseudo}"></td>
-                <td th:text="${utilisateur.nom}"></td>
+                <td>Prénom :</td>
                 <td th:text="${utilisateur.prenom}"></td>
-                <td th:text="${utilisateur.email}"></td>
-                <td th:text="${utilisateur.telephone}"></td>
-                <td th:text="${utilisateur.credit}"></td>
-                <td th:text="${utilisateur.admin == 1 ? 'vous êtes admin' : 'utilisateur'}"></td>
             </tr>
-            </tbody>
+            <tr>
+                <td>Nom :</td>
+                <td th:text="${utilisateur.nom}"></td>
+            </tr>
+            <tr>
+                <td>Email :</td>
+                <td th:text="${utilisateur.email}"></td>
+            </tr>
+            <tr>
+                <td>Téléphone</td>
+                <td th:text="${utilisateur.telephone}"></td>
+            </tr>
         </table>
     </div>
-    <a th:href="@{/utilisateurs/edit/{pseudo}(pseudo=${utilisateur.pseudo})}" class="btn btn-primary">Modifier le profil</a>
+    <a th:href="@{/utilisateurs/edit/myProfile}" class="btn btn-primary">Modifier le profil</a>
     <div th:if="${utilisateur == null}">
         <p class="text-danger">Aucun utilisateur trouvé pour ce pseudo.</p>
     </div>
