@@ -110,7 +110,7 @@ public class UtilisateurController {
         if (bindingResult.hasErrors()) {
             return "editprofil";
         }
-        utilisateurService.updateUser(utilisateurAModifier);
+        utilisateurService.updateByUser(utilisateurAModifier);
         return "redirect:/utilisateurs/profilpseudo?pseudo=" + userDetails.getUsername();
     }
 

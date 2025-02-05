@@ -10,5 +10,6 @@ public interface UtilisateurService {
     Optional<Utilisateur> findByPseudo(String pseudo);
     List<Utilisateur> findAll();
     void updateUser(Utilisateur user);
+    void updateByUser(Utilisateur user);
     void deleteUser(String pseudo);
 }
