@@ -5,30 +5,39 @@ contenuPage=~{:: main},
 ressources=~{:: #ressources-css})}" >
 <head>
     <title th:text="Connexion"></title>
+    <th:block id="ressources-css">
+        <link rel="stylesheet" data-th-href="@{/css/login.css}">
+    </th:block>
 </head>
 <body>
-<main class="container my-4">
-    <h1 th:text="Connexion"></h1>
+<main class="container my-4 pt-4 d-flex justify-content-center">
+    <div class="boxLogin">
+        <h1 th:text="Connexion"></h1>
 
-    <form th:action="@{/login}" method="post">
-        <div class="cards" th:if="${param.error}" th:text="Errors"></div>
-        <div th:if="${param.logout}" th:text="Déconnexion"></div>
+        <form th:action="@{/login}" method="post">
+            <div class="cards" th:if="${param.error}" th:text="Errors"></div>
+            <div th:if="${param.logout}" th:text="Déconnexion"></div>
 
             <div class="mb-3">
-                <label for="inputUsername" class="form-label">Pseudo</label>
+                <label for="inputUsername" class="form-label"><strong>Pseudo :</strong></label>
                 <input id="inputUsername" type="text" name="username" class="form-control"/>
             </div>
             <div class="mb-3">
-                <label for="inputPwd" class="form-label">Mot de passe</label>
+                <label for="inputPwd" class="form-label"><strong>Mot de passe :</strong></label>
                 <input id="inputPwd" type="password" name="password" class="form-control"/>
             </div>
 
-            <button type="submit" class="btn btn-primary" th:text="Connexion" ></button>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary" th:text="Connexion" ></button>
+            </div>
+        </form>
 
+        <div>
             <span>coach_titi</span>
             <span>Pa$$w0rd</span>
+        </div>
+    </div>
 
-    </form>
 </main>
 </body>
 </html>
