@@ -16,8 +16,8 @@ public class Utilisateur implements Serializable {
     private String motDePasse;
     private int credit;
     private boolean admin;
-
     private Adresse adresse;
+
 
     private List<ArticleAVendre> ArticlesAVendre;
     private List<Enchere> listeEncheres;
