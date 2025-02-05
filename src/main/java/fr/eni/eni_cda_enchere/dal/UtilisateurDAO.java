@@ -15,6 +15,8 @@ public interface UtilisateurDAO {
 
     void update(Utilisateur utilisateur);//update
 
+    void updateByUser(Utilisateur utilisateur);
+
     void delete(String pseudo);//delete
 
 }

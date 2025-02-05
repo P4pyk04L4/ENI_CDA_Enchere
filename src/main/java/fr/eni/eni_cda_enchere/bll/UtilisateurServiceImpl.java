@@ -1,8 +1,12 @@
 package fr.eni.eni_cda_enchere.bll;
 
+import fr.eni.eni_cda_enchere.bo.Adresse;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
+import fr.eni.eni_cda_enchere.dal.AdresseDAO;
+import fr.eni.eni_cda_enchere.dal.AdresseDAOImpl;
 import fr.eni.eni_cda_enchere.dal.UtilisateurDAO;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,8 +14,10 @@ import java.util.Optional;
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService {
     private final UtilisateurDAO utilisateurDAO;
+    private final AdresseDAO adresseDAO;
 
-    public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO) {
+    public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
+        this.adresseDAO = adresseDAO;
         this.utilisateurDAO = utilisateurDAO;
     }
 
@@ -33,6 +39,31 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public void updateUser(Utilisateur user) {
         utilisateurDAO.update(user);
+    }
+
+    @Override
+    @Transactional
+    public void updateByUser(Utilisateur user) {
+        int noAdress = 0;
+
+        // Vérification du numéro d'adresse
+        boolean isNewAdress = false;
+        Adresse oldAdress = adresseDAO.getAdresse(user.getAdresse().getNo_adresse());
+        if(oldAdress != null) {
+            if(!oldAdress.getRue().equals(user.getAdresse().getRue())
+            || !oldAdress.getCode_postal().equals(user.getAdresse().getCode_postal())
+            || !oldAdress.getVille().equals(user.getAdresse().getVille())) {
+                isNewAdress = true;
+            }
+        }
+        // Création si besoin
+        if(isNewAdress) {
+           noAdress = adresseDAO.insertAdresse(user.getAdresse());
+           user.getAdresse().setNo_adresse(noAdress);
+        }
+
+        // Update par l'utilisateur
+        utilisateurDAO.updateByUser(user);
     }
 
     @Override

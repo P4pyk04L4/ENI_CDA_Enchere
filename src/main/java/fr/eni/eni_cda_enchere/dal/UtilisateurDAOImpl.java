@@ -20,13 +20,13 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     private final String INSERT = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe, credit, administrateur, no_adresse) " +
                         "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse, :credit, :admin, :noAdresse)";
     private final String FIND_ALL_UTILISATEUR = "SELECT * FROM UTILISATEURS";
-    private final String FIND_BY_PSEUDO = "SELECT pseudo, nom, prenom, email, telephone, mot_de_passe, credit, administrateur, no_adresse " +
-                        "FROM UTILISATEURS " +
-                        "WHERE pseudo = :pseudo";
     private final String DELETE_BY_PSEUDO = "DELETE FROM UTILISATEURS WHERE pseudo = :pseudo";
     private final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET nom = :nom, prenom = :prenom, email = :email, " +
                         "telephone = :telephone, mot_de_passe = :motDePasse, credit = :credit, administrateur = :admin, no_adresse = :noAdresse "+
                         "WHERE pseudo = :pseudo";
+    private final String UPDATE_BY_USER = "UPDATE UTILISATEURS SET nom = :nom, prenom = :prenom, email = :email, " +
+            "telephone = :telephone, no_adresse = :noAdresse "+
+            "WHERE pseudo = :pseudo";
     private final String FIND_BY_PSEUDO_ALL_INCLUSIVE = "SELECT pseudo, nom, prenom, email, telephone, mot_de_passe, credit, administrateur, u.no_adresse, " +
             "a.rue, a.code_postal, a.ville, a.adresse_eni " +
             "FROM UTILISATEURS u " +
@@ -90,6 +90,20 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     }
 
     @Override
+    public void updateByUser(Utilisateur utilisateur) {
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+
+        namedParameters.addValue("pseudo", utilisateur.getPseudo());
+        namedParameters.addValue("nom", utilisateur.getNom());
+        namedParameters.addValue("prenom", utilisateur.getPrenom());
+        namedParameters.addValue("email", utilisateur.getEmail());
+        namedParameters.addValue("telephone", utilisateur.getTelephone());
+        namedParameters.addValue("noAdresse", utilisateur.getAdresse().getNo_adresse());
+
+        namedParameterJdbcTemplate.update(UPDATE_BY_USER, namedParameters);
+    }
+
+    @Override
     public void delete(String pseudo) {
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("pseudo", pseudo);
@@ -97,7 +111,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         namedParameterJdbcTemplate.update(DELETE_BY_PSEUDO, namedParameters);
     }
 
-    class UtilisateurRowMapper implements RowMapper<Utilisateur> {
+    static class UtilisateurRowMapper implements RowMapper<Utilisateur> {
 
         @Override
         public Utilisateur mapRow(ResultSet rs, int rowNum) throws SQLException {

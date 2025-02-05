@@ -32,7 +32,7 @@ public class AdresseDAOImpl implements AdresseDAO {
     }
 
     @Override
-    public void insertAdresse(Adresse adresse) {
+    public int insertAdresse(Adresse adresse) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         String sql = "INSERT INTO ADRESSES (rue, code_postal, ville, adresse_eni) VALUES (:rue, :code_postal, :ville, :adresse_eni)";
@@ -44,8 +44,11 @@ public class AdresseDAOImpl implements AdresseDAO {
         namedParameterJdbcTemplate.update(sql, params, keyHolder);
 
         if(keyHolder.getKey() != null) {
-            adresse.setNo_adresse(keyHolder.getKey().intValue());
+            return keyHolder.getKey().intValue();
+        } else {
+            return -1;
         }
+
     }
 
     @Override

@@ -10,7 +10,7 @@ public interface AdresseDAO {
 
     List<Adresse> getAdresses();
 
-    void insertAdresse(Adresse adresse);
+    int insertAdresse(Adresse adresse);
 
     void updateAdresse(Adresse adresse);
 
