@@ -1,38 +1,33 @@
 <!DOCTYPE html>
-<!-- Mise en place du layout -->
-<html xmlns:th="http://www.thymeleaf.org"
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
       data-th-replace="~{layout/layout :: layout(titrePage=~{:: title},
 contenuPage=~{:: main},
-ressources=~{:: #ressources-css})}">
+ressources=~{:: #ressources-css})}" >
 <head>
-    <meta charset="UTF-8">
-    <!-- Accueil comme titre de page -->
-    <title data-th-text="Connexion"></title>
-    <!-- Ajout de CSS demo-form.css -->
+    <title th:text="Connexion"></title>
 </head>
-
 <body>
-<main >
+<main class="container my-4">
+    <h1 th:text="Connexion"></h1>
+
     <form th:action="@{/login}" method="post">
-        <h1 data-th-text="Connexion"></h1>
-        <div class="cards" th:if="${param.error}" data-th-text="Errors"></div>
-        <div th:if="${param.logout}" data-th-text="Déconnexion"></div>
-        <ul class="flex-outer">
-            <li>
-                <label for="inputUsername" data-th-text="Username"></label>
-                <input id="inputUsername" type="text" name="username" />
-            </li>
-            <li>
-                <label for="inputPwd" data-th-text="Pwd"></label>
-                <input id="inputPwd" type="password" name="password" />
-            </li>
-            <li>
-                <button type="submit" data-th-text="Connexion" ></button>
-            </li>
+        <div class="cards" th:if="${param.error}" th:text="Errors"></div>
+        <div th:if="${param.logout}" th:text="Déconnexion"></div>
+
+            <div class="mb-3">
+                <label for="inputUsername" class="form-label">Pseudo</label>
+                <input id="inputUsername" type="text" name="username" class="form-control"/>
+            </div>
+            <div class="mb-3">
+                <label for="inputPwd" class="form-label">Mot de passe</label>
+                <input id="inputPwd" type="password" name="password" class="form-control"/>
+            </div>
+
+            <button type="submit" class="btn btn-primary" th:text="Connexion" ></button>
 
             <span>coach_titi</span>
             <span>Pa$$w0rd</span>
-        </ul>
+
     </form>
 </main>
 </body>

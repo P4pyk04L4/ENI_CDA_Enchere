@@ -1,12 +1,16 @@
 package fr.eni.eni_cda_enchere.dal;
 
+import fr.eni.eni_cda_enchere.bo.Adresse;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +25,13 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
                         "WHERE pseudo = :pseudo";
     private final String DELETE_BY_PSEUDO = "DELETE FROM UTILISATEURS WHERE pseudo = :pseudo";
     private final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET nom = :nom, prenom = :prenom, email = :email, " +
-                        "telephone = :telephone, mot_de_passe = :motDePasse, credit = :credit, administrateur = :admin, no_adresse = :noAdresse, "+
+                        "telephone = :telephone, mot_de_passe = :motDePasse, credit = :credit, administrateur = :admin, no_adresse = :noAdresse "+
                         "WHERE pseudo = :pseudo";
+    private final String FIND_BY_PSEUDO_ALL_INCLUSIVE = "SELECT pseudo, nom, prenom, email, telephone, mot_de_passe, credit, administrateur, u.no_adresse, " +
+            "a.rue, a.code_postal, a.ville, a.adresse_eni " +
+            "FROM UTILISATEURS u " +
+            "LEFT JOIN ADRESSES a ON u.no_adresse = a.no_adresse " +
+            "WHERE pseudo = :pseudo";
 
 
     public UtilisateurDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
@@ -43,7 +52,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         params.addValue("motDePasse", utilisateur.getMotDePasse());
         params.addValue("credit", utilisateur.getCredit());
         params.addValue("admin", utilisateur.isAdmin());
-     //   params.addValue("noAdresse", utilisateur.getAdresse() != null ? utilisateur.getAdresse().getNoAdresse() : null);
+        params.addValue("noAdresse", utilisateur.getAdresse() != null ? utilisateur.getAdresse().getNo_adresse() : null);
 
         namedParameterJdbcTemplate.update(INSERT, params);
     }
@@ -55,7 +64,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         namedParameters.addValue("pseudo", pseudo);
 
         return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(
-                FIND_BY_PSEUDO,namedParameters,new BeanPropertyRowMapper<>(Utilisateur.class)
+                FIND_BY_PSEUDO_ALL_INCLUSIVE,namedParameters, new UtilisateurRowMapper()
         ));
     }
 
@@ -75,6 +84,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         namedParameters.addValue("motDePasse", utilisateur.getMotDePasse());
         namedParameters.addValue("credit", utilisateur.getCredit());
         namedParameters.addValue("admin", utilisateur.isAdmin() ? 1 : 0);
+        namedParameters.addValue("noAdresse", utilisateur.getAdresse().getNo_adresse());
 
         namedParameterJdbcTemplate.update(UPDATE_UTILISATEUR, namedParameters);
     }
@@ -85,6 +95,32 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         namedParameters.addValue("pseudo", pseudo);
 
         namedParameterJdbcTemplate.update(DELETE_BY_PSEUDO, namedParameters);
+    }
+
+    class UtilisateurRowMapper implements RowMapper<Utilisateur> {
+
+        @Override
+        public Utilisateur mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Utilisateur utilisateur = new Utilisateur();
+            utilisateur.setPseudo(rs.getString("pseudo"));
+            utilisateur.setNom(rs.getString("nom"));
+            utilisateur.setPrenom(rs.getString("prenom"));
+            utilisateur.setEmail(rs.getString("email"));
+            utilisateur.setTelephone(rs.getString("telephone"));
+            utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
+            utilisateur.setAdmin(rs.getBoolean("administrateur"));
+
+            Adresse adresse = new Adresse();
+            adresse.setNo_adresse(rs.getInt("no_adresse"));
+            adresse.setRue(rs.getString("rue"));
+            adresse.setCode_postal(rs.getString("code_postal"));
+            adresse.setVille(rs.getString("ville"));
+            adresse.setAdresse_eni(rs.getBoolean("adresse_eni"));
+
+            utilisateur.setAdresse(adresse);
+
+            return utilisateur;
+        }
     }
 
 }

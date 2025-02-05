@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="fr" xmlns:th="http://wwww.thymeleaf.org" data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
+                                                                        , titrePage=~{:: title}
+                                                                        , ressources=~{})}">
 <head>
-    <meta charset="UTF-8">
-    <title>Edit Profile</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Editer le profil</title>
 </head>
 <body>
 <main class="container my-4">
-    <h1 class="text-center mb-4">Edit Profile</h1>
+    <h1 class="text-center mb-4" th:text="Editer le profil"></h1>
 
-    <form th:action="@{/utilisateurs/edit/{pseudo}(pseudo=${utilisateur.pseudo})}" th:object="${utilisateur}" method="post">
+    <form th:action="@{/utilisateurs/edit/{pseudo}(pseudo=${utilisateur.pseudo})}" th:object="${utilisateurAModifier}" method="post">
         <div class="form-group">
-            <label for="pseudo">Username</label>
+            <label for="pseudo">Pseudo</label>
             <input type="text" id="pseudo" th:field="*{pseudo}" class="form-control" readonly>
         </div>
         <div class="form-group">
-            <label for="nom">Last Name</label>
+            <label for="nom">Nom</label>
             <input type="text" id="nom" th:field="*{nom}" class="form-control">
         </div>
         <div class="form-group">
-            <label for="prenom">First Name</label>
+            <label for="prenom">Prénom</label>
             <input type="text" id="prenom" th:field="*{prenom}" class="form-control">
         </div>
         <div class="form-group">
@@ -27,22 +27,31 @@
             <input type="email" id="email" th:field="*{email}" class="form-control">
         </div>
         <div class="form-group">
-            <label for="telephone">Phone Number</label>
+            <label for="telephone">Téléphone</label>
             <input type="text" id="telephone" th:field="*{telephone}" class="form-control">
         </div>
         <div class="form-group">
-            <label for="motDePasse">Password</label>
+            <label for="motDePasse">Mot de passe</label>
             <input type="password" id="motDePasse" th:field="*{motDePasse}" class="form-control">
         </div>
+
         <div class="form-group">
-            <label for="credit">Credit</label>
-            <input type="number" id="credit" th:field="*{credit}" class="form-control">
+            <label for="adresseRue">Rue</label>
+            <input type="text" id="adresseRue" th:field="*{adresse.rue}" class="form-control">
         </div>
         <div class="form-group">
-            <label for="admin">Administrator</label>
-            <input type="checkbox" id="admin" th:field="*{admin}" class="form-check-input">
+            <label for="adresseCP">Code postal</label>
+            <input type="text" id="adresseCP" th:field="*{adresse.code_postal}" class="form-control">
         </div>
-        <button type="submit" class="btn btn-primary">Save</button>
+        <div class="form-group">
+            <label for="adresseVille">Ville</label>
+            <input type="text" id="adresseVille" th:field="*{adresse.ville}" class="form-control">
+        </div>
+        <label>
+            <input type="number" hidden="hidden" th:field="*{adresse.no_adresse}" disabled>
+        </label>
+
+        <button type="submit" class="btn btn-primary">Sauvegarder</button>
     </form>
 </main>
 </body>
