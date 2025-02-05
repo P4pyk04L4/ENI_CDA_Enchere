@@ -48,6 +48,14 @@ public class ArticleAVendre implements Serializable {
         this.description = description;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public LocalDate getDate_debut_encheres() {
         return date_debut_encheres;
     }
