@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/utilisateurs")public class UtilisateurController {
+@RequestMapping("/utilisateurs")
+@SessionAttributes({"utilisateurAModifier"})
+public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
 
@@ -32,29 +34,39 @@ import java.util.Optional;
     public String findByPseudo(@RequestParam String pseudo, Model model) {
         Optional<Utilisateur> utilisateur = utilisateurService.findByPseudo(pseudo);
 
-            model.addAttribute("utilisateur", utilisateur.get());
-            return "profil/view-profil";
+        model.addAttribute("utilisateur", utilisateur.get());
+        return "profil/view-profil";
     }
 
     // /edit/{pseudo} mais il y a Get et Post differents
     @GetMapping("/edit/{pseudo}")
-    public String showEditForm(@PathVariable String pseudo, Model model) {
+    public String showEditForm(
+        @PathVariable
+        String pseudo,
+        Model model)
+    {
         Optional<Utilisateur> utilisateur = utilisateurService.findByPseudo(pseudo);
-        model.addAttribute("utilisateur", utilisateur.orElse(null));
+        model.addAttribute("utilisateurAModifier", utilisateur.orElse(null));
+
         return "profil/view-editProfil";
     }
 
-    /*
     @PostMapping("/edit/{pseudo}")
-    public String updateProfil(@PathVariable String pseudo, @Valid @ModelAttribute Utilisateur utilisateur, BindingResult bindingResult) {
+    public String updateProfil(
+            @PathVariable
+            String pseudo,
+            @Valid
+            @ModelAttribute("utilisateurAModifier")
+            Utilisateur utilisateurAModifier,
+            BindingResult bindingResult)
+    {
         if (bindingResult.hasErrors()) {
             return "editprofil";
         }
-        utilisateur.setPseudo(pseudo);
-        utilisateurService.updateUser(utilisateur);
+        utilisateurService.updateUser(utilisateurAModifier);
         return "redirect:/utilisateurs/profilpseudo?pseudo=" + pseudo;
     }
-*/
+
 
 
 }

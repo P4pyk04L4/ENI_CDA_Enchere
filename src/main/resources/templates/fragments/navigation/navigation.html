@@ -1,15 +1,23 @@
 <ul xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-nav" class="nav nav-pills">
     <li class="nav-item">
-        <a href="#" class="nav-link active">Home</a>
+        <a th:href="@{/}" class="nav-link active">Accueil</a>
+    </li>
+    <li class="nav-item">
+        <a href="#" class="nav-link">Vendre un article</a>
     </li>
     <li class="nav-item">
         <!-- Accès statique temporaire jusqu'à la mise en place du code dynamique -->
-        <a th:href="@{/utilisateurs/profilpseudo(pseudo='coach_tata')}" class="nav-link">Profil</a>
+        <a th:href="@{/utilisateurs/profilpseudo(pseudo='coach_tata')}" class="nav-link">Mon profil</a>
     </li>
     <li class="nav-item">
-        <a href="#" class="nav-link">Enchères</a>
+        <a th:href="@{/logout}" class="nav-link">Se déconnecter</a>
     </li>
-    <li class="nav-item">
-        <a href="#" class="nav-link">Ajouter un produit</a>
-    </li>
+
+    <th:block th:if="${membreSession == null}">
+        <li class="nav-item">
+            <a th:href="@{/login}" class="nav-link">S'inscrire - Se connecter</a>
+        </li>
+    </th:block>
+
+
 </ul>
