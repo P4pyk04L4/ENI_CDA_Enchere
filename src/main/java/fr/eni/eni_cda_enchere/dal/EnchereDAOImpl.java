@@ -24,11 +24,11 @@ public class EnchereDAOImpl implements EnchereDAO {
     public Enchere read(String id_utilisateur, long no_article, int montant_enchere) {
         String sql = "SELECT e.id_utilisateur, e.no_article, e.montant_enchere, e.date_enchere, " +
                 "a.nom_article, a.description, a.photo, a.date_debut_encheres, a.date_fin_encheres, " +
-                "a.statut_encheres, a.prix_initial, a.prix_vente " +
+                "a.statut_enchere, a.prix_initial, a.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit " +
-                "FROM Enchere AS e " +
-                "LEFT JOIN Articles_a_vendre AS a ON e.no_article = a.no_article " +
-                "LEFT JOIN Utilisateurs AS u ON e.id_utilisateur = u.pseudo " +
+                "FROM encheres AS e " +
+                "LEFT JOIN articles_a_vendre AS a ON e.no_article = a.no_article " +
+                "LEFT JOIN utilisateurs AS u ON e.id_utilisateur = u.pseudo " +
                 "WHERE e.id_utilisateur = :id_utilisateur AND e.no_article = :no_article AND e.montant_enchere = :montant_enchere";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("id_utilisateur", id_utilisateur);
@@ -41,9 +41,9 @@ public class EnchereDAOImpl implements EnchereDAO {
     public List<Enchere> readAllFromUserAndArticle(String id_utilisateur, long no_article) {
         String sql = "SELECT e.id_utilisateur, e.no_article, e.montant_enchere, e.date_enchere, " +
                 "a.nom_article, a.description, a.photo, a.date_debut_encheres, a.date_fin_encheres, " +
-                "a.statut_encheres, a.prix_initial, a.prix_vente " +
+                "a.statut_enchere, a.prix_initial, a.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit " +
-                "FROM Enchere AS e " +
+                "FROM Encheres AS e " +
                 "LEFT JOIN Articles_a_vendre AS a ON e.no_article = a.no_article " +
                 "LEFT JOIN Utilisateurs AS u ON e.id_utilisateur = u.pseudo " +
                 "WHERE e.id_utilisateur = :id_utilisateur AND e.no_article = :no_article";
@@ -57,9 +57,9 @@ public class EnchereDAOImpl implements EnchereDAO {
     public List<Enchere> readAllFromUser(String id_utilisateur) {
         String sql = "SELECT e.id_utilisateur, e.no_article, e.montant_enchere, e.date_enchere, " +
                 "a.nom_article, a.description, a.photo, a.date_debut_encheres, a.date_fin_encheres, " +
-                "a.statut_encheres, a.prix_initial, a.prix_vente " +
+                "a.statut_enchere, a.prix_initial, a.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit " +
-                "FROM Enchere AS e " +
+                "FROM Encheres AS e " +
                 "LEFT JOIN Articles_a_vendre AS a ON e.no_article = a.no_article " +
                 "LEFT JOIN Utilisateurs AS u ON e.id_utilisateur = u.pseudo " +
                 "WHERE e.id_utilisateur = :id_utilisateur";
@@ -72,9 +72,9 @@ public class EnchereDAOImpl implements EnchereDAO {
     public List<Enchere> readAllFromArticle(long no_article) {
         String sql = "SELECT e.id_utilisateur, e.no_article, e.montant_enchere, e.date_enchere, " +
                 "a.nom_article, a.description, a.photo, a.date_debut_encheres, a.date_fin_encheres, " +
-                "a.statut_encheres, a.prix_initial, a.prix_vente " +
+                "a.statut_enchere, a.prix_initial, a.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit " +
-                "FROM Enchere AS e " +
+                "FROM Encheres AS e " +
                 "LEFT JOIN Articles_a_vendre AS a ON e.no_article = a.no_article " +
                 "LEFT JOIN Utilisateurs AS u ON e.id_utilisateur = u.pseudo " +
                 "WHERE e.no_article = :no_article";
@@ -85,7 +85,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 
     @Override
     public void create(Enchere enchere) {
-        String sql = "INSERT INTO enchere(id_utilisateur, id_article, montant, date_enchere) " +
+        String sql = "INSERT INTO Encheres(id_utilisateur, id_article, montant, date_enchere) " +
                 "VALUES (:id_utilisateur, :no_article, :montant, :date_enchere)";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("id_utilisateur", enchere.getAcquereur().getPseudo());
