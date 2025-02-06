@@ -30,6 +30,7 @@
         </table>
     </div>
     <a th:href="@{/utilisateurs/edit/myProfile}" class="btn btn-primary">Modifier le profil</a>
+    <a th:href="@{/utilisateurs/edit/myProfile/myPassword}" class="btn btn-secondary">Modifier le mot de passe</a>
     <div th:if="${utilisateur == null}">
         <p class="text-danger">Aucun utilisateur trouvé pour ce pseudo.</p>
     </div>
