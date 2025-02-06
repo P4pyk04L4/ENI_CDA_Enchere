@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      data-th-replace="~{layout/layout :: layout(titrePage=~{:: title},
+contenuPage=~{:: main},
+ressources=~{:: #ressources-css})}" >
+<head>
+    <title th:text="Inscription"></title>
+    <th:block id="ressources-css">
+        <link rel="stylesheet" data-th-href="@{/css/register.css}">
+    </th:block>
+</head>
+
+<body>
+    <main>
+        <div class="container mt-5 registerBox">
+            <div class="itemCentered mb-3">
+                <h1>Inscription</h1>
+            </div>
+
+            <form th:action="@{/utilisateurs/register}" method="post">
+                <div class="cards" th:if="${param.error}" th:text="Errors"></div>
+
+                <div class="row mb-3">
+                    <div class="col">
+                        <fieldset data-th-object="${utilisateur}">
+                            <div class="mb-2">
+                                <label for="pseudo" class="form-label">Pseudo : </label>
+                                <input type="text" class="form-control" id="pseudo" data-th-field="*{pseudo}" aria-describedby="pseudoHelp">
+                                <div id="pseudoHelp" class="form-text">Ce sera votre identifiant de connexion...</div>
+                                <span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span>
+                            </div>
+                            <div class="mb-2">
+                                <label for="first_name" class="form-label">Prénom :</label>
+                                <input type="text" class="form-control" id="first_name"  data-th-field="*{prenom}">
+                                <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></span>
+                            </div>
+                            <div class="mb-2">
+                                <label for="telephone" class="form-label">Téléphone :</label>
+                                <input type="text" class="form-control" id="telephone"  data-th-field="*{telephone}">
+                                <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
+                            </div>
+                        </fieldset>
+
+                        <fieldset data-th-object="${adresse}">
+                            <div class="mb-2">
+                                <label for="address" class="form-label">Adresse :</label>
+                                <input type="text" class="form-control" id="address"  data-th-field="*{rue}">
+                                <span th:if="${#fields.hasErrors('rue')}" th:errors="*{rue}"></span>
+                            </div>
+                        </fieldset>
+
+                        <fieldset data-th-object="${utilisateur}">
+                            <div class="mb-2">
+                                <label for="password" class="form-label">Mot de passe :</label>
+                                <input type="password" class="form-control" id="password"  data-th-field="*{motDePasse}">
+                                <span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="col">
+                        <fieldset data-th-object="${utilisateur}">
+                            <div class="mb-2">
+                                <label for="last_name" class="form-label">Nom : </label>
+                                <input type="text" class="form-control" id="last_name"  data-th-field="*{nom}">
+                                <div id="nomHelp" class="form-text transparent">Ce sera votre identifiant de connexion...</div>
+                                <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span>
+                            </div>
+                            <div class="mb-2">
+                                <label for="email" class="form-label">Email : </label>
+                                <input type="email" class="form-control" id="email"  data-th-field="*{email}">
+                                <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                            </div>
+                            <div class="mb-2 transparent">
+                                <label for="null" class="form-label">null : </label>
+                                <input type="text" class="form-control" id="null">
+                            </div>
+                        </fieldset>
+
+                        <fieldset data-th-object="${adresse}">
+                            <div class="mb-2 row">
+                                <div class="col">
+                                    <label for="cp" class="form-label">CP : </label>
+                                    <input type="text" class="form-control" id="cp"  data-th-field="*{code_postal}">
+                                    <span th:if="${#fields.hasErrors('code_postal')}" th:errors="*{code_postal}"></span>
+                                </div>
+                                <div class="col">
+                                    <label for="city" class="form-label">Ville : </label>
+                                    <input type="text" class="form-control" id="city"  data-th-field="*{ville}">
+                                    <span th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></span>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="mb-2">
+                            <label for="passwordConfirm" class="form-label">Confirmation mot de passe : </label>
+                            <input type="password" class="form-control" id="passwordConfirm">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="itemCentered">
+                    <button type="submit" class="btn btn-primary w-25 m-2">S'inscrire</button>
+                    <a data-th-href="@{/}" class="btn btn-danger w-25 m-2">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>

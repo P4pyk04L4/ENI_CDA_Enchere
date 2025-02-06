@@ -1,5 +1,9 @@
 package fr.eni.eni_cda_enchere.bo;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
@@ -8,14 +12,24 @@ public class Utilisateur implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @NotBlank(message = "Le champ ne doit pas être null.")
+    @Size(min = 1, max = 30, message = "Le pseudo doit faire entre 1 et 30 caractères.")
     private String pseudo;
+    @NotBlank(message = "Le champ ne doit pas être null.")
+    @Size(min = 1, max = 40, message = "Le nom doit faire entre 1 et 40 caractères.")
     private String nom;
+    @NotBlank(message = "Le champ ne doit pas être null.")
+    @Size(min = 1, max = 50, message = "Le prénom doit faire entre 1 et 50 caractères.")
     private String prenom;
+    @NotBlank(message = "Le champ ne doit pas être null.")
     private String email;
+    @NotBlank(message = "Le champ ne doit pas être null.")
     private String telephone;
-    private String motDePasse;
+    @NotBlank(message = "Le champ ne doit pas être null.")
+    private String mot_de_passe;
     private int credit;
     private boolean admin;
+    @NotNull
     private Adresse adresse;
 
 
@@ -66,11 +80,11 @@ public class Utilisateur implements Serializable {
     }
 
     public String getMotDePasse() {
-        return motDePasse;
+        return mot_de_passe;
     }
 
-    public void setMotDePasse(String motDePasse) {
-        this.motDePasse = motDePasse;
+    public void setMotDePasse(String mot_de_passe) {
+        this.mot_de_passe = mot_de_passe;
     }
 
     public int getCredit() {
@@ -119,7 +133,7 @@ public class Utilisateur implements Serializable {
                 "adresse=" + adresse +
                 ", admin=" + admin +
                 ", credit=" + credit +
-                ", motDePasse='" + motDePasse + '\'' +
+                ", motDePasse='" + mot_de_passe + '\'' +
                 ", telephone='" + telephone + '\'' +
                 ", email='" + email + '\'' +
                 ", prenom='" + prenom + '\'' +

@@ -40,7 +40,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "LEFT JOIN adresses AS a ON aav.no_adresse_retrait = a.no_adresse " +
                 "WHERE aav.no_article = :id";
         MapSqlParameterSource params = new MapSqlParameterSource("id", id);
-        return namedParameterJdbcTemplate.queryForObject(sql, params, new BeanPropertyRowMapper<>(ArticleAVendre.class));
+        return namedParameterJdbcTemplate.queryForObject(sql, params, new ArticleAVendreRowMapper());
     }
 
     @Override

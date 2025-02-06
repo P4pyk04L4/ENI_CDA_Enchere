@@ -43,10 +43,8 @@ public class ENESecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> {
+            auth.requestMatchers("/css/**", "/images/**", "/js/**").permitAll();
             auth.requestMatchers("/**").permitAll();
-            auth.requestMatchers("/css/**").permitAll();
-            auth.requestMatchers("/images/**").permitAll();
-            auth.requestMatchers("/js/**").permitAll();
             auth.anyRequest().authenticated();
         });
 
@@ -69,7 +67,7 @@ public class ENESecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEncoder(){
         return CustomPasswordEncoder.passwordEncoder();
     }
 

@@ -44,11 +44,11 @@ public class AdresseDAOImpl implements AdresseDAO {
         namedParameterJdbcTemplate.update(sql, params, keyHolder);
 
         if(keyHolder.getKey() != null) {
+            adresse.setNo_adresse(keyHolder.getKey().longValue());
             return keyHolder.getKey().intValue();
         } else {
             return -1;
         }
-
     }
 
     @Override
