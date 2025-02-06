@@ -3,7 +3,6 @@ package fr.eni.eni_cda_enchere.controller;
 import fr.eni.eni_cda_enchere.bll.UtilisateurService;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -114,6 +113,21 @@ public class UtilisateurController {
         return "redirect:/utilisateurs/profilpseudo?pseudo=" + userDetails.getUsername();
     }
 
+    @GetMapping("/public/profil/{pseudo}")
+    public String showPublicProfile(
+            @PathVariable String pseudo,
+            Model model
+    ) {
+        Optional<Utilisateur> utilisateur = utilisateurService.findByPseudo(pseudo);
 
+        if (utilisateur.isPresent()) {
+            model.addAttribute("publicUtilisateur", utilisateur.get());
+            return "profil/view-publicProfil";
+        } else {
+            System.out.println("Utilisateur not found for pseudo: " + pseudo);  // デバッグ用
+            return "redirect:/error"; // cas d'utilisateur n'exist pas
+        }
+
+}
 
 }

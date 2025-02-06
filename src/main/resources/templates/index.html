@@ -21,6 +21,10 @@
                             <p>Prix : <span data-th-text="${item.prix_initial}"></span>€<br>
                                 Fin de l'enchère : <span data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span>
                             </p>
+                            <p>
+                                <a th:href="@{/utilisateurs/public/profil/coach_tata}">nom de vendeur</a>
+                                <!--TO DO href "@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.Pseudo})}">-->
+                            </p>
                         </div>
                     </div>
                     </div>
