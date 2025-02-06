@@ -10,7 +10,7 @@ public interface AdresseService {
 
     List<Adresse> getAdresses();
 
-    void insertAdresse(Adresse adresse);
+    int createAdresse(Adresse adresse);
 
     void updateAdresse(Adresse adresse);
 

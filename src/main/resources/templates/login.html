@@ -14,7 +14,7 @@ ressources=~{:: #ressources-css})}" >
     <div class="boxLogin">
         <h1 th:text="Connexion"></h1>
 
-        <form th:action="@{/login}" method="post">
+        <form th:action="@{/login}" method="post" class="loginForm">
             <div class="cards" th:if="${param.error}" th:text="Errors"></div>
             <div th:if="${param.logout}" th:text="Déconnexion"></div>
 
@@ -28,9 +28,14 @@ ressources=~{:: #ressources-css})}" >
             </div>
 
             <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary" th:text="Connexion" ></button>
+                <button type="submit" class="btn btn-primary" th:text="Connexion"></button>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-center">
+                <a class="btn btn-success" th:text="Inscription" data-th-href="@{/utilisateurs/register}"></a>
             </div>
         </form>
+
 
         <div>
             <span>coach_titi</span>

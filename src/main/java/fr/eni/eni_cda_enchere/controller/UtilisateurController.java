@@ -1,13 +1,18 @@
 package fr.eni.eni_cda_enchere.controller;
 
+import fr.eni.eni_cda_enchere.bll.AdresseService;
 import fr.eni.eni_cda_enchere.bll.UtilisateurService;
+import fr.eni.eni_cda_enchere.bo.Adresse;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
+import fr.eni.eni_cda_enchere.exceptions.BusinessException;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
@@ -20,9 +25,13 @@ import java.util.Optional;
 public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
+    private final AdresseService adresseService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UtilisateurController(UtilisateurService utilisateurService) {
+    public UtilisateurController(UtilisateurService utilisateurService, AdresseService adresseService, PasswordEncoder passwordEncoder) {
         this.utilisateurService = utilisateurService;
+        this.adresseService = adresseService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/list")
@@ -131,5 +140,54 @@ public class UtilisateurController {
 
     }
 
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {
+        model.addAttribute("utilisateur", new Utilisateur());
+        model.addAttribute("adresse", new Adresse());
+        return "profil/view-register";
+    }
 
+
+
+    @Transactional
+    @PostMapping("/register")
+    public String register(
+            @Valid @ModelAttribute("utilisateur") Utilisateur user,
+            BindingResult userBindingResult,
+            @Valid @ModelAttribute("adresse") Adresse address,
+            BindingResult addressBindingResult
+    ) {
+        if (addressBindingResult.hasErrors()) {
+            return "profil/view-register";
+        } else {
+           try {
+               int idAddress = adresseService.createAdresse(address);
+               System.out.println(address);
+
+
+           } catch (BusinessException e) {
+               e.getClefsExternalisations().forEach(key -> {
+                   ObjectError err = new ObjectError("globalError", key);
+                   addressBindingResult.addError(err);
+               });
+           }
+            if (userBindingResult.hasErrors()) {
+                return "profil/view-register";
+            } else {
+                try{
+                    user.setAdresse(address);
+                    user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
+                    utilisateurService.createUser(user);
+                    System.out.println(user);
+                } catch (BusinessException e){
+                    e.getClefsExternalisations().forEach( key -> {
+                        ObjectError err = new ObjectError("globalError", key);
+                        userBindingResult.addError(err);
+                    });
+                    return "profil/view-register";
+                }
+            }
+            return "profil/view-register";
+        }
+    }
 }

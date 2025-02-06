@@ -1,0 +1,18 @@
+.registerBox{
+    padding:10px;
+    border : 1px solid whitesmoke;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    -webkit-box-shadow: 0px 5px 12px 4px rgba(0,0,0,0.37);
+    box-shadow: 0px 5px 12px 4px rgba(0,0,0,0.37);
+}
+
+.itemCentered{
+    display: flex;
+    justify-content: center;
+}
+
+.transparent{
+    opacity: 0;
+}
+
