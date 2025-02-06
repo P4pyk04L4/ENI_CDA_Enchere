@@ -54,7 +54,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "LEFT JOIN utilisateurs AS u ON aav.id_utilisateur = u.pseudo " +
                 "LEFT JOIN categories AS c ON aav.no_categorie = c.no_categorie " +
                 "LEFT JOIN adresses AS a ON aav.no_adresse_retrait = a.no_adresse ";
-        return namedParameterJdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleAVendre.class));
+        return namedParameterJdbcTemplate.query(sql, new ArticleAVendreRowMapper());
     }
 
     @Override
@@ -68,8 +68,8 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "LEFT JOIN utilisateurs AS u ON aav.id_utilisateur = u.pseudo " +
                 "LEFT JOIN categories AS c ON aav.no_categorie = c.no_categorie " +
                 "LEFT JOIN adresses AS a ON aav.no_adresse_retrait = a.no_adresse " +
-                "WHERE aav.statut_enchère = 1";
-        return namedParameterJdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ArticleAVendre.class));
+                "WHERE aav.statut_enchere = 1";
+        return namedParameterJdbcTemplate.query(sql, new ArticleAVendreRowMapper());
     }
 
     @Override
@@ -93,7 +93,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
             sql += " and u.nom = :nom";
             params.addValue("nom", nom);
         }
-        return namedParameterJdbcTemplate.query(sql, params, new BeanPropertyRowMapper<>(ArticleAVendre.class));
+        return namedParameterJdbcTemplate.query(sql, params, new ArticleAVendreRowMapper());
     }
 
     @Override
