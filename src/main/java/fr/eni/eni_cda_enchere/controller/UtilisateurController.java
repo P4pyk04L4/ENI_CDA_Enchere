@@ -114,6 +114,22 @@ public class UtilisateurController {
         return "redirect:/utilisateurs/profilpseudo?pseudo=" + userDetails.getUsername();
     }
 
+    @GetMapping("/public/profil/{pseudo}")
+    public String showPublicProfile(
+            @PathVariable String pseudo,
+            Model model
+    ) {
+        Optional<Utilisateur> utilisateur = utilisateurService.findByPseudo(pseudo);
+
+        if (utilisateur.isPresent()) {
+            model.addAttribute("publicUtilisateur", utilisateur.get());
+            return "profil/view-publicProfil";
+        } else {
+            System.out.println("Utilisateur not found for pseudo: " + pseudo);  // デバッグ用
+            return "redirect:/error"; // cas d'utilisateur n'exist pas
+        }
+
+    }
 
 
 }
