@@ -5,7 +5,6 @@ import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class IndexController {
     public String showIndex(
             Model model
     ){
-        List<ArticleAVendre> articleAVendreList = articleService.getAllArticleAVendre();
+        List<ArticleAVendre> articleAVendreList = articleService.getAllActiveArticleAVendre();
         model.addAttribute("articleAVendreList", articleAVendreList);
         return "index";
     }

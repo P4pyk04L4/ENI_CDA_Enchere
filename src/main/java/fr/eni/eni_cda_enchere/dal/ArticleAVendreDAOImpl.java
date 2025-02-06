@@ -68,7 +68,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "LEFT JOIN utilisateurs AS u ON aav.id_utilisateur = u.pseudo " +
                 "LEFT JOIN categories AS c ON aav.no_categorie = c.no_categorie " +
                 "LEFT JOIN adresses AS a ON aav.no_adresse_retrait = a.no_adresse " +
-                "WHERE aav.statut_enchère = 1";
+                "WHERE aav.statut_enchere = 1";
         return namedParameterJdbcTemplate.query(sql, new ArticleAVendreRowMapper());
     }
 

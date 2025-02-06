@@ -5,6 +5,7 @@ import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import fr.eni.eni_cda_enchere.dal.AdresseDAO;
 import fr.eni.eni_cda_enchere.dal.UtilisateurDAO;
 import fr.eni.eni_cda_enchere.exceptions.BusinessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +17,12 @@ import java.util.regex.Pattern;
 public class UtilisateurServiceImpl implements UtilisateurService {
     private final UtilisateurDAO utilisateurDAO;
     private final AdresseDAO adresseDAO;
+    private final PasswordEncoder passwordEncoder;
 
-    public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO) {
+    public UtilisateurServiceImpl(UtilisateurDAO utilisateurDAO, AdresseDAO adresseDAO, PasswordEncoder passwordEncoder) {
         this.adresseDAO = adresseDAO;
         this.utilisateurDAO = utilisateurDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -78,6 +81,11 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
         // Update par l'utilisateur
         utilisateurDAO.updateByUser(user);
+    }
+
+    @Override
+    public void updatePassword(Utilisateur utilisateur) {
+        utilisateurDAO.updatePassword(utilisateur);
     }
 
     @Override

@@ -5,8 +5,13 @@ import fr.eni.eni_cda_enchere.bll.UtilisateurService;
 import fr.eni.eni_cda_enchere.bo.Adresse;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import fr.eni.eni_cda_enchere.exceptions.BusinessException;
+import fr.eni.eni_cda_enchere.form.UserPasswordForm;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -117,7 +122,7 @@ public class UtilisateurController {
             UserDetails userDetails)
     {
         if (bindingResult.hasErrors()) {
-            return "editprofil";
+            return "profil/view-editProfil";
         }
         utilisateurService.updateByUser(utilisateurAModifier);
         return "redirect:/utilisateurs/profilpseudo?pseudo=" + userDetails.getUsername();
@@ -145,6 +150,53 @@ public class UtilisateurController {
         model.addAttribute("utilisateur", new Utilisateur());
         model.addAttribute("adresse", new Adresse());
         return "profil/view-register";
+
+    @GetMapping("edit/myProfile/myPassword")
+    public String editPassword(
+            Model model
+    ) {
+        model.addAttribute("userPasswordForm", new UserPasswordForm());
+        return "/profil/view-edit-password";
+    }
+
+    @PostMapping("edit/myProfile/myPassword")
+    public String updatePassword(
+            @AuthenticationPrincipal
+            UserDetails userDetails,
+            @Valid
+            @ModelAttribute("userPasswordForm")
+            UserPasswordForm userPasswordForm,
+            BindingResult bindingResult,
+            Model model
+            ){
+        if (bindingResult.hasErrors()) {
+            return "/profil/view-edit-password";
+        }
+
+        Utilisateur utilisateurConnecte = utilisateurService.findByPseudo(userDetails.getUsername()).get();
+        String motDePasseInitial = utilisateurConnecte.getMotDePasse();
+
+        if(motDePasseInitial != null){
+
+            if(passwordEncoder.matches(userPasswordForm.getMotDePasseActuel(), motDePasseInitial)){
+                if(userPasswordForm.getMotDePasseNouveau().equals(userPasswordForm.getMotDePasseConfirmation())){
+
+                    utilisateurConnecte.setMotDePasse(passwordEncoder.encode(userPasswordForm.getMotDePasseNouveau()));
+                    utilisateurService.updatePassword(utilisateurConnecte);
+
+                } else {
+                    bindingResult.addError(new ObjectError("global", "Les mots de passe ne correspondent pas."));
+                    System.out.println("ERREUR : Les mots de passe ne correspondent pas.");
+                    return "profil/view-edit-password";
+                }
+            } else {
+                bindingResult.addError(new ObjectError("global","Le mot de passe actuel est incorrect"));
+                System.out.println("ERREUR : Le mot de passe actuel est incorrect");
+                return "profil/view-edit-password";
+            }
+        }
+
+        return "redirect:/utilisateurs/myProfile";
     }
 
 
