@@ -1,12 +1,23 @@
 package fr.eni.eni_cda_enchere.controller;
 
+import fr.eni.eni_cda_enchere.bll.AdresseService;
 import fr.eni.eni_cda_enchere.bll.UtilisateurService;
+import fr.eni.eni_cda_enchere.bo.Adresse;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
+import fr.eni.eni_cda_enchere.exceptions.BusinessException;
+import fr.eni.eni_cda_enchere.form.UserPasswordForm;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
@@ -19,9 +30,13 @@ import java.util.Optional;
 public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;
+    private final AdresseService adresseService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UtilisateurController(UtilisateurService utilisateurService) {
+    public UtilisateurController(UtilisateurService utilisateurService, AdresseService adresseService, PasswordEncoder passwordEncoder) {
         this.utilisateurService = utilisateurService;
+        this.adresseService = adresseService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/list")
@@ -107,7 +122,7 @@ public class UtilisateurController {
             UserDetails userDetails)
     {
         if (bindingResult.hasErrors()) {
-            return "editprofil";
+            return "profil/view-editProfil";
         }
         utilisateurService.updateByUser(utilisateurAModifier);
         return "redirect:/utilisateurs/profilpseudo?pseudo=" + userDetails.getUsername();
@@ -128,6 +143,104 @@ public class UtilisateurController {
             return "redirect:/error"; // cas d'utilisateur n'exist pas
         }
 
-}
+    }
 
+    @GetMapping("/register")
+    public String showRegisterForm(Model model) {
+        model.addAttribute("utilisateur", new Utilisateur());
+        model.addAttribute("adresse", new Adresse());
+        return "profil/view-register";
+    }
+
+    @GetMapping("edit/myProfile/myPassword")
+    public String editPassword(
+            Model model
+    ) {
+        model.addAttribute("userPasswordForm", new UserPasswordForm());
+        return "/profil/view-edit-password";
+    }
+
+    @PostMapping("edit/myProfile/myPassword")
+    public String updatePassword(
+            @AuthenticationPrincipal
+            UserDetails userDetails,
+            @Valid
+            @ModelAttribute("userPasswordForm")
+            UserPasswordForm userPasswordForm,
+            BindingResult bindingResult,
+            Model model
+            ){
+        if (bindingResult.hasErrors()) {
+            return "/profil/view-edit-password";
+        }
+
+        Utilisateur utilisateurConnecte = utilisateurService.findByPseudo(userDetails.getUsername()).get();
+        String motDePasseInitial = utilisateurConnecte.getMotDePasse();
+
+        if(motDePasseInitial != null){
+
+            if(passwordEncoder.matches(userPasswordForm.getMotDePasseActuel(), motDePasseInitial)){
+                if(userPasswordForm.getMotDePasseNouveau().equals(userPasswordForm.getMotDePasseConfirmation())){
+
+                    utilisateurConnecte.setMotDePasse(passwordEncoder.encode(userPasswordForm.getMotDePasseNouveau()));
+                    utilisateurService.updatePassword(utilisateurConnecte);
+
+                } else {
+                    bindingResult.addError(new ObjectError("global", "Les mots de passe ne correspondent pas."));
+                    System.out.println("ERREUR : Les mots de passe ne correspondent pas.");
+                    return "profil/view-edit-password";
+                }
+            } else {
+                bindingResult.addError(new ObjectError("global","Le mot de passe actuel est incorrect"));
+                System.out.println("ERREUR : Le mot de passe actuel est incorrect");
+                return "profil/view-edit-password";
+            }
+        }
+
+        return "redirect:/utilisateurs/myProfile";
+    }
+
+
+
+    @Transactional
+    @PostMapping("/register")
+    public String register(
+            @Valid @ModelAttribute("utilisateur") Utilisateur user,
+            BindingResult userBindingResult,
+            @Valid @ModelAttribute("adresse") Adresse address,
+            BindingResult addressBindingResult
+    ) {
+        if (addressBindingResult.hasErrors()) {
+            return "profil/view-register";
+        } else {
+           try {
+               int idAddress = adresseService.createAdresse(address);
+               System.out.println(address);
+
+
+           } catch (BusinessException e) {
+               e.getClefsExternalisations().forEach(key -> {
+                   ObjectError err = new ObjectError("globalError", key);
+                   addressBindingResult.addError(err);
+               });
+           }
+            if (userBindingResult.hasErrors()) {
+                return "profil/view-register";
+            } else {
+                try{
+                    user.setAdresse(address);
+                    user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
+                    utilisateurService.createUser(user);
+                    System.out.println(user);
+                } catch (BusinessException e){
+                    e.getClefsExternalisations().forEach( key -> {
+                        ObjectError err = new ObjectError("globalError", key);
+                        userBindingResult.addError(err);
+                    });
+                    return "profil/view-register";
+                }
+            }
+            return "profil/view-register";
+        }
+    }
 }
