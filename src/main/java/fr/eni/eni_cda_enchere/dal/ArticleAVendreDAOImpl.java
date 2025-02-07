@@ -6,6 +6,7 @@ import fr.eni.eni_cda_enchere.bo.Categorie;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -22,6 +23,8 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 
     @Autowired
     NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     public ArticleAVendreDAOImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -184,6 +187,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
             a.setRue(rs.getString("rue"));
             a.setCode_postal(rs.getString("code_postal"));
             a.setVille(rs.getString("ville"));
+            aav.setRetrait(a);
 
             return aav;
         }

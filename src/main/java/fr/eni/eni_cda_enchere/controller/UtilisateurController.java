@@ -7,11 +7,7 @@ import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import fr.eni.eni_cda_enchere.exceptions.BusinessException;
 import fr.eni.eni_cda_enchere.form.UserPasswordForm;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -152,13 +148,15 @@ public class UtilisateurController {
         return "profil/view-register";
     }
 
+
     @GetMapping("edit/myProfile/myPassword")
-    public String editPassword(
+    public String editPassword (
             Model model
-    ) {
-        model.addAttribute("userPasswordForm", new UserPasswordForm());
-        return "/profil/view-edit-password";
+    ){
+            model.addAttribute("userPasswordForm", new UserPasswordForm());
+            return "/profil/view-edit-password";
     }
+
 
     @PostMapping("edit/myProfile/myPassword")
     public String updatePassword(
