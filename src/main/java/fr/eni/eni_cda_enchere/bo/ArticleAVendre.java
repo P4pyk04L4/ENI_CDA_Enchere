@@ -17,7 +17,7 @@ public class ArticleAVendre implements Serializable {
     private int statut_enchere;
     private int prix_initial;
     private Integer prix_vente;
-
+    private Integer meilleure_offre;
     private Adresse retrait;
     private Utilisateur vendeur;
     private Categorie categorie;
@@ -96,6 +96,14 @@ public class ArticleAVendre implements Serializable {
         this.prix_vente = prix_vente;
     }
 
+    public Integer getMeilleure_offre() {
+        return meilleure_offre;
+    }
+
+    public void setMeilleure_offre(Integer meilleure_offre) {
+        this.meilleure_offre = meilleure_offre;
+    }
+
     public Adresse getRetrait() {
         return retrait;
     }
@@ -131,6 +139,7 @@ public class ArticleAVendre implements Serializable {
                 ", statut=" + statut_enchere +
                 ", prixInitial=" + prix_initial +
                 ", prixVente=" + prix_vente +
+                ", meilleureOffre=" + meilleure_offre +
                 ", retrait=" + retrait +
                 ", vendeur=" + vendeur.getPseudo() +
                 ", categorie=" + categorie.getLibelle() +

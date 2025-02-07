@@ -4,6 +4,7 @@ import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
 import fr.eni.eni_cda_enchere.bo.Enchere;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -93,6 +94,20 @@ public class EnchereDAOImpl implements EnchereDAO {
         namedParameters.addValue("montant", enchere.getMontant());
         namedParameters.addValue("date_enchere", enchere.getDate());
         jdbc.update(sql, namedParameters);
+    }
+
+    public int getMeilleurPrix(int no_article){
+        String sql = "SELECT TOP 1 montant_enchere FROM encheres " +
+                "WHERE no_article = :no_article " +
+                "ORDER BY date_enchere DESC ";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("no_article", no_article);
+        try {
+            int best_offer = jdbc.queryForObject(sql, params, Integer.class);
+            return best_offer;
+        } catch (EmptyResultDataAccessException e) {
+            return 0;
+        }
     }
 
     static class EnchereRowMapper implements RowMapper<Enchere> {

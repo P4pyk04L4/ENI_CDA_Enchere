@@ -38,4 +38,9 @@ public class EnchereServiceImpl implements EnchereService {
     public void createEnchere(Enchere enchere) {
         enchereDAO.create(enchere);
     }
+
+    @Override
+    public int getMeilleurPrix(int no_article){
+        return enchereDAO.getMeilleurPrix(no_article);
+    }
 }

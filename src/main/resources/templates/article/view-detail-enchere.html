@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org" data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
+                                                                        , titrePage=~{:: title}
+                                                                        , ressources=~{:: #ressources-css})}">
+<head>
+    <title>Détail enchère</title>
+    <th:block id="ressources-css">
+        <link rel="stylesheet" data-th-href="@{/css/detail-enchere.css}">
+    </th:block>
+</head>
+<body>
+<main class="container my-4">
+    <div class="enchereBox">
+        <h1 class="text-center mb-4">Détail enchère</h1>
+
+        <form action="" method="post" class="mb-3">
+            <div class="cards" th:if="${param.error}" th:text="Errors"></div>
+
+            <div class="row mb-3">
+                <div class="col">
+                    <fieldset data-th-object="${article}">
+                        <div class="mb-2">
+                            <label for="article_name" class="form-label">Article :</label>
+                            <input type="text" class="form-control" id="article_name" disabled data-th-field="*{nom_article}">
+                        </div>
+                        <div class="mb-2">
+                            <label for="categorie" class="form-label">Catégorie :</label>
+                            <input type="text" class="form-control" id="categorie" disabled data-th-field="*{categorie.libelle}">
+                        </div>
+                        <div class="mb-2">
+                            <label for="description" class="form-label">Description :</label>
+                            <input type="text" class="form-control" id="description" disabled data-th-field="*{description}">
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col">
+                    <fieldset data-th-object="${article}">
+                        <div class="mb-2">
+                            <label for="prix_initial" class="form-label">Mise à prix :</label>
+                            <input type="text" class="form-control" id="prix_initial" disabled data-th-field="*{prix_initial}">
+                        </div>
+                        <div class="mb-2">
+                            <label for="meilleure_offre" class="form-label">Meilleure offre :</label>
+                            <th:block data-th-if="${article.meilleure_offre != 0}">
+                                <input type="text" class="form-control" id="meilleure_offre" disabled data-th-value="${article.meilleure_offre + ' €'}">
+                            </th:block>
+                            <th:block data-th-if="${article.meilleure_offre == 0}">
+                                <input type="text" class="form-control" id="meilleure_offre_null" disabled value="Aucune offre pour le moment.">
+                            </th:block>
+                        </div>
+                        <div class="mb-2">
+                            <label for="fin_enchere" class="form-label">Fin de l'enchère :</label>
+                            <input type="text" class="form-control" id="fin_enchere" disabled data-th-field="*{date_fin_encheres}">
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <fieldset data-th-object="${article}">
+                        <div class="mb-2">
+                            <label for="retrait" class="form-label">Retrait : </label>
+                            <input type="text" class="form-control" id="retrait" disabled data-th-value="${article.retrait.rue + ', ' + article.retrait.code_postal + ', ' + article.retrait.ville}">
+                        </div>
+                        <div class="mb-2">
+                            <label for="vendeur" class="form-label">Vendeur : </label>
+                            <input type="text" class="form-control" id="vendeur" disabled data-th-value="*{vendeur.pseudo}">
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="col-6 d-flex justify-content-center align-item-center">
+                    <th:block data-th-if="${article.photo != null}">
+                        <img data-th-src="@{${article.photo}}" alt="" height="200" width="200" class="photo">
+                    </th:block>
+                    <th:block data-th-if="${article.photo == null}">
+                        <img data-th-src="@{/images/genericSale.jpg}" alt="" height="200" width="200" class="photo">
+                    </th:block>
+
+                </div>
+            </div>
+        </form>
+
+        <div class="d-flex justify-content-center align-item-center">
+            <a data-th-href="@{/}" class="btn btn-danger w-25">Retour</a>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>
