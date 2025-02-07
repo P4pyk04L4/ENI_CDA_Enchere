@@ -28,6 +28,10 @@
                                 <span th:if="${!#authorization.expression('isAuthenticated()')}"
                                 th:text="${item.vendeur.pseudo}"></span>
                             </p>
+                            <p>
+                                <a th:href="@{/utilisateurs/public/profil/coach_tata}">nom de vendeur</a>
+                                <!--TO DO href "@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.Pseudo})}">-->
+                            </p>
                         </div>
                     </div>
                     </div>
