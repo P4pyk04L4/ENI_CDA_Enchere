@@ -21,6 +21,7 @@ public class CategorieServiceImpl implements CategorieService{
 
     @Override
     public List<Categorie> findAllCategories() {
+
         return categorieDAO.findAll();
     }
 

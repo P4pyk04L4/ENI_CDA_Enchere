@@ -12,11 +12,11 @@ public class Categorie implements Serializable {
 
     public Categorie() {}
 
-    public long getId() {
+    public long getNo_categorie() {
         return no_categorie;
     }
 
-    public void setId(long no_categorie) {
+    public void setNo_categorie(long no_categorie) {
         this.no_categorie = no_categorie;
     }
 

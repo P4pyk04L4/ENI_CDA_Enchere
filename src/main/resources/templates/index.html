@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org" data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
+<html lang="fr" xmlns:th="http://wwww.thymeleaf.org" data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
                                                                         , titrePage=~{:: title}
                                                                         , ressources=~{})}">
 <head>
@@ -35,38 +35,34 @@
             </div>
         </div>
 
-        <!--ajouté "data-th-attr" pour js-->
+        <div class="row my-3">
+            <!--ajouté "data-th-attr" pour js-->
         <div data-th-each="item : ${articleAVendreList}" class="col-lg-4 col-md-6 col-sm-12 p-3">
             <div class="card" data-th-attr="data-category=${item.categorie}">
+           <!--     <div class="card" data-th-attr="data-category=${article.categorie.no_categorie}">-->
 
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-10">
-                            <h5 class="card-title" data-th-text="${item.nom_article}"></h5>
-                        </div>
-                        <div class="col-2">
-                            <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-symbol.png}" alt="" height="30" width="30"></a>
-                        </div>
-                    </div>
+                    <h5 class="card-title" data-th-text="${item.nom_article}"></h5>
                     <div class="card-text">
                         <p>Prix : <span data-th-text="${item.prix_initial}"></span>€<br>
                             Fin de l'enchère : <span data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span>
                             <br>
                             Vendeur :
-                            <a data-th-href="@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.vendeur.Pseudo})}"
-                               data-th-if="${#authorization.expression('isAuthenticated()')}"
-                               data-th-text="${item.vendeur.pseudo}"></a>
-                            <span data-th-if="${!#authorization.expression('isAuthenticated()')}"
-                                  data-th-text="${item.vendeur.pseudo}"></span>
+                            <a th:href="@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.vendeur.Pseudo})}"
+                               th:if="${#authorization.expression('isAuthenticated()')}"
+                               th:text="${item.vendeur.pseudo}"></a>
+                            <span th:if="${!#authorization.expression('isAuthenticated()')}"
+                                  th:text="${item.vendeur.pseudo}"></span>
                         </p>
                     </div>
                 </div>
             </div>
         </div>
-
-
         </div>
 
+
+
     </main>
+
 </body>
 </html>

@@ -100,7 +100,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
     }
 
     @Override
-    public void createArticleAVendre(ArticleAVendre articleAVendre, Utilisateur utilisateur, Adresse adresse) {
+    public void createArticleAVendre(ArticleAVendre articleAVendre) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         String sql = "INSERT INTO ARTICLES_A_VENDRE (nom_article, description, date_debut_encheres, date_fin_encheres, statut_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait) VALUES (:nom_article, :description, :date_debut_encheres,:date_fin_encheres, :statut_enchere, :prix_initial, :prix_vente, :id_utilisateur, :no_categorie, :no_adresse_retrait)";
@@ -112,9 +112,9 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
         params.addValue("statut_enchere", articleAVendre.getStatut_enchere());
         params.addValue("prix_initial", articleAVendre.getPrix_initial());
         params.addValue("prix_vente", articleAVendre.getPrix_vente());
-        params.addValue("id_utilisateur", utilisateur.getPseudo());
-        params.addValue("no_categorie", articleAVendre.getCategorie().getId());
-        params.addValue("adresse_retrait", adresse.getNo_adresse());
+        params.addValue("id_utilisateur", articleAVendre.getVendeur().getPseudo());
+        params.addValue("no_categorie", articleAVendre.getCategorie().getNo_categorie());
+        params.addValue("no_adresse_retrait", articleAVendre.getRetrait().getNo_adresse());
         namedParameterJdbcTemplate.update(sql, params, keyHolder);
 
         if(keyHolder.getKey() != null) {
@@ -144,7 +144,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
         params.addValue("prix_initial", articleAVendre.getPrix_initial());
         params.addValue("prix_vente", articleAVendre.getPrix_vente());
         params.addValue("id_utilisateur", articleAVendre.getVendeur().getPseudo());
-        params.addValue("no_categorie", articleAVendre.getCategorie().getId());
+        params.addValue("no_categorie", articleAVendre.getCategorie().getNo_categorie());
         namedParameterJdbcTemplate.update(sql, params);
     }
 

@@ -10,6 +10,8 @@ public interface AdresseService {
 
     List<Adresse> getAdresses();
 
+    List<Adresse> getEniAdresses();
+
     int createAdresse(Adresse adresse);
 
     void updateAdresse(Adresse adresse);
