@@ -37,8 +37,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void createArticleAVendre(ArticleAVendre articleAVendre, Utilisateur utilisateur, Adresse adresse) {
-        articleAVendreDAO.createArticleAVendre(articleAVendre, utilisateur, adresse);
+    public void createArticleAVendre(ArticleAVendre articleAVendre) {
+        articleAVendreDAO.createArticleAVendre(articleAVendre);
     }
 
     @Override

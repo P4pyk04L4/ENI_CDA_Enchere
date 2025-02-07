@@ -73,7 +73,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         namedParameters.addValue("pseudo", pseudo);
 
         return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(
-                FIND_BY_PSEUDO,namedParameters,new BeanPropertyRowMapper<>(Utilisateur.class)
+                FIND_BY_PSEUDO_ALL_INCLUSIVE,namedParameters, new UtilisateurRowMapper()
         ));
     }
 

@@ -16,7 +16,7 @@ public interface ArticleAVendreDAO {
 
     List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nom);
 
-    void createArticleAVendre(ArticleAVendre articleAVendre, Utilisateur utilisateur, Adresse adresse);
+    void createArticleAVendre(ArticleAVendre articleAVendre);
 
     void updateArticleAVendre(ArticleAVendre articleAVendre);
 

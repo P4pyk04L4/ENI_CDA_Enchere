@@ -20,15 +20,15 @@ public class CategorieDAOImpl implements CategorieDAO {
 
     @Override
     public Categorie read(long no_categorie) {
-        String sql = "SELECT * FROM Categorie WHERE no_categorie = :no_categorie";
+        String sql = "SELECT * FROM Categories WHERE no_categorie = :no_categorie";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("no_categorie", no_categorie);
-        return jdbc.queryForObject(sql, namedParameters, Categorie.class);
+        return jdbc.queryForObject(sql, namedParameters, new BeanPropertyRowMapper<>(Categorie.class));
     }
 
     @Override
     public List<Categorie> findAll() {
-        String sql = "SELECT * FROM Categorie";
+        String sql = "SELECT * FROM Categories";
         return jdbc.query(sql, new BeanPropertyRowMapper<>(Categorie.class));
     }
 
@@ -36,28 +36,28 @@ public class CategorieDAOImpl implements CategorieDAO {
     public void createCategory(Categorie cat) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String sql = "INSERT INTO Categorie (libelle) VALUES (:libelle)";
+        String sql = "INSERT INTO Categories (libelle) VALUES (:libelle)";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("libelle", cat.getLibelle());
         jdbc.update(sql, namedParameters);
 
         if(keyHolder.getKey() != null) {
-            cat.setId(keyHolder.getKey().longValue());
+            cat.setNo_categorie(keyHolder.getKey().intValue());
         }
     }
 
     @Override
     public void updateCategory(Categorie cat) {
-        String sql = "UPDATE Categorie SET libelle = :libelle WHERE no_categorie = :no_categorie";
+        String sql = "UPDATE Categories SET libelle = :libelle WHERE no_categorie = :no_categorie";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("libelle", cat.getLibelle());
-        namedParameters.addValue("no_categorie", cat.getId());
+        namedParameters.addValue("no_categorie", cat.getNo_categorie());
         jdbc.update(sql, namedParameters);
     }
 
     @Override
     public void deleteCategory(long no_categorie) {
-        String sql = "DELETE FROM Categorie WHERE no_categorie = :no_categorie";
+        String sql = "DELETE FROM Categories WHERE no_categorie = :no_categorie";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
         namedParameters.addValue("no_categorie", no_categorie);
         jdbc.update(sql, namedParameters);

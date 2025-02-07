@@ -2,6 +2,7 @@ package fr.eni.eni_cda_enchere.bll;
 
 import fr.eni.eni_cda_enchere.bo.Adresse;
 import fr.eni.eni_cda_enchere.dal.AdresseDAO;
+import jakarta.validation.OverridesAttribute;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,10 @@ public class AdresseServiceImpl implements AdresseService {
     public List<Adresse> getAdresses() {
         return adresseDAO.getAdresses();
     }
+
+    @Override
+    public List<Adresse> getEniAdresses() { return adresseDAO.getEniAdresses(); }
+
 
     @Override
     public int createAdresse(Adresse adresse){

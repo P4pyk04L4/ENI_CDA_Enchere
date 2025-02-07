@@ -32,6 +32,12 @@ public class AdresseDAOImpl implements AdresseDAO {
     }
 
     @Override
+    public List<Adresse> getEniAdresses() {
+        String sql = "select * from ADRESSES where adresse_eni = 1";
+        return namedParameterJdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Adresse.class));
+    }
+
+    @Override
     public int insertAdresse(Adresse adresse) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
