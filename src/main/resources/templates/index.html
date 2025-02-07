@@ -11,30 +11,61 @@
     <main class="container my-3">
         <h1 style="text-align: center">Liste des enchères</h1>
 
-        <div class="my-3 row g-3">
+        <!-- Fenêtre de filtrage -->
+        <div class="row my-3">
+            <div class="col-md-6">
+                <div class="d-flex align-items-center mb-2">
+                    <label for="search-bar" class="me-2 fw-bold">Filtre:</label>
+                    <input type="text" id="search-bar" placeholder="Le nom de l'article..." class="form-control">
+                </div>
+                <!-- Recherche par catégorie : les données seront récupérées depuis la session plus tard, pour l'instant elles sont statiques -->
+                <div class="d-flex align-items-center mb-2">
+                    <label for="category-select" class="me-2 fw-bold">Catégorie:</label>
+                    <select id="category-select" class="form-select">
+                        <option value="">Toutes les catégories</option>
+                        <option value="1">Électronique</option>
+                        <option value="2">Vêtements</option>
+                        <option value="3">Maison</option>
+                    </select>
+                </div>
+                <div class="d-flex">
+                    <button id="search-btn" class="btn btn-primary me-2">Rechercher</button>
+                    <button id="reset-btn" class="btn btn-secondary">Annuler</button>
+                </div>
+            </div>
+        </div>
 
-                <div data-th-each="item : ${articleAVendreList}" class="col-lg-4 col-md-6 col-sm-12 p-3">
-                    <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title" data-th-text="${item.nom_article}"></h5>
-                        <div class="card-text">
-                            <p>Prix : <span data-th-text="${item.prix_initial}"></span>€<br>
-                                Fin de l'enchère : <span data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span>
+        <!--ajouté "data-th-attr" pour js-->
+        <div data-th-each="item : ${articleAVendreList}" class="col-lg-4 col-md-6 col-sm-12 p-3">
+            <div class="card" data-th-attr="data-category=${item.categorie}">
+           <!--     <div class="card" data-th-attr="data-category=${article.categorie.no_categorie}">-->
+
+                <div class="card-body">
+                    <h5 class="card-title" data-th-text="${item.nom_article}"></h5>
+                    <div class="card-text">
+                        <p>Prix : <span data-th-text="${item.prix_initial}"></span>€<br>
+                            Fin de l'enchère : <span data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span>
                             <br>
-                                Vendeur :
-                                <a th:href="@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.vendeur.Pseudo})}"
-                                   th:if="${#authorization.expression('isAuthenticated()')}"
-                                   th:text="${item.vendeur.pseudo}"></a>
-                                <span th:if="${!#authorization.expression('isAuthenticated()')}"
-                                th:text="${item.vendeur.pseudo}"></span>
-                            </p>
-                        </div>
-                    </div>
+                            Vendeur :
+                            <a th:href="@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.vendeur.Pseudo})}"
+                               th:if="${#authorization.expression('isAuthenticated()')}"
+                               th:text="${item.vendeur.pseudo}"></a>
+                            <span th:if="${!#authorization.expression('isAuthenticated()')}"
+                                  th-text="${item.vendeur.pseudo}"></span>
+                        </p>
                     </div>
                 </div>
+            </div>
+        </div>
+
 
         </div>
 
     </main>
+<!--    <script th:src="@{/js/filter.js}"></script> -->
+<!--    <script src="/js/filter.js defer"></script> -->
+<!--    <script th:src="@{/js/filter.js}" defer></script>-->
+    <!--<script th:src="@{/js/filter.js}"></script>-->
+<!--   <script type="text/javascript" src="/js/filter.js" th:src="@{/js/filter.js}"></script> -->
 </body>
 </html>

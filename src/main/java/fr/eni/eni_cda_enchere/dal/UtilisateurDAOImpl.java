@@ -24,6 +24,9 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
     private final String INSERT = "INSERT INTO UTILISATEURS (pseudo, nom, prenom, email, telephone, mot_de_passe, credit, administrateur, no_adresse) " +
                         "VALUES (:pseudo, :nom, :prenom, :email, :telephone, :motDePasse, :credit, :admin, :noAdresse)";
     private final String FIND_ALL_UTILISATEUR = "SELECT * FROM UTILISATEURS";
+    private final String FIND_BY_PSEUDO = "SELECT pseudo, nom, prenom, email, telephone, mot_de_passe, credit, administrateur, no_adresse " +
+                        "FROM UTILISATEURS " +
+                        "WHERE pseudo = :pseudo";
     private final String DELETE_BY_PSEUDO = "DELETE FROM UTILISATEURS WHERE pseudo = :pseudo";
     private final String UPDATE_UTILISATEUR = "UPDATE UTILISATEURS SET nom = :nom, prenom = :prenom, email = :email, " +
                         "telephone = :telephone, mot_de_passe = :motDePasse, credit = :credit, administrateur = :admin, no_adresse = :noAdresse "+
@@ -58,7 +61,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         params.addValue("motDePasse", utilisateur.getMotDePasse());
         params.addValue("credit", utilisateur.getCredit());
         params.addValue("admin", utilisateur.isAdmin());
-        params.addValue("noAdresse", utilisateur.getAdresse() != null ? utilisateur.getAdresse().getNo_adresse() : null);
+     //   params.addValue("noAdresse", utilisateur.getAdresse() != null ? utilisateur.getAdresse().getNoAdresse() : null);
 
         namedParameterJdbcTemplate.update(INSERT, params);
     }
@@ -70,7 +73,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         namedParameters.addValue("pseudo", pseudo);
 
         return Optional.ofNullable(namedParameterJdbcTemplate.queryForObject(
-                FIND_BY_PSEUDO_ALL_INCLUSIVE,namedParameters, new UtilisateurRowMapper()
+                FIND_BY_PSEUDO,namedParameters,new BeanPropertyRowMapper<>(Utilisateur.class)
         ));
     }
 
