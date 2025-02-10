@@ -8,7 +8,7 @@ public class ArticleAVendre implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private long no_article;
+    private int no_article;
     private String nom_article;
     private String description;
     private String photo;
@@ -24,11 +24,11 @@ public class ArticleAVendre implements Serializable {
 
     public ArticleAVendre() {}
 
-    public long getNo_article() {
+    public int getNo_article() {
         return no_article;
     }
 
-    public void setNo_article(long no_article) {
+    public void setNo_article(int no_article) {
         this.no_article = no_article;
     }
 

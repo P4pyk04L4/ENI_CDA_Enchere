@@ -7,7 +7,9 @@ import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import fr.eni.eni_cda_enchere.exceptions.BusinessException;
 import fr.eni.eni_cda_enchere.form.UserPasswordForm;
 import jakarta.validation.Valid;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -22,7 +24,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/utilisateurs")
-@SessionAttributes({"utilisateurAModifier"})
+@SessionAttributes({"utilisateurAModifier", "userSession"})
 public class UtilisateurController {
 
     private final UtilisateurService utilisateurService;

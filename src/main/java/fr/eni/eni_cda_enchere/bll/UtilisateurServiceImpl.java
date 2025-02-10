@@ -5,6 +5,8 @@ import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import fr.eni.eni_cda_enchere.dal.AdresseDAO;
 import fr.eni.eni_cda_enchere.dal.UtilisateurDAO;
 import fr.eni.eni_cda_enchere.exceptions.BusinessException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +35,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         isValid &= validerPseudo(user.getPseudo(), be);
         isValid &= validerEmail(user.getEmail(), be);
         isValid &= validerTel(user.getTelephone(), be);
+        isValid &= validerPwd(user.getMotDePasse(), be);
         isValid &= validerAdresse(user.getAdresse(), be);
         if (isValid) {
             utilisateurDAO.create(user);
@@ -93,6 +96,15 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         utilisateurDAO.delete(pseudo);
     }
 
+    @Override
+    public String getConnectedUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null){
+            return auth.getName();
+        } else {
+            return null;
+        }
+    }
 
     /**
      * Méthodes de validation des BO
@@ -167,6 +179,4 @@ public class UtilisateurServiceImpl implements UtilisateurService {
             return true;
         }
     }
-
-
 }

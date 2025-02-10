@@ -12,4 +12,5 @@ public interface EnchereService {
     List<Enchere> findAllEncheresFromArticle(long no_article);
     void createEnchere(Enchere enchere);
     int getMeilleurPrix(int no_article);
+    String getMeilleurEnchereur(int no_article);
 }

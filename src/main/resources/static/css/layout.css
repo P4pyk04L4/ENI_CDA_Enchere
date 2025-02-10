@@ -41,3 +41,26 @@ main{
     -webkit-box-shadow: 0px -5px 12px 4px rgba(0,0,0,0.37);
     box-shadow: 0px -5px 12px 4px rgba(0,0,0,0.37);
 }
+
+.customBox{
+    padding:10px;
+    border : 1px solid whitesmoke;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    -webkit-box-shadow: 0px 5px 12px 4px rgba(0,0,0,0.37);
+    box-shadow: 0px 5px 12px 4px rgba(0,0,0,0.37);
+}
+
+.legende{
+    height: 100%;
+}
+
+.customZoom{
+    transition: transform 0.3s ease-in-out;
+}
+
+.customZoom:hover{
+    transform: scale(1.05);
+    -webkit-box-shadow: 0px 5px 12px 4px rgba(0,0,0,0.37);
+    box-shadow: 0px 5px 12px 4px rgba(0,0,0,0.37);
+}

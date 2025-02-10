@@ -10,5 +10,6 @@ public interface EnchereDAO {
     List<Enchere> readAllFromArticle(long no_article);
     void create(Enchere enchere);
     int getMeilleurPrix(int no_article);
+    String getMeilleurEnchereur(int no_article);
 
 }

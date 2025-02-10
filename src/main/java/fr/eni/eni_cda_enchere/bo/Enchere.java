@@ -3,6 +3,7 @@ package fr.eni.eni_cda_enchere.bo;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 public class Enchere implements Serializable {
     @Serial
@@ -10,7 +11,7 @@ public class Enchere implements Serializable {
 
     private LocalDateTime date_enchere;
     private int montant;
-    private Utilisateur acquereur;
+    private Optional<Utilisateur> acquereur;
     private ArticleAVendre articleAVendre;
 
 
@@ -33,11 +34,11 @@ public class Enchere implements Serializable {
         this.montant = montant;
     }
 
-    public Utilisateur getAcquereur() {
+    public Optional<Utilisateur> getAcquereur() {
         return acquereur;
     }
 
-    public void setAcquereur(Utilisateur acquereur) {
+    public void setAcquereur(Optional<Utilisateur> acquereur) {
         this.acquereur = acquereur;
     }
 
