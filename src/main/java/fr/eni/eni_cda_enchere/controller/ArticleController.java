@@ -1,11 +1,7 @@
 package fr.eni.eni_cda_enchere.controller;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import fr.eni.eni_cda_enchere.bll.*;
-import fr.eni.eni_cda_enchere.bo.Adresse;
-import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
-import fr.eni.eni_cda_enchere.bo.Categorie;
-import fr.eni.eni_cda_enchere.bo.Utilisateur;
+import fr.eni.eni_cda_enchere.bo.*;
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,12 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 
 @Controller
 @RequestMapping("/articles")
+@SessionAttributes({"sessionUser"})
 public class ArticleController {
 
     private final UtilisateurService utilisateurService;
@@ -41,18 +40,66 @@ public class ArticleController {
     @GetMapping("/detail_enchere/{noArticle}")
     public String detailArticle(
             @PathVariable int noArticle,
+            @ModelAttribute Enchere enchere,
+            @ModelAttribute ArticleAVendre article,
             Model model) {
+
         ArticleAVendre a = articleService.getArticleAVendre(noArticle);
 
         if(a == null) {
             return "redirect:/";
         } else {
+            String connected_username = utilisateurService.getConnectedUsername();
             int meilleur_prix = enchereService.getMeilleurPrix(noArticle);
+            String meilleur_enchereur = enchereService.getMeilleurEnchereur(noArticle);
+
             a.setMeilleure_offre(meilleur_prix);
             model.addAttribute("article", a);
             System.out.println(a);
             System.out.println(a.getVendeur());
+
+            if(!Objects.equals(a.getVendeur().getPseudo(), connected_username)){
+                model.addAttribute("acquereur", true);
+            } else {
+                model.addAttribute("acquereur", false);
+            }
+
+            if(!Objects.equals(meilleur_enchereur, connected_username)){
+                model.addAttribute("enchere_lead", false);
+            } else {
+                model.addAttribute("enchere_lead", true);
+            }
+
             return "article/view-detail-enchere";
+        }
+    }
+
+    @PostMapping("/bid/{noArticle}")
+    public String bidArticle(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @PathVariable int noArticle,
+            @ModelAttribute("enchere") Enchere enchere,
+            BindingResult bindingResult
+    ){
+        String connected_username = utilisateurService.getConnectedUsername();
+        Optional<Utilisateur> connected_user = utilisateurService.findByPseudo(connected_username);
+
+        if(bindingResult.hasErrors()) {
+            return "article/view-detail-enchere";
+        } else {
+            ArticleAVendre a = articleService.getArticleAVendre(noArticle);
+            if(a == null) {
+                return "article/view-detail-enchere";
+            } else {
+                LocalDateTime now = LocalDateTime.now();
+                enchere.setArticleAVendre(a);
+                enchere.setAcquereur(connected_user);
+                enchere.setDate(now);
+                System.out.println("Enchère créée : " + enchere);
+                enchereService.createEnchere(enchere);
+
+                return "redirect:/articles/detail_enchere/" + noArticle;
+            }
         }
     }
 

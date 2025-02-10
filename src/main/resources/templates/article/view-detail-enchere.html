@@ -37,7 +37,7 @@
                     <fieldset data-th-object="${article}">
                         <div class="mb-2">
                             <label for="prix_initial" class="form-label">Mise à prix :</label>
-                            <input type="text" class="form-control" id="prix_initial" disabled data-th-field="*{prix_initial}">
+                            <input type="text" class="form-control" id="prix_initial" disabled data-th-value="${article.prix_initial + ' €'}">
                         </div>
                         <div class="mb-2">
                             <label for="meilleure_offre" class="form-label">Meilleure offre :</label>
@@ -76,10 +76,46 @@
                     <th:block data-th-if="${article.photo == null}">
                         <img data-th-src="@{/images/genericSale.jpg}" alt="" height="200" width="200" class="photo">
                     </th:block>
-
                 </div>
             </div>
         </form>
+
+        <th:block data-th-if="${acquereur == true}">
+            <div class="d-flex justify-content-center">
+                <div class="w-75">
+                    <hr>
+                    <h3 class="mb-3 d-flex justify-content-center">Enchérissez...</h3>
+                    <form data-th-action="@{/articles/bid/{id}(id=${article.no_article})}" method="post" class="mb-3" data-th-object="${enchere}">
+                        <div class="row d-flex justify-content-center mb-3">
+                            <div class="col-2 d-flex justify-content-center align-item-center">
+                                <label for="enchere" class="form-label">Mon enchère : </label>
+                            </div>
+                            <div class="col-2">
+                                <th:block data-th-if="${article.meilleure_offre == 0}">
+                                    <input type="number" class="form-control" id="enchere" data-th-min="${article.prix_initial + 1}" data-th-field="*{montant}">
+                                </th:block>
+                                <th:block data-th-if="${article.meilleure_offre != 0}">
+                                    <input type="number" class="form-control" id="enchere1"
+                                           data-th-min="${article.meilleure_offre + 1}"
+                                           data-th-field="*{montant}">
+                                </th:block>
+                            </div>
+                            <div class="col-2 d-flex align-item-center">
+                                <button type="submit" class="btn btn-success"><img data-th-src="@{/images/bid.png}" height="25" width="25" alt=""></button>
+                            </div>
+                        </div>
+                        <th:block data-th-if="${enchere_lead == true}">
+                            <div class="row d-flex align-item-center justify-content-center mb-3">
+                                <div class="col-6 d-flex align-item-center justify-content-center">
+                                    <span class="alert alert-success">( Vous détenez actuellement la plus haute enchère )</span>
+                                </div>
+                            </div>
+                        </th:block>
+                    </form>
+                    <hr>
+                </div>
+            </div>
+        </th:block>
 
         <div class="d-flex justify-content-center align-item-center">
             <a data-th-href="@{/}" class="btn btn-danger w-25">Retour</a>
