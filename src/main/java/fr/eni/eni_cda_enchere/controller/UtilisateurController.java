@@ -1,8 +1,10 @@
 package fr.eni.eni_cda_enchere.controller;
 
 import fr.eni.eni_cda_enchere.bll.AdresseService;
+import fr.eni.eni_cda_enchere.bll.ArticleService;
 import fr.eni.eni_cda_enchere.bll.UtilisateurService;
 import fr.eni.eni_cda_enchere.bo.Adresse;
+import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import fr.eni.eni_cda_enchere.exceptions.BusinessException;
 import fr.eni.eni_cda_enchere.form.UserPasswordForm;
@@ -30,11 +32,13 @@ public class UtilisateurController {
     private final UtilisateurService utilisateurService;
     private final AdresseService adresseService;
     private final PasswordEncoder passwordEncoder;
+    private final ArticleService articleService;
 
-    public UtilisateurController(UtilisateurService utilisateurService, AdresseService adresseService, PasswordEncoder passwordEncoder) {
+    public UtilisateurController(UtilisateurService utilisateurService, AdresseService adresseService, PasswordEncoder passwordEncoder, ArticleService articleService) {
         this.utilisateurService = utilisateurService;
         this.adresseService = adresseService;
         this.passwordEncoder = passwordEncoder;
+        this.articleService = articleService;
     }
 
     @GetMapping("/list")
@@ -93,6 +97,13 @@ public class UtilisateurController {
             UserDetails userDetails
     ) {
         Optional<Utilisateur> utilisateur = utilisateurService.findByPseudo(userDetails.getUsername());
+
+        // VOIR POUR AFFICHER LES VENTES DE L'UTILISATEUR CONNECTE !!!
+
+        if(utilisateur.isPresent()) {
+            List<ArticleAVendre> articlesEnVente = articleService.getFilteredArticleAVendre(0, utilisateur.get().getPseudo());
+            model.addAttribute("articlesEnVente", articlesEnVente);
+        }
 
         model.addAttribute("utilisateur", utilisateur.get());
         return "profil/view-profil";

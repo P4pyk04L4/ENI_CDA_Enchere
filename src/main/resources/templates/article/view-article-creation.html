@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://wwww.thymeleaf.org" data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
                                                                         , titrePage=~{:: title}
-                                                                        , ressources=~{:: #ressources-css})}">
+                                                                        , ressources=~{:: #ressources})}">
 <head>
-    <title>Nouvelle vente</title>
-    <th:block id="ressources-css">
+    <title th:text="${article.no_article == 0} ? 'Nouvelle vente' : 'Modifier l\'article'"></title>
+    <th:block id="ressources">
         <link rel="stylesheet" data-th-href="@{/css/detail-enchere.css}">
     </th:block>
 </head>
 <body>
 <main class="container my-4">
     <div class="enchereBox">
-    <h1 class="text-center mb-4">Nouvelle vente</h1>
+    <h1 class="text-center mb-4" th:text="${article.no_article == 0} ? 'Nouvelle vente' : 'Modifier l\'article'"></h1>
 
-    <form th:action="@{/articles/creer}" method="post" th:object="${article}" class="row">
+    <form th:action="${article.no_article == 0} ? @{/articles/creer} : @{/articles/modifier/{id}(id=${article.no_article})}" method="post" th:object="${article}" class="row">
+        <div class="alert alert-danger" role="alert" th:if="${param.error}" th:text="Errors"></div>
 
         <div th:replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
 
@@ -22,12 +23,13 @@
                 <label for="nomArticle" class="col-form-label col-sm-4">Article</label>
                 <div class="col-sm-8">
                     <input type="text" id="nomArticle" th:field="*{nom_article}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('nom_article')}" th:errors="*{nom_article}" style="color: red; font-size: small"></span>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="categories" class="col-form-label col-sm-4">Categorie</label>
                 <div class="col-sm-8">
-                <select id="categories" name="noCategorie" class="form-select" required>
+                <select id="categories" th:field="*{categorie}" class="form-select" required>
                     <option th:each="categorie : ${categorieList}"
                             th:value="${categorie.no_categorie}"
                             th:text="${categorie.libelle}">
@@ -38,7 +40,8 @@
             <div class="mb-3 row">
                 <label for="description" class="col-form-label col-sm-4">Description</label>
                 <div class="col-sm-8">
-                <textarea id="description" th:field="*{description}" class="form-control" rows="6" required></textarea>
+                    <textarea id="description" th:field="*{description}" class="form-control" rows="6" required></textarea>
+                    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red; font-size: small"></span>
                 </div>
             </div>
         </div>
@@ -48,19 +51,23 @@
             <div class="mb-3 row">
                 <label for="miseAPrix" class="col-form-label col-sm-4">Mise à prix</label>
                 <div class="col-sm-8">
-                <input type="number" id="miseAPrix" th:field="*{prix_initial}" class="form-control" required>
+                    <input type="number" id="miseAPrix" th:field="*{prix_initial}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('prix_initial')}" th:errors="*{prix_initial}" style="color: red; font-size: small"></span>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="dateDebut" class="col-form-label col-sm-4">Début de l'enchère</label>
                 <div class="col-sm-8">
-                <input type="date" id="dateDebut" th:field="*{date_debut_encheres}" class="form-control" required>
+                    <input type="date" id="dateDebut" th:field="*{date_debut_encheres}"
+                       class="form-control" required>
+                    <span th:if="${#fields.hasErrors('date_debut_encheres')}" th:errors="*{date_debut_encheres}" style="color: red; font-size: small"></span>
                 </div>
             </div>
             <div class="mb-3 row">
                 <label for="dateFin" class="col-form-label col-sm-4">Fin de l'enchère</label>
                 <div class="col-sm-8">
-                <input type="date" id="dateFin" th:field="*{date_fin_encheres}" class="form-control" required>
+                    <input type="date" id="dateFin" th:field="*{date_fin_encheres}" class="form-control" required>
+                    <span th:if="${#fields.hasErrors('date_fin_encheres')}" th:errors="*{date_fin_encheres}" style="color: red; font-size: small"></span>
                 </div>
             </div>
         </div>
@@ -69,16 +76,16 @@
             <div class="mb-3 row">
                 <label for="adresses" class="col-form-label col-sm-4">Retrait</label>
                 <div class="col-sm-8">
-                    <select id="adresses" name="noRetrait" class="form-select form-select-sm" aria-label="Sélectionnez une catégorie" required>
+                    <select id="adresses" th:field="*{retrait}" class="form-select form-select-sm" aria-label="Sélectionnez une catégorie" required>
                         <option th:each="adresse : ${adressesList}"
                                 th:value="${adresse.no_adresse}"
                                 th:text="${adresse.rue} + ' - ' + ${adresse.code_postal} + ' ' + ${adresse.ville}">
-
                         </option>
                     </select>
                 </div>
             </div>
         </div>
+        <input type="hidden" th:field="*{no_article}"/>
         <div class="d-flex justify-content-end">
             <button type="reset" class="btn btn-outline-secondary me-2">Annuler</button>
             <button type="submit" class="btn btn-primary">Sauvegarder</button>

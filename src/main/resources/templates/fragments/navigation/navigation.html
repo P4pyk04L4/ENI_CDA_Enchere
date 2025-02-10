@@ -1,6 +1,6 @@
 <ul xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-nav" class="nav nav-pills">
     <li class="nav-item">
-        <a th:href="@{/}" class="nav-link active">Accueil</a>
+        <a th:href="@{/}" class="nav-link">Accueil</a>
     </li>
     <th:block th:if="${#authorization.expression('isAuthenticated()')}">
     <li class="nav-item">

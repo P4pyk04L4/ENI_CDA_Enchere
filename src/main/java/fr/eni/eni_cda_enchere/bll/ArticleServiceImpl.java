@@ -1,10 +1,7 @@
 package fr.eni.eni_cda_enchere.bll;
 
-import fr.eni.eni_cda_enchere.bo.Adresse;
 import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
-import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import fr.eni.eni_cda_enchere.dal.ArticleAVendreDAO;
-import fr.eni.eni_cda_enchere.dal.ArticleAVendreDAOImpl;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -37,8 +34,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void createArticleAVendre(ArticleAVendre articleAVendre) {
-        articleAVendreDAO.createArticleAVendre(articleAVendre);
+    public int createArticleAVendre(ArticleAVendre articleAVendre) {
+        return articleAVendreDAO.createArticleAVendre(articleAVendre);
     }
 
     @Override

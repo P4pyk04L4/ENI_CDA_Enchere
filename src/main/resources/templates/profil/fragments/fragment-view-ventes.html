@@ -1,0 +1,30 @@
+<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-view-ventes">
+    <div class="mb-5">
+        <h2>Mes ventes</h2>
+
+        <div th:if="${articlesEnVente != null}">
+
+            <table class="table">
+                <thead>
+                    <th>Nom</th>
+                    <th>Prix initial</th>
+                    <th>Fin de l'enchère</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    <tr data-th-each="item : ${articlesEnVente}">
+                        <td>
+                            <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}" data-th-text="${item.nom_article}"></a>
+                        </td>
+                        <td data-th-text="${item.prix_initial} + '€'"></td>
+                        <td data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></td>
+                        <td>
+                            <a data-th-href="@{/articles/modifier/{id}(id=${item.no_article})}" data-th-text="Modifier"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

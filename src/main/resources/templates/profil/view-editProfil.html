@@ -13,22 +13,27 @@
         <div class="mb-3">
             <label for="pseudo" class="form-label">Pseudo</label>
             <input type="text" id="pseudo" th:field="*{pseudo}" class="form-control" readonly>
+            <span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span>
         </div>
         <div class="mb-3">
             <label for="nom" class="form-label">Nom</label>
             <input type="text" id="nom" th:field="*{nom}" class="form-control">
+            <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span>
         </div>
         <div class="mb-3">
             <label for="prenom" class="form-label">Prénom</label>
             <input type="text" id="prenom" th:field="*{prenom}" class="form-control">
+            <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></span>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" id="email" th:field="*{email}" class="form-control">
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
         </div>
         <div class="mb-3">
             <label for="telephone" class="form-label">Téléphone</label>
             <input type="text" id="telephone" th:field="*{telephone}" class="form-control">
+            <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
         </div>
 
 
