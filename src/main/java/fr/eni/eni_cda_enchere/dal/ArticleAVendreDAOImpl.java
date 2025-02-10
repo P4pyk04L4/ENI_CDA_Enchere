@@ -5,7 +5,6 @@ import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
 import fr.eni.eni_cda_enchere.bo.Categorie;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -100,7 +99,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
     }
 
     @Override
-    public void createArticleAVendre(ArticleAVendre articleAVendre) {
+    public int createArticleAVendre(ArticleAVendre articleAVendre) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         String sql = "INSERT INTO ARTICLES_A_VENDRE (nom_article, description, date_debut_encheres, date_fin_encheres, statut_enchere, prix_initial, prix_vente, id_utilisateur, no_categorie, no_adresse_retrait) VALUES (:nom_article, :description, :date_debut_encheres,:date_fin_encheres, :statut_enchere, :prix_initial, :prix_vente, :id_utilisateur, :no_categorie, :no_adresse_retrait)";
@@ -119,6 +118,9 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 
         if(keyHolder.getKey() != null) {
             articleAVendre.setNo_article(keyHolder.getKey().intValue());
+            return keyHolder.getKey().intValue();
+        } else {
+            return 0;
         }
     }
 

@@ -16,7 +16,7 @@ public interface ArticleService {
 
     List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nom);
 
-    void createArticleAVendre(ArticleAVendre articleAVendre);
+    int createArticleAVendre(ArticleAVendre articleAVendre);
 
     void updateArticleAVendre(ArticleAVendre articleAVendre);
 

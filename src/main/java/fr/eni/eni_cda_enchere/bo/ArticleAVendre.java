@@ -1,25 +1,49 @@
 package fr.eni.eni_cda_enchere.bo;
 
+import fr.eni.eni_cda_enchere.validations.DateComparer;
+import jakarta.validation.constraints.*;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@DateComparer
 public class ArticleAVendre implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     private long no_article;
+
+    @NotBlank(message = "Veuillez entrer un nom d'article.")
+    @Size(min = 5, max = 30, message = "Le nom doit être compris entre 5 et 30 caractères.")
     private String nom_article;
+
+    @NotBlank(message = "Veuillez entrer une description pour votre vente.")
+    @Size(min = 5, max = 300, message = "Vous devez entrer une description comportant plus de 5 caractères et ne devant pas excéder 300 caractères.")
     private String description;
+
     private String photo;
+
+    @NotNull(message = "Veuillez indiquer une date de début d'enchère.")
     private LocalDate date_debut_encheres;
+
+    @Future
+    @NotNull(message = "Veuillez indiquer une date de fin d'enchère.")
     private LocalDate date_fin_encheres;
+
     private int statut_enchere;
+
+    @NotNull(message = "Veuillez indiquer un prix de vente.")
     private int prix_initial;
+
     private Integer prix_vente;
+
     private Integer meilleure_offre;
+
     private Adresse retrait;
+
     private Utilisateur vendeur;
+
     private Categorie categorie;
 
     public ArticleAVendre() {}

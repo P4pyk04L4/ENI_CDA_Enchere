@@ -1,6 +1,5 @@
 package fr.eni.eni_cda_enchere.controller;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import fr.eni.eni_cda_enchere.bll.*;
 import fr.eni.eni_cda_enchere.bo.Adresse;
 import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
@@ -70,7 +69,7 @@ public class ArticleController {
         List<Categorie> categorieList = categorieService.findAllCategories();
 
         List<Adresse> adressesList = adresseService.getEniAdresses();
-        adressesList.add(utilisateur.getAdresse());
+        adressesList.add(0, utilisateur.getAdresse());
 
         model.addAttribute("article", article);
         model.addAttribute("categorieList", categorieList);
@@ -84,12 +83,24 @@ public class ArticleController {
             @RequestParam("noRetrait") int noAdresse, // Récupère l'ID de l'adresse
             @Valid @ModelAttribute("article") ArticleAVendre article,
             BindingResult bindingResult,
-            @AuthenticationPrincipal UserDetails userDetails
-    ) {
+            @AuthenticationPrincipal UserDetails userDetails,
+            Model model) {
 
         if (bindingResult.hasErrors()) {
-            System.out.println("Erreur = " + bindingResult.getAllErrors());
-            return "redirect:/articles/creer";
+            Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
+
+            article.setRetrait(utilisateur.getAdresse());
+            article.setVendeur(utilisateur);
+
+            List<Categorie> categorieList = categorieService.findAllCategories();
+
+            List<Adresse> adressesList = adresseService.getEniAdresses();
+            adressesList.add(0, utilisateur.getAdresse());
+
+            model.addAttribute("article", article);
+            model.addAttribute("categorieList", categorieList);
+            model.addAttribute("adressesList", adressesList);
+            return "article/view-article-creation";
         }
 
         // Récupère les objets Categorie et Adresse à partir de leurs IDs
@@ -100,13 +111,14 @@ public class ArticleController {
         article.setCategorie(categorie);
         article.setRetrait(adresse);
 
+
         // Récupère l'utilisateur connecté
         Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
         article.setVendeur(utilisateur);
 
         // Crée l'article dans la base de données
-        articleService.createArticleAVendre(article);
+        int no_Article = articleService.createArticleAVendre(article);
 
-        return "redirect:/";
+        return "redirect:/articles/detail_enchere/" + no_Article;
     }
 }

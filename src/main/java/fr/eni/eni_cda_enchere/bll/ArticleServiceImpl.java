@@ -37,8 +37,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void createArticleAVendre(ArticleAVendre articleAVendre) {
-        articleAVendreDAO.createArticleAVendre(articleAVendre);
+    public int createArticleAVendre(ArticleAVendre articleAVendre) {
+        return articleAVendreDAO.createArticleAVendre(articleAVendre);
     }
 
     @Override
