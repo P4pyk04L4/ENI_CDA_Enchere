@@ -46,10 +46,14 @@ public class ArticleController {
 
         if(a == null) {
             return "redirect:/";
+        } else {
+            int meilleur_prix = enchereService.getMeilleurPrix(noArticle);
+            a.setMeilleure_offre(meilleur_prix);
+            model.addAttribute("article", a);
+            System.out.println(a);
+            System.out.println(a.getVendeur());
+            return "article/view-detail-enchere";
         }
-
-        model.addAttribute("article", a);
-        return "article/view-detail-enchere";
     }
 
     @GetMapping("/creer")
