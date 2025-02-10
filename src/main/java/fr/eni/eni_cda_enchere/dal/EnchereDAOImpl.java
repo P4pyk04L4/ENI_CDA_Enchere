@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class EnchereDAOImpl implements EnchereDAO {
@@ -86,10 +87,10 @@ public class EnchereDAOImpl implements EnchereDAO {
 
     @Override
     public void create(Enchere enchere) {
-        String sql = "INSERT INTO Encheres(id_utilisateur, id_article, montant, date_enchere) " +
+        String sql = "INSERT INTO Encheres(id_utilisateur, no_article, montant_enchere, date_enchere) " +
                 "VALUES (:id_utilisateur, :no_article, :montant, :date_enchere)";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
-        namedParameters.addValue("id_utilisateur", enchere.getAcquereur().getPseudo());
+        namedParameters.addValue("id_utilisateur", enchere.getAcquereur().get().getPseudo());
         namedParameters.addValue("no_article", enchere.getArticleAVendre().getNo_article());
         namedParameters.addValue("montant", enchere.getMontant());
         namedParameters.addValue("date_enchere", enchere.getDate());
@@ -107,6 +108,20 @@ public class EnchereDAOImpl implements EnchereDAO {
             return best_offer;
         } catch (EmptyResultDataAccessException e) {
             return 0;
+        }
+    }
+
+    public String getMeilleurEnchereur(int no_article){
+        String sql = "SELECT TOP 1 id_utilisateur FROM encheres " +
+                "WHERE no_article = :no_article " +
+                "ORDER BY date_enchere DESC";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("no_article", no_article);
+        try {
+            String best_buyer = jdbc.queryForObject(sql, params, String.class);
+            return best_buyer;
+        } catch (EmptyResultDataAccessException e) {
+            return "";
         }
     }
 
@@ -135,7 +150,7 @@ public class EnchereDAOImpl implements EnchereDAO {
             u.setEmail(rs.getString("email"));
             u.setTelephone(rs.getString("telephone"));
             u.setCredit(rs.getInt("credit"));
-            e.setAcquereur(u);
+            e.setAcquereur(Optional.of(u));
 
             return e;
         }

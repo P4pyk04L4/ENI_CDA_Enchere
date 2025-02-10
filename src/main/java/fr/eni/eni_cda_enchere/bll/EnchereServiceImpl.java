@@ -43,4 +43,9 @@ public class EnchereServiceImpl implements EnchereService {
     public int getMeilleurPrix(int no_article){
         return enchereDAO.getMeilleurPrix(no_article);
     }
+
+    @Override
+    public String getMeilleurEnchereur(int no_article){
+        return enchereDAO.getMeilleurEnchereur(no_article);
+    }
 }

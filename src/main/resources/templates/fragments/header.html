@@ -22,6 +22,7 @@
                     <span><strong>Aujourd'hui : </strong><span th:text="${#dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span></span>
                     <th:block th:if="${#authorization.expression('isAuthenticated()')}">
                         <span><strong>Pseudo :</strong><span data-th-text="${' ' + #authentication.name}"></span></span>
+                        <span><strong>Crédit :</strong><span data-th-text="${' '}"></span></span>
                     </th:block>
                 </div>
 
