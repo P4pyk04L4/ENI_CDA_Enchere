@@ -35,7 +35,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "aav.date_fin_encheres, aav.statut_enchere, aav.prix_initial, aav.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit, " +
                 "c.libelle, " +
-                "a.rue, a.code_postal, a.ville, a.adresse_eni " +
+                "a.rue, a.code_postal, a.ville, a.adresse_eni, a.no_adresse " +
                 "FROM articles_a_vendre AS aav " +
                 "LEFT JOIN utilisateurs AS u ON aav.id_utilisateur = u.pseudo " +
                 "LEFT JOIN categories AS c ON aav.no_categorie = c.no_categorie " +
@@ -51,7 +51,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "aav.date_fin_encheres, aav.statut_enchere, aav.prix_initial, aav.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit, " +
                 "c.libelle, " +
-                "a.rue, a.code_postal, a.ville, a.adresse_eni " +
+                "a.rue, a.code_postal, a.ville, a.adresse_eni, a.no_adresse " +
                 "FROM articles_a_vendre AS aav " +
                 "LEFT JOIN utilisateurs AS u ON aav.id_utilisateur = u.pseudo " +
                 "LEFT JOIN categories AS c ON aav.no_categorie = c.no_categorie " +
@@ -65,7 +65,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "aav.date_fin_encheres, aav.statut_enchere, aav.prix_initial, aav.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit, " +
                 "c.libelle, " +
-                "a.rue, a.code_postal, a.ville, a.adresse_eni " +
+                "a.rue, a.code_postal, a.ville, a.adresse_eni, a.no_adresse " +
                 "FROM articles_a_vendre AS aav " +
                 "LEFT JOIN utilisateurs AS u ON aav.id_utilisateur = u.pseudo " +
                 "LEFT JOIN categories AS c ON aav.no_categorie = c.no_categorie " +
@@ -80,7 +80,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "aav.date_fin_encheres, aav.statut_enchere, aav.prix_initial, aav.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit, " +
                 "c.libelle, " +
-                "a.rue, a.code_postal, a.ville, a.adresse_eni " +
+                "a.no_adresse, a.rue, a.code_postal, a.ville, a.adresse_eni " +
                 "FROM articles_a_vendre AS aav " +
                 "LEFT JOIN utilisateurs AS u ON aav.id_utilisateur = u.pseudo " +
                 "LEFT JOIN categories AS c ON aav.no_categorie = c.no_categorie " +
@@ -92,7 +92,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
             params.addValue("noCategorie", noCategorie);
         }
         if(nom != null){
-            sql += " and u.nom = :nom";
+            sql += " and aav.id_utilisateur = :nom";
             params.addValue("nom", nom);
         }
         return namedParameterJdbcTemplate.query(sql, params, new ArticleAVendreRowMapper());
@@ -136,7 +136,8 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "prix_vente = :prix_vente, " +
                 "id_utilisateur = :id_utilisateur, " +
                 "no_categorie = :no_categorie, " +
-                "no_adresse_retrait = :no_adresse_retrait";
+                "no_adresse_retrait = :no_adresse_retrait " +
+                "WHERE id_utilisateur = :id_utilisateur";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("nom_article", articleAVendre.getNom_article());
         params.addValue("description", articleAVendre.getDescription());
@@ -147,6 +148,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
         params.addValue("prix_vente", articleAVendre.getPrix_vente());
         params.addValue("id_utilisateur", articleAVendre.getVendeur().getPseudo());
         params.addValue("no_categorie", articleAVendre.getCategorie().getNo_categorie());
+        params.addValue("no_adresse_retrait", articleAVendre.getRetrait().getNo_adresse());
         namedParameterJdbcTemplate.update(sql, params);
     }
 
@@ -189,6 +191,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
             a.setRue(rs.getString("rue"));
             a.setCode_postal(rs.getString("code_postal"));
             a.setVille(rs.getString("ville"));
+            a.setNo_adresse(rs.getLong("no_adresse"));
             aav.setRetrait(a);
 
             return aav;

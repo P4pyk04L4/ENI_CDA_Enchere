@@ -3,19 +3,17 @@
                                                                         , titrePage=~{:: title}
                                                                         , ressources=~{:: #ressources})}">
 <head>
-    <title>Nouvelle vente</title>
+    <title th:text="${article.no_article == 0} ? 'Nouvelle vente' : 'Modifier l\'article'"></title>
     <th:block id="ressources">
         <link rel="stylesheet" data-th-href="@{/css/detail-enchere.css}">
-        <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-        <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
     </th:block>
 </head>
 <body>
 <main class="container my-4">
     <div class="enchereBox">
-    <h1 class="text-center mb-4">Nouvelle vente</h1>
+    <h1 class="text-center mb-4" th:text="${article.no_article == 0} ? 'Nouvelle vente' : 'Modifier l\'article'"></h1>
 
-    <form th:action="@{/articles/creer}" method="post" th:object="${article}" class="row">
+    <form th:action="${article.no_article == 0} ? @{/articles/creer} : @{/articles/modifier/{id}(id=${article.no_article})}" method="post" th:object="${article}" class="row">
         <div class="alert alert-danger" role="alert" th:if="${param.error}" th:text="Errors"></div>
 
         <div th:replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
@@ -31,7 +29,7 @@
             <div class="mb-3 row">
                 <label for="categories" class="col-form-label col-sm-4">Categorie</label>
                 <div class="col-sm-8">
-                <select id="categories" name="noCategorie" class="form-select" required>
+                <select id="categories" th:field="*{categorie}" class="form-select" required>
                     <option th:each="categorie : ${categorieList}"
                             th:value="${categorie.no_categorie}"
                             th:text="${categorie.libelle}">
@@ -78,7 +76,7 @@
             <div class="mb-3 row">
                 <label for="adresses" class="col-form-label col-sm-4">Retrait</label>
                 <div class="col-sm-8">
-                    <select id="adresses" name="noRetrait" class="form-select form-select-sm" aria-label="Sélectionnez une catégorie" required>
+                    <select id="adresses" th:field="*{retrait}" class="form-select form-select-sm" aria-label="Sélectionnez une catégorie" required>
                         <option th:each="adresse : ${adressesList}"
                                 th:value="${adresse.no_adresse}"
                                 th:text="${adresse.rue} + ' - ' + ${adresse.code_postal} + ' ' + ${adresse.ville}">
@@ -87,6 +85,7 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" th:field="*{no_article}"/>
         <div class="d-flex justify-content-end">
             <button type="reset" class="btn btn-outline-secondary me-2">Annuler</button>
             <button type="submit" class="btn btn-primary">Sauvegarder</button>

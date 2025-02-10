@@ -24,6 +24,7 @@ public class ArticleAVendre implements Serializable {
     private String photo;
 
     @NotNull(message = "Veuillez indiquer une date de début d'enchère.")
+    @FutureOrPresent
     private LocalDate date_debut_encheres;
 
     @Future

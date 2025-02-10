@@ -1,8 +1,6 @@
 package fr.eni.eni_cda_enchere.bll;
 
-import fr.eni.eni_cda_enchere.bo.Adresse;
 import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
-import fr.eni.eni_cda_enchere.bo.Utilisateur;
 
 import java.util.List;
 

@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -127,14 +129,13 @@ public class ArticleController {
 
     @PostMapping("/creer")
     public String enregistrerArticle(
-            @RequestParam("noCategorie") int noCategorie, // Récupère l'ID de la catégorie
-            @RequestParam("noRetrait") int noAdresse, // Récupère l'ID de l'adresse
             @Valid @ModelAttribute("article") ArticleAVendre article,
             BindingResult bindingResult,
             @AuthenticationPrincipal UserDetails userDetails,
             Model model) {
 
         if (bindingResult.hasErrors()) {
+            System.out.println("Erreur = " + bindingResult.getAllErrors());
             Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
 
             article.setRetrait(utilisateur.getAdresse());
@@ -151,14 +152,10 @@ public class ArticleController {
             return "article/view-article-creation";
         }
 
-        // Récupère les objets Categorie et Adresse à partir de leurs IDs
-        Categorie categorie = categorieService.findByNoCategory(noCategorie);
-        Adresse adresse = adresseService.getAdresse(noAdresse);
 
-        // Assigne les objets à l'article
-        article.setCategorie(categorie);
-        article.setRetrait(adresse);
-
+        if(article.getDate_debut_encheres().isEqual(LocalDate.now())){
+            article.setStatut_enchere(1);
+        }
 
         // Récupère l'utilisateur connecté
         Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
@@ -168,5 +165,55 @@ public class ArticleController {
         int no_Article = articleService.createArticleAVendre(article);
 
         return "redirect:/articles/detail_enchere/" + no_Article;
+    }
+
+    @GetMapping({"/modifier/", "/modifier/{idArticle}"})
+    public String modifierArticle(
+            @PathVariable int idArticle,
+            Model model
+    ) {
+        ArticleAVendre articleAVendre = articleService.getArticleAVendre(idArticle);
+
+        List<Adresse> adressesList = adresseService.getEniAdresses();
+        adressesList.add(0, articleAVendre.getRetrait());
+
+        List<Categorie> categorieList = categorieService.findAllCategories();
+
+        model.addAttribute("article", articleAVendre);
+        model.addAttribute("adressesList", adressesList);
+        model.addAttribute("categorieList", categorieList);
+
+        return "article/view-article-creation";
+    }
+
+    @PostMapping({"/modifier/", "/modifier/{idArticle}"})
+    public String enregistrerModificationsArticle(
+            @PathVariable int idArticle,
+            @Valid @ModelAttribute("article") ArticleAVendre article,
+            BindingResult bindingResult,
+            @AuthenticationPrincipal UserDetails userDetails,
+            Model model
+    ){
+        if (bindingResult.hasErrors()) {
+            ArticleAVendre articleAVendre = articleService.getArticleAVendre(idArticle);
+
+            List<Adresse> adressesList = adresseService.getEniAdresses();
+            adressesList.add(0, articleAVendre.getRetrait());
+
+            List<Categorie> categorieList = categorieService.findAllCategories();
+
+            model.addAttribute("article", articleAVendre);
+            model.addAttribute("adressesList", adressesList);
+            model.addAttribute("categorieList", categorieList);
+            return "article/view-article-creation";
+        }
+
+        // Récupère l'utilisateur connecté
+        Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
+        article.setVendeur(utilisateur);
+
+        articleService.updateArticleAVendre(article);
+
+        return "redirect:/articles/detail_enchere/" + idArticle;
     }
 }
