@@ -3,18 +3,19 @@
                                                                         , titrePage=~{:: title}
                                                                         , ressources=~{})}">
 <head>
-    <title>Liste des utilisateurs</title>
+    <title data-th-text="#{profil.title}"></title>
 </head>
 <body>
 <main class="container my-4">
-    <h1 class="text-center mb-4">Liste des utilisateurs</h1>
+    <h1 class="text-center mb-4" data-th-text="#{profil.title}"></h1>
 
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
-            <th scope="col">Pseudo</th>
-            <th scope="col">Prénom</th>
-            <th scope="col">Email</th>
+            <th scope="col" data-th-text="#{profil.username}"></th>
+            <th scope="col" data-th-text="#{profil.first.name}"></th>
+            <th scope="col" data-th-text="#{profil.last.name}"></th>
+            <th scope="col" data-th-text="#{profil.mail}"></th>
         </tr>
         </thead>
         <tbody>

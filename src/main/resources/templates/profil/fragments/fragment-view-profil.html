@@ -1,28 +1,28 @@
 <div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-view-profil">
     <div class="mb-5">
-    <h2>Mes informations</h2>
+    <h2 data-th-text="#{my.info}"></h2>
 
     <div th:if="${utilisateur != null}">
         <table class="table table-striped table-bordered">
             <tr>
-                <td>Prénom :</td>
+                <td data-th-text="#{profil.first.name}"> :</td>
                 <td th:text="${utilisateur.prenom}"></td>
             </tr>
             <tr>
-                <td>Nom :</td>
+                <td data-th-text="#{profil.last.name}"> :</td>
                 <td th:text="${utilisateur.nom}"></td>
             </tr>
             <tr>
-                <td>Email :</td>
+                <td data-th-text="#{profil.mail}"> :</td>
                 <td th:text="${utilisateur.email}"></td>
             </tr>
             <tr>
-                <td>Téléphone</td>
+                <td data-th-text="#{profil.tel}"></td>
                 <td th:text="${utilisateur.telephone}"></td>
             </tr>
         </table>
     </div>
-    <a th:href="@{/utilisateurs/edit/myProfile}" class="btn btn-primary">Modifier le profil</a>
-    <a th:href="@{/utilisateurs/edit/myProfile/myPassword}" class="btn btn-secondary">Modifier le mot de passe</a>
+    <a th:href="@{/utilisateurs/edit/myProfile}" class="btn btn-primary" data-th-text="#{edit.profil}"></a>
+    <a th:href="@{/utilisateurs/edit/myProfile/myPassword}" class="btn btn-secondary" data-th-text="#{edit.my.password}"></a>
 </div>
 </div>

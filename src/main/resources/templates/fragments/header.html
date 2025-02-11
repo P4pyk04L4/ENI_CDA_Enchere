@@ -12,14 +12,14 @@
                     <h3 class="m-2" data-th-text="#{header.title.h1}"></h3>
                 </span>
                 <!-- 言語切り替え用の国旗 -->
-                <p class="d-flex align-items-center justify-content-center">
+                <span class="d-flex align-items-center justify-content-center gap-2">
                     <a th:href="@{/?language=fr}">
                         <img th:src="@{/images/French.webp}" alt="Français" height="30" width="30">
                     </a>
                     <a th:href="@{/?language=en}">
                         <img th:src="@{/images/English.webp}" alt="English" height="30" width="30">
                     </a>
-                </p>
+                </span>
             </section>
             <!-- Intégration du fragment de navigation -->
             <section class="d-flex align-items-center justify-content-center">

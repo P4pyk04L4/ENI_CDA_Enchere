@@ -3,11 +3,11 @@
                                                                         , titrePage=~{:: title}
                                                                         , ressources=~{})}">
 <head>
-    <title>Editer le profil</title>
+    <title data-th-text="#{profil.edit.title}"></title>
 </head>
 <body>
 <main class="container my-4">
-    <h1 class="text-center mb-4">Editer le profil</h1>
+    <h1 class="text-center mb-4" data-th-text="#{profil.edit.title}"></h1>
 
     <form th:action="@{/utilisateurs/edit/myProfile}" th:object="${utilisateurAModifier}" method="post">
         <div class="mb-3">
@@ -16,44 +16,44 @@
             <span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span>
         </div>
         <div class="mb-3">
-            <label for="nom" class="form-label">Nom</label>
+            <label for="nom" class="form-label" data-th-text="#{profil.last.name}"></label>
             <input type="text" id="nom" th:field="*{nom}" class="form-control">
             <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span>
         </div>
         <div class="mb-3">
-            <label for="prenom" class="form-label">Prénom</label>
+            <label for="prenom" class="form-label" data-th-text="#{profil.first.name}"></label>
             <input type="text" id="prenom" th:field="*{prenom}" class="form-control">
             <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></span>
         </div>
         <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
+            <label for="email" class="form-label" data-th-text="#{profil.mail}"></label>
             <input type="email" id="email" th:field="*{email}" class="form-control">
             <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
         </div>
         <div class="mb-3">
-            <label for="telephone" class="form-label">Téléphone</label>
+            <label for="telephone" class="form-label" data-th-text="#{profil.tel}"></label>
             <input type="text" id="telephone" th:field="*{telephone}" class="form-control">
             <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
         </div>
 
 
         <div class="mb-3">
-            <label for="adresseRue" class="form-label">Rue</label>
+            <label for="adresseRue" class="form-label" data-th-text="#{profil.street}"></label>
             <input type="text" id="adresseRue" th:field="*{adresse.rue}" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="adresseCP" class="form-label">Code postal</label>
+            <label for="adresseCP" class="form-label" data-th-text="#{profil.codepostal}"></label>
             <input type="text" id="adresseCP" th:field="*{adresse.code_postal}" class="form-control">
         </div>
         <div class="mb-3">
-            <label for="adresseVille" class="form-label">Ville</label>
+            <label for="adresseVille" class="form-label" data-th-text="#{profil.ville}"></label>
             <input type="text" id="adresseVille" th:field="*{adresse.ville}" class="form-control">
         </div>
         <label>
             <input type="number" hidden="hidden" th:field="*{adresse.no_adresse}" disabled>
         </label>
 
-        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        <button type="submit" class="btn btn-primary" data-th-text="#{save_button}"></button>
     </form>
 </main>
 </body>
