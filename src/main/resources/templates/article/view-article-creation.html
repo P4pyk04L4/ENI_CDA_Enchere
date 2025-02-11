@@ -3,7 +3,7 @@
                                                                         , titrePage=~{:: title}
                                                                         , ressources=~{:: #ressources})}">
 <head>
-    <title th:text="${article.no_article == 0} ? 'Nouvelle vente' : 'Modifier l\'article'"></title>
+    <title th:text="${article.no_article == 0} ? #{detail.newAuction} : #{detail.editArticle}"></title>
     <th:block id="ressources">
         <link rel="stylesheet" data-th-href="@{/css/detail-enchere.css}">
     </th:block>
@@ -11,23 +11,23 @@
 <body>
 <main class="container my-4">
     <div class="enchereBox">
-    <h1 class="text-center mb-4" th:text="${article.no_article == 0} ? 'Nouvelle vente' : 'Modifier l\'article'"></h1>
+        <h1 class="text-center mb-4" th:text="${article.no_article == 0} ? #{detail.newAuction} : #{detail.editArticle}"></h1>
 
-    <form th:action="${article.no_article == 0} ? @{/articles/creer} : @{/articles/modifier/{id}(id=${article.no_article})}" method="post" th:object="${article}" class="row">
+        <form th:action="${article.no_article == 0} ? @{/articles/creer} : @{/articles/modifier/{id}(id=${article.no_article})}" method="post" th:object="${article}" class="row">
         <div class="alert alert-danger" role="alert" th:if="${param.error}" th:text="Errors"></div>
 
         <div th:replace="~{fragments/errors/fragment-errors :: frag-errors}"></div>
 
         <div class="col-md-6 col-sm-12">
             <div class="mb-3 row">
-                <label for="nomArticle" class="col-form-label col-sm-4">Article</label>
+                <label for="nomArticle" class="col-form-label col-sm-4" data-th-text="#{detail.auction.item}"></label>
                 <div class="col-sm-8">
                     <input type="text" id="nomArticle" th:field="*{nom_article}" class="form-control" required>
                     <span th:if="${#fields.hasErrors('nom_article')}" th:errors="*{nom_article}" style="color: red; font-size: small"></span>
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="categories" class="col-form-label col-sm-4">Categorie</label>
+                <label for="categories" class="col-form-label col-sm-4" data-th-text="#{detail.category}"></label>
                 <div class="col-sm-8">
                 <select id="categories" th:field="*{categorie}" class="form-select" required>
                     <option th:each="categorie : ${categorieList}"
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="description" class="col-form-label col-sm-4">Description</label>
+                <label for="description" class="col-form-label col-sm-4" data-th-text="#{detail.description}"></label>
                 <div class="col-sm-8">
                     <textarea id="description" th:field="*{description}" class="form-control" rows="6" required></textarea>
                     <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red; font-size: small"></span>
@@ -49,14 +49,14 @@
         <div class="col-md-6 col-sm-12">
 
             <div class="mb-3 row">
-                <label for="miseAPrix" class="col-form-label col-sm-4">Mise à prix</label>
+                <label for="miseAPrix" class="col-form-label col-sm-4" data-th-text="#{detail.startingPrice}"></label>
                 <div class="col-sm-8">
                     <input type="number" id="miseAPrix" th:field="*{prix_initial}" class="form-control" required>
                     <span th:if="${#fields.hasErrors('prix_initial')}" th:errors="*{prix_initial}" style="color: red; font-size: small"></span>
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="dateDebut" class="col-form-label col-sm-4">Début de l'enchère</label>
+                <label for="dateDebut" class="col-form-label col-sm-4" data-th-text="#{detail.startTime}"></label>
                 <div class="col-sm-8">
                     <input type="date" id="dateDebut" th:field="*{date_debut_encheres}"
                        class="form-control" required>
@@ -64,7 +64,7 @@
                 </div>
             </div>
             <div class="mb-3 row">
-                <label for="dateFin" class="col-form-label col-sm-4">Fin de l'enchère</label>
+                <label for="dateFin" class="col-form-label col-sm-4" data-th-text="#{detail.endTime}"></label>
                 <div class="col-sm-8">
                     <input type="date" id="dateFin" th:field="*{date_fin_encheres}" class="form-control" required>
                     <span th:if="${#fields.hasErrors('date_fin_encheres')}" th:errors="*{date_fin_encheres}" style="color: red; font-size: small"></span>
@@ -74,7 +74,7 @@
         <div class="col-md-6 col-sm-12">
 
             <div class="mb-3 row">
-                <label for="adresses" class="col-form-label col-sm-4">Retrait</label>
+                <label for="adresses" class="col-form-label col-sm-4" data-th-text="#{detail.pickup}"></label>
                 <div class="col-sm-8">
                     <select id="adresses" th:field="*{retrait}" class="form-select form-select-sm" aria-label="Sélectionnez une catégorie" required>
                         <option th:each="adresse : ${adressesList}"
@@ -87,8 +87,8 @@
         </div>
         <input type="hidden" th:field="*{no_article}"/>
         <div class="d-flex justify-content-end">
-            <button type="reset" class="btn btn-outline-secondary me-2">Annuler</button>
-            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+            <button type="reset" class="btn btn-outline-secondary me-2" data-th-text="#{filter.reset_button}">Annuler</button>
+            <button type="submit" class="btn btn-primary" data-th-text="#{save_button}"></button>
         </div>
     </form>
     </div>

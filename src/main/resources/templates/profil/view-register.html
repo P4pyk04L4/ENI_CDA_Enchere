@@ -4,7 +4,7 @@
 contenuPage=~{:: main},
 ressources=~{:: #ressources-css})}" >
 <head>
-    <title th:text="Inscription"></title>
+    <title th:text="#{registration.h1}"></title>
     <th:block id="ressources-css">
         <link rel="stylesheet" data-th-href="@{/css/register.css}">
     </th:block>
@@ -14,7 +14,7 @@ ressources=~{:: #ressources-css})}" >
     <main>
         <div class="container mt-5 registerBox">
             <div class="itemCentered mb-3">
-                <h1>Inscription</h1>
+                <h1 data-th-text="#{registration.h1}">Inscription</h1>
             </div>
 
             <form th:action="@{/utilisateurs/register}" method="post">
@@ -24,18 +24,18 @@ ressources=~{:: #ressources-css})}" >
                     <div class="col">
                         <fieldset data-th-object="${utilisateur}">
                             <div class="mb-2">
-                                <label for="pseudo" class="form-label">Pseudo : </label>
+                                <label for="pseudo" class="form-label" data-th-text="#{profil.username}"> : </label>
                                 <input type="text" class="form-control" id="pseudo" data-th-field="*{pseudo}" aria-describedby="pseudoHelp">
-                                <div id="pseudoHelp" class="form-text">Ce sera votre identifiant de connexion...</div>
+                                <div id="pseudoHelp" class="form-text" data-th-text="#{profil.message.connexion}"></div>
                                 <span th:if="${#fields.hasErrors('pseudo')}" th:errors="*{pseudo}"></span>
                             </div>
                             <div class="mb-2">
-                                <label for="first_name" class="form-label">Prénom :</label>
+                                <label for="first_name" class="form-label" data-th-text="#{profil.first.name}"> :</label>
                                 <input type="text" class="form-control" id="first_name"  data-th-field="*{prenom}">
                                 <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}"></span>
                             </div>
                             <div class="mb-2">
-                                <label for="telephone" class="form-label">Téléphone :</label>
+                                <label for="telephone" class="form-label" data-th-text="#{profil.tel}"> :</label>
                                 <input type="text" class="form-control" id="telephone"  data-th-field="*{telephone}">
                                 <span th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}"></span>
                             </div>
@@ -43,7 +43,7 @@ ressources=~{:: #ressources-css})}" >
 
                         <fieldset data-th-object="${adresse}">
                             <div class="mb-2">
-                                <label for="address" class="form-label">Adresse :</label>
+                                <label for="address" class="form-label" data-th-text="#{profil.adress}"> :</label>
                                 <input type="text" class="form-control" id="address"  data-th-field="*{rue}">
                                 <span th:if="${#fields.hasErrors('rue')}" th:errors="*{rue}"></span>
                             </div>
@@ -51,7 +51,7 @@ ressources=~{:: #ressources-css})}" >
 
                         <fieldset data-th-object="${utilisateur}">
                             <div class="mb-2">
-                                <label for="password" class="form-label">Mot de passe :</label>
+                                <label for="password" class="form-label" data-th-text="#{login.password}"> :</label>
                                 <input type="password" class="form-control" id="password"  data-th-field="*{motDePasse}">
                                 <span th:if="${#fields.hasErrors('motDePasse')}" th:errors="*{motDePasse}"></span>
                             </div>
@@ -61,13 +61,13 @@ ressources=~{:: #ressources-css})}" >
                     <div class="col">
                         <fieldset data-th-object="${utilisateur}">
                             <div class="mb-2">
-                                <label for="last_name" class="form-label">Nom : </label>
+                                <label for="last_name" class="form-label" data-th-text="#{profil.last.name}"> : </label>
                                 <input type="text" class="form-control" id="last_name"  data-th-field="*{nom}">
-                                <div id="nomHelp" class="form-text transparent">Ce sera votre identifiant de connexion...</div>
+                                <div id="nomHelp" class="form-text transparent" data-th-text="#{profil.message.connexion}"></div>
                                 <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}"></span>
                             </div>
                             <div class="mb-2">
-                                <label for="email" class="form-label">Email : </label>
+                                <label for="email" class="form-label" data-th-text="#{profil.mail}"> : </label>
                                 <input type="email" class="form-control" id="email"  data-th-field="*{email}">
                                 <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                             </div>
@@ -80,12 +80,12 @@ ressources=~{:: #ressources-css})}" >
                         <fieldset data-th-object="${adresse}">
                             <div class="mb-2 row">
                                 <div class="col">
-                                    <label for="cp" class="form-label">CP : </label>
+                                    <label for="cp" class="form-label" data-th-text="#{profil.codepostal}"> : </label>
                                     <input type="text" class="form-control" id="cp"  data-th-field="*{code_postal}">
                                     <span th:if="${#fields.hasErrors('code_postal')}" th:errors="*{code_postal}"></span>
                                 </div>
                                 <div class="col">
-                                    <label for="city" class="form-label">Ville : </label>
+                                    <label for="city" class="form-label" data-th-text="#{profil.ville}"> : </label>
                                     <input type="text" class="form-control" id="city"  data-th-field="*{ville}">
                                     <span th:if="${#fields.hasErrors('ville')}" th:errors="*{ville}"></span>
                                 </div>
@@ -93,15 +93,15 @@ ressources=~{:: #ressources-css})}" >
                         </fieldset>
 
                         <div class="mb-2">
-                            <label for="passwordConfirm" class="form-label">Confirmation mot de passe : </label>
+                            <label for="passwordConfirm" class="form-label" data-th-text="#{confirmation.message}"> : </label>
                             <input type="password" class="form-control" id="passwordConfirm">
                         </div>
                     </div>
                 </div>
 
                 <div class="itemCentered">
-                    <button type="submit" class="btn btn-primary w-25 m-2">S'inscrire</button>
-                    <a data-th-href="@{/}" class="btn btn-danger w-25 m-2">Annuler</a>
+                    <button type="submit" class="btn btn-primary w-25 m-2" data-th-text="#{inscription.label}"></button>
+                    <a data-th-href="@{/}" class="btn btn-danger w-25 m-2" data-th-text="#{filter.reset_button}"></a>
                 </div>
             </form>
         </div>

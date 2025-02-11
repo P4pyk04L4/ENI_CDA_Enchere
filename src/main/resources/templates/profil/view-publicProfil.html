@@ -25,7 +25,7 @@
     </div>
 
     <div th:if="${publicUtilisateur == null}">
-        <p class="text-danger">Aucun utilisateur trouvé pour ce pseudo.</p>
+        <p class="text-danger" data-th-text="#{profil.nouser.message}"></p>
     </div>
 </main>
 </body>
