@@ -72,6 +72,8 @@ public class ArticleController {
                 model.addAttribute("enchere_lead", true);
             }
 
+            model.addAttribute("meilleur_enchereur", meilleur_enchereur);
+
             return "article/view-detail-enchere";
         }
     }
