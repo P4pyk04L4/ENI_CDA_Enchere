@@ -72,6 +72,12 @@ public class ArticleController {
                 model.addAttribute("enchere_lead", true);
             }
 
+            if(a.getStatut_enchere() == 2){
+                model.addAttribute("sold", true);
+            } else {
+                model.addAttribute("sold", false);
+            }
+
             model.addAttribute("meilleur_enchereur", meilleur_enchereur);
 
             return "article/view-detail-enchere";
