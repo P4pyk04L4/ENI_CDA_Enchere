@@ -4,46 +4,46 @@
                                                                         , ressources=~{})}">
 <head>
     <!-- Accueil comme titre de page -->
-    <title>Enchères</title>
+    <title data-th-text="#{index.title}"></title>
 </head>
 
 <body>
     <main class="container my-3">
-        <h1 style="text-align: center">Liste des enchères</h1>
+        <h1 style="text-align: center" data-th-text="#{index.h1}">Liste des enchères</h1>
 
         <!-- Fenêtre de filtrage -->
         <div class="row my-3">
             <div class="col-md-5 customBox">
                 <div class="d-flex align-items-center mb-2">
-                    <label for="search-bar" class="me-2 fw-bold">Filtre:</label>
-                    <input type="text" id="search-bar" placeholder="Le nom de l'article..." class="form-control">
+                    <label for="search-bar" class="me-2 fw-bold" data-th-text="#{filter.label}">:</label>
+                    <input type="text" id="search-bar" data-th-placeholder="#{filter.placeholder}" class="form-control">
                 </div>
                 <!-- Recherche par catégorie : les données seront récupérées depuis la session plus tard, pour l'instant elles sont statiques -->
                 <div class="d-flex align-items-center mb-2">
-                    <label for="category-select" class="me-2 fw-bold">Catégorie:</label>
+                    <label for="category-select" class="me-2 fw-bold" data-th-text="#{filter.category}">:</label>
                     <select id="category-select" class="form-select">
-                        <option value="">Toutes les catégories</option>
-                        <option value="1">Électronique</option>
-                        <option value="2">Vêtements</option>
-                        <option value="3">Maison</option>
+                        <option value="" data-th-text="#{filter.all_categories}"></option>
+                        <option value="1" data-th-text="#{filter.electronics}"></option>
+                        <option value="2" data-th-text="#{filter.clothing}"></option>
+                        <option value="3" data-th-text="#{filter.home}"></option>
                     </select>
                 </div>
                 <div class="d-flex">
-                    <button id="search-btn" class="btn btn-primary me-2">Rechercher</button>
-                    <button id="reset-btn" class="btn btn-secondary">Annuler</button>
+                    <button id="search-btn" class="btn btn-primary me-2" data-th-text="#{filter.search_button}"></button>
+                    <button id="reset-btn" class="btn btn-secondary" data-th-text="#{filter.reset_button}"></button>
                 </div>
             </div>
             <div class="col-md-2"></div>
             <div class="col-md-5 customBox legende">
                 <div class="d-flex justify-content-center">
-                    <h5>Légende</h5>
+                    <h5 data-th-text="#{index.legend.h5}"></h5>
                 </div>
                 <div class="d-flex justify-content-evenly">
                     <div>
-                        <img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"><span> Vente en cours</span>
+                        <img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"><span data-th-text="#{index.legend.ongoing}"></span>
                     </div>
                     <div>
-                        <img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30"><span> Vente terminée</span>
+                        <img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30"><span data-th-text="#{index.legend.finishd}"></span>
                     </div>
                 </div>
             </div>
@@ -65,7 +65,7 @@
                         </div>
                     </div>
                     <div class="card-text">
-                        <span>Prix de départ : <span data-th-text="${item.prix_initial}"></span>€</span><br>
+                        <span>Prix de départ : <span data-th-text="${item.prix_initial}"></span >€</span><br>
                         <th:block data-th-if="${item.meilleure_offre == 0}">
                             <span>Offre actuelle : Pas d'offres pour l'instant.</span>
                         </th:block>

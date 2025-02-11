@@ -1,22 +1,22 @@
 <ul xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-nav" class="nav nav-pills">
     <li class="nav-item">
-        <a th:href="@{/}" class="nav-link">Accueil</a>
+        <a th:href="@{/}" class="nav-link" data-th-text="#{nav.home}"></a>
     </li>
     <th:block th:if="${#authorization.expression('isAuthenticated()')}">
     <li class="nav-item">
-        <a th:href="@{/articles/creer}" class="nav-link">Vendre un article</a>
+        <a th:href="@{/articles/creer}" class="nav-link" data-th-text="#{nav.sell}"></a>
     </li>
     <li class="nav-item">
         <!-- Accès statique temporaire jusqu'à la mise en place du code dynamique -->
-        <a th:href="@{/utilisateurs/myProfile}" class="nav-link">Mon profil</a>
+        <a th:href="@{/utilisateurs/myProfile}" class="nav-link" data-th-text="#{nav.profile}"></a>
     </li>
     <li class="nav-item">
-        <a th:href="@{/logout}" class="nav-link">Se déconnecter</a>
+        <a th:href="@{/logout}" class="nav-link" data-th-text="#{nav.logout}"></a>
     </li>
     </th:block>
     <th:block th:if="${!#authorization.expression('isAuthenticated()')}">
         <li class="nav-item">
-            <a th:href="@{/login}" class="nav-link">S'inscrire - Se connecter</a>
+            <a th:href="@{/login}" class="nav-link" data-th-text="#{nav.login}"></a>
         </li>
     </th:block>
 

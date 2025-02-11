@@ -4,7 +4,7 @@
 contenuPage=~{:: main},
 ressources=~{:: #ressources-css})}" >
 <head>
-    <title th:text="Connexion"></title>
+    <title th:text="#{login.h1}"></title>
     <th:block id="ressources-css">
         <link rel="stylesheet" data-th-href="@{/css/login.css}">
     </th:block>
@@ -12,27 +12,27 @@ ressources=~{:: #ressources-css})}" >
 <body>
 <main class="container my-4 pt-4 d-flex justify-content-center">
     <div class="boxLogin">
-        <h1 th:text="Connexion"></h1>
+        <h1 th:text="#{login.h1}"></h1>
 
         <form th:action="@{/login}" method="post" class="loginForm">
-            <div class="cards" th:if="${param.error}" th:text="Errors"></div>
-            <div th:if="${param.logout}" th:text="Déconnexion"></div>
+            <div class="cards" th:if="${param.error}" th:text="#{login.error}"></div>
+            <div th:if="${param.logout}" th:text="#{login.logout}"></div>
 
             <div class="mb-3">
-                <label for="inputUsername" class="form-label"><strong>Pseudo :</strong></label>
+                <label for="inputUsername" class="form-label"><strong th:text="#{login.username}"> :</strong></label>
                 <input id="inputUsername" type="text" name="username" class="form-control" value="coach_titi"/>
             </div>
             <div class="mb-3">
-                <label for="inputPwd" class="form-label"><strong>Mot de passe :</strong></label>
+                <label for="inputPwd" class="form-label"><strong th:text="#{login.password}"> :</strong></label>
                 <input id="inputPwd" type="password" name="password" class="form-control" value="Pa$$w0rd"/>
             </div>
 
             <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary" th:text="Connexion"></button>
+                <button type="submit" class="btn btn-primary" th:text="#{login.h1}"></button>
             </div>
             <hr>
             <div class="d-flex justify-content-center">
-                <a class="btn btn-success" th:text="Inscription" data-th-href="@{/utilisateurs/register}"></a>
+                <a class="btn btn-success" th:text="#{registration.h1}" data-th-href="@{/utilisateurs/register}"></a>
             </div>
         </form>
 
