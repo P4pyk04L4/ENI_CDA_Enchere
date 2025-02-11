@@ -49,6 +49,17 @@ public class ArticleAVendre implements Serializable {
 
     public ArticleAVendre() {}
 
+    public ArticleAVendre(String nom_article, int prix_initial, int meilleure_offre, LocalDate date_fin_encheres, String pseudo, long no_categorie) {
+        this.categorie = new Categorie();
+        this.vendeur = new Utilisateur();
+        this.nom_article = nom_article;
+        this.prix_initial = prix_initial;
+        this.meilleure_offre = meilleure_offre;
+        this.date_fin_encheres = date_fin_encheres;
+        this.vendeur.setPseudo(pseudo);
+        this.categorie.setNo_categorie(no_categorie);
+    }
+
     public int getNo_article() {
         return no_article;
     }

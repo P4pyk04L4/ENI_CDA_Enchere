@@ -60,12 +60,12 @@
                     <div class="card-text">
                         <span>Prix de départ : <span id="first-price" data-th-text="${item.prix_initial}"></span >€</span><br>
                         <th:block data-th-if="${item.meilleure_offre == 0}">
-                            <span class="actual-offer">Offre actuelle : Pas d'offres pour l'instant.</span>
+                            <span class="actual-offer">Offre actuelle : Pas d'offres pour l'instant.</span><br>
                         </th:block>
                         <th:block data-th-if="${item.meilleure_offre != 0}">
-                            <span class="actual-offer">Offre actuelle : <span data-th-text="${item.meilleure_offre}"></span>€</span>
+                            <span class="actual-offer">Offre actuelle : <span data-th-text="${item.meilleure_offre}"></span>€</span><br>
                         </th:block>
-                        <span> Fin de l'enchère : <span class="final-date" data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span></span>
+                        <span> Fin de l'enchère : <span class="final-date" data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span></span><br>
                         <span>Vendeur :
                         <a class="seller-name" th:href="@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.vendeur.Pseudo})}"
                            th:if="${#authorization.expression('isAuthenticated()')}"
