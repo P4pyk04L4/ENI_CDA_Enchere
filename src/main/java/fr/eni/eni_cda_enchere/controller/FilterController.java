@@ -31,20 +31,30 @@ public class FilterController {
     public List<ArticleFilteredResponse> filterArticles(
             @RequestBody ArticleRequest request
             ) {
-
+        // VERIFICATION AUTHENTIFICATION
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean estAuthentifie = auth != null && auth.isAuthenticated() && !(auth.getPrincipal() instanceof String && auth.getPrincipal().equals("anonymousUser"));
 
-        List<ArticleAVendre> articlesFiltres = articleService.getFilteredArticleAVendre(request.getNoCategorie(), request.getSearchText());
-        List<ArticleFilteredResponse> articleARetourner = new ArrayList<ArticleFilteredResponse>();
-
-        for (ArticleAVendre articleAVendre : articlesFiltres) {
-            int meilleure_offre = enchereService.getMeilleurPrix(articleAVendre.getNo_article());
-            articleAVendre.setMeilleure_offre(meilleure_offre);
+        String achatVente = null;
+        // VERIFICATION UTILISATEUR CONNECTE ET CRITERES
+        if (estAuthentifie && !request.isEstAchat() && request.isEstVente()) {
+            achatVente = "vente";
+        } else {
+            achatVente = "achat";
         }
 
+        // ENVOI DE LA RECHERCHE
+        List<ArticleAVendre> articlesFiltres = articleService.getFilteredArticleAVendre(request.getNoCategorie(), request.getSearchText(), achatVente, request.getCritere());
+        List<ArticleFilteredResponse> articleARetourner = new ArrayList<>();
+
         for (ArticleAVendre a : articlesFiltres) {
-            articleARetourner.add(new ArticleFilteredResponse(a.getNo_article(), a.getNom_article(), a.getPrix_initial(), a.getMeilleure_offre(), a.getDate_fin_encheres(), a.getVendeur().getPseudo(), a.getCategorie().getNo_categorie(), estAuthentifie));
+            int meilleure_offre = enchereService.getMeilleurPrix(a.getNo_article());
+            a.setMeilleure_offre(meilleure_offre);
+
+            articleARetourner.add(new ArticleFilteredResponse(a.getNo_article(),
+                    a.getNom_article(), a.getPrix_initial(), a.getMeilleure_offre(),
+                    a.getDate_fin_encheres(), a.getVendeur().getPseudo(),
+                    a.getCategorie().getNo_categorie(), estAuthentifie));
         }
 
         return articleARetourner;

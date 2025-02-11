@@ -1,0 +1,32 @@
+<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-filter" class="col-12">
+        <div class="row">
+            <div class="col-6">
+                <div>
+                    <label for="achats" class="form-check-label">Achats</label>
+                    <input type="radio" name="achatVente" id="achats" class="form-check-input" checked>
+                </div>
+                <div>
+                    <label for="typeAchat" class="form-label" style="display: none"></label>
+                    <select name="typeAchat" id="typeAchat" class="form-select">
+                        <option value="1" selected>Enchères ouvertes</option>
+                        <option value="2">Mes enchères en cours</option>
+                        <option value="3">Mes enchères remportées</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+                <div>
+                    <label for="ventes" class="form-check-label">Ventes</label>
+                    <input type="radio" name="achatVente" id="ventes" class="form-check-input">
+                </div>
+                <div>
+                    <label for="typeVente" class="form-label" style="display: none"></label>
+                    <select name="typeAchat" id="typeVente" class="form-select" disabled>
+                        <option value="1">Mes ventes en cours</option>
+                        <option value="2">Mes ventes non débutées</option>
+                        <option value="3">Mes ventes terminées</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+</div>

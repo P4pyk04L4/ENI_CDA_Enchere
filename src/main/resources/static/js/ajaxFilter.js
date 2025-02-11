@@ -1,4 +1,24 @@
 $(document).ready(function() {
+    function toggleSelects() {
+        if ($('#achats').is(':checked')) {
+            $('#typeAchat').prop('disabled', false);
+        } else {
+            $('#typeAchat').prop('disabled', true);
+        }
+
+        if ($('#ventes').is(':checked')) {
+            $('#typeVente').prop('disabled', false);
+        } else {
+            $('#typeVente').prop('disabled', true);
+        }
+    }
+
+    toggleSelects();
+
+    $('input[name="achatVente"]').change(function() {
+        toggleSelects();
+    });
+
     $("#search-btn").click(function(event) {
         event.preventDefault();
 
@@ -7,6 +27,15 @@ $(document).ready(function() {
 
         let searchText = $("#search-bar").val();
         let noCategorie = $("#category-select").val();
+        let estAchat = $('#achats').is(':checked');
+        let estVente = $('#ventes').is(':checked');
+        let critere = null;
+
+        if(estAchat){
+            critere = $('#typeAchat').val();
+        } else {
+            critere = $('#typeVente').val();
+        }
 
         $.ajax({
             url: "http://localhost:8080/filter/articles",
@@ -14,7 +43,10 @@ $(document).ready(function() {
             contentType: "application/json",
             data: JSON.stringify({
                 searchText: searchText,
-                noCategorie: noCategorie
+                noCategorie: noCategorie,
+                estAchat: estAchat,
+                estVente: estVente,
+                critere: critere
             }),
             beforeSend: function(xhr) {
                 xhr.setRequestHeader(csrfHeader, csrfToken);

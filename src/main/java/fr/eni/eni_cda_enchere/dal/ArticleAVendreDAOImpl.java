@@ -85,14 +85,14 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "LEFT JOIN utilisateurs AS u ON aav.id_utilisateur = u.pseudo " +
                 "LEFT JOIN categories AS c ON aav.no_categorie = c.no_categorie " +
                 "LEFT JOIN adresses AS a ON aav.no_adresse_retrait = a.no_adresse " +
-                "WHERE aav.statut_enchere != 1" +
-                "AND WHERE aav.statut_enchere != 0";
+                "WHERE aav.statut_enchere != 1 " +
+                "AND aav.statut_enchere != 0";
         return namedParameterJdbcTemplate.query(sql, new ArticleAVendreRowMapper());
     }
 
 
     @Override
-    public List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nomArticle) {
+    public List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nomArticle, String achatVente, int critere) {
         String sql = "SELECT aav.no_article, aav.nom_article, aav.description, aav.photo, aav.date_debut_encheres, " +
                 "aav.date_fin_encheres, aav.statut_enchere, aav.prix_initial, aav.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit, " +
