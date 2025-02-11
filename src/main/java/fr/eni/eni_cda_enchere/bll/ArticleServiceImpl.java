@@ -36,8 +36,8 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nom) {
-        return articleAVendreDAO.getFilteredArticleAVendre(noCategorie, nom);
+    public List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nom, String achatVente, int critere) {
+        return articleAVendreDAO.getFilteredArticleAVendre(noCategorie, nom, achatVente, critere);
     }
 
     @Override

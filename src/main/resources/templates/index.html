@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://wwww.thymeleaf.org" data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
-                                                                        , titrePage=~{:: title}
-                                                                        , ressources=~{})}">
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
+                                                , titrePage=~{:: title}
+                                                , ressources=~{:: ##ressources}
+                                                , scripts=~{:: #scripts})}">
 <head>
     <!-- Accueil comme titre de page -->
     <title data-th-text="#{index.title}"></title>
+    <th:block id="#ressources">
+        <meta name="_csrf" th:content="${_csrf.token}"/>
+        <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+                integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+                crossorigin="anonymous"></script>
+    </th:block>
 </head>
 
 <body>
@@ -13,47 +22,31 @@
 
         <!-- Fenêtre de filtrage -->
         <div class="row my-3">
-            <div class="col-md-5 customBox">
-                <div class="d-flex align-items-center mb-2">
-                    <label for="search-bar" class="me-2 fw-bold" data-th-text="#{filter.label}">:</label>
-                    <input type="text" id="search-bar" data-th-placeholder="#{filter.placeholder}" class="form-control">
-                </div>
-                <!-- Recherche par catégorie : les données seront récupérées depuis la session plus tard, pour l'instant elles sont statiques -->
-                <div class="d-flex align-items-center mb-2">
-                    <label for="category-select" class="me-2 fw-bold" data-th-text="#{filter.category}">:</label>
-                    <select id="category-select" class="form-select">
-                        <option value="" data-th-text="#{filter.all_categories}"></option>
-                        <option value="1" data-th-text="#{filter.electronics}"></option>
-                        <option value="2" data-th-text="#{filter.clothing}"></option>
-                        <option value="3" data-th-text="#{filter.home}"></option>
-                    </select>
-                </div>
-                <div class="d-flex">
-                    <button id="search-btn" class="btn btn-primary me-2" data-th-text="#{filter.search_button}"></button>
-                    <button id="reset-btn" class="btn btn-secondary" data-th-text="#{filter.reset_button}"></button>
-                </div>
-            </div>
-            <div class="col-md-2"></div>
-            <div class="col-md-5 customBox legende">
+
+            <div data-th-replace="~{fragments/filter/fragment-filter-articles :: frag-filter}"></div>
+
+
+
+            <div class="col-md-3"></div>
+            <div class="col-md-3 customBox legende">
                 <div class="d-flex justify-content-center">
                     <h5 data-th-text="#{index.legend.h5}"></h5>
                 </div>
                 <div class="d-flex justify-content-evenly">
                     <div>
-                        <img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30" class="mx-2"><span data-th-text="#{index.legend.ongoing}"></span>
+                        <img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"><span data-th-text="#{index.legend.ongoing}"></span>
                     </div>
                     <div>
-                        <img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30" class="mx-2"><span data-th-text="#{index.legend.finishd}"></span>
+                        <img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30"><span data-th-text="#{index.legend.finishd}"></span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row my-3">
+        <div class="row my-3" id="articles-cards">
             <!--ajouté "data-th-attr" pour js-->
-        <div data-th-each="item : ${articleAVendreList}" class="col-lg-4 col-md-6 col-sm-12 p-3">
+        <div data-th-each="item : ${articleAVendreList}" class="col-lg-4 col-md-6 col-sm-12 p-3" >
             <div class="card customZoom" data-th-attr="data-category=${item.categorie}">
-           <!--     <div class="card" data-th-attr="data-category=${article.categorie.no_categorie}">-->
 
                 <div class="card-body">
                     <div class="row">
@@ -70,23 +63,21 @@
                         </div>
                     </div>
                     <div class="card-text">
-                        <span>Prix de départ : <span data-th-text="${item.prix_initial}"></span >€</span><br>
+                        <span>Prix de départ : <span id="first-price" data-th-text="${item.prix_initial}"></span >€</span><br>
                         <th:block data-th-if="${item.meilleure_offre == 0}">
-                            <span>Offre actuelle : Pas d'offres pour l'instant.</span>
+                            <span class="actual-offer">Offre actuelle : Pas d'offres pour l'instant.</span><br>
                         </th:block>
                         <th:block data-th-if="${item.meilleure_offre != 0}">
-                            <span>Offre actuelle : <span data-th-text="${item.meilleure_offre}"></span>€</span>
+                            <span class="actual-offer">Offre actuelle : <span data-th-text="${item.meilleure_offre}"></span>€</span><br>
                         </th:block>
-                        <p>
-                            Fin de l'enchère : <span data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span>
-                            <br>
-                            Vendeur :
-                            <a th:href="@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.vendeur.Pseudo})}"
-                               th:if="${#authorization.expression('isAuthenticated()')}"
-                               th:text="${item.vendeur.pseudo}"></a>
-                            <span th:if="${!#authorization.expression('isAuthenticated()')}"
-                                  th:text="${item.vendeur.pseudo}"></span>
-                        </p>
+                        <span> Fin de l'enchère : <span class="final-date" data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span></span><br>
+                        <span>Vendeur :
+                        <a class="seller-name" th:href="@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.vendeur.Pseudo})}"
+                           th:if="${#authorization.expression('isAuthenticated()')}"
+                           th:text="${item.vendeur.pseudo}"></a>
+                        <span class="seller-name" th:if="${!#authorization.expression('isAuthenticated()')}"
+                              th:text="${item.vendeur.pseudo}"></span></span>
+
                     </div>
                 </div>
             </div>
@@ -96,6 +87,10 @@
 
 
     </main>
+    <div id="scripts">
+
+        <script th:src="@{/js/ajaxFilter.js}"></script>
+    </div>
 
 </body>
 </html>

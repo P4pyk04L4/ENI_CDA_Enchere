@@ -2,7 +2,8 @@
 <html lang="fr" xmlns:th="http://www.thymeleaf.org"
       data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
                                                 , titrePage=~{:: title}
-                                                , ressources=~{})}">
+                                                , ressources=~{},
+scripts=~{})}">
 <head>
     <title th:text="'Profil de vendeur ' + ${publicUtilisateur.pseudo}"></title>
 

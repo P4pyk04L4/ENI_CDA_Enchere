@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org" data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
                                                                         , titrePage=~{:: title}
-                                                                        , ressources=~{:: #ressources-css})}">
+                                                                        , ressources=~{:: #ressources-css},
+scripts=~{})}">
 <head>
     <title data-th-text="#{detail.title}"></title>
     <th:block id="ressources-css">

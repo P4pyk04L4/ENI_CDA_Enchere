@@ -2,7 +2,8 @@
 <html lang="fr" xmlns:th="http://www.thymeleaf.org"
       data-th-replace="~{layout/layout :: layout(titrePage=~{:: title},
 contenuPage=~{:: main},
-ressources=~{:: #ressources-css})}" >
+ressources=~{:: #ressources-css},
+scripts=~{})}" >
 <head>
     <title th:text="#{registration.h1}"></title>
     <th:block id="ressources-css">
