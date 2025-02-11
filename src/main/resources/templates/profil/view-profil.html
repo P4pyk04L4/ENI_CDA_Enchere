@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="fr" xmlns:th="http://www.thymeleaf.org" data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
                                                                         , titrePage=~{:: title}
-                                                                        , ressources=~{:: #ressources})}">
+                                                                        , ressources=~{:: #ressources},
+scripts=~{})}">
 <head>
     <title th:text="${#authentication.name}"></title>
     <th:block id="ressources">

@@ -12,9 +12,10 @@ public class ArticleAVendre implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private int no_article;
+
     @NotBlank(message = "Veuillez entrer un nom d'article.")
     @Size(min = 5, max = 30, message = "Le nom doit être compris entre 5 et 30 caractères.")
-    private int no_article;
     private String nom_article;
 
     @NotBlank(message = "Veuillez entrer une description pour votre vente.")

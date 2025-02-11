@@ -1,0 +1,43 @@
+<div xmlns:th="http://www.thymeleaf.org" data-th-fragment="frag-filter" class="col-md-5 customBox">
+<!--    <form action="">-->
+<!--        <div class="d-flex align-items-center mb-2">-->
+<!--            <label for="search-bar" class="me-2 fw-bold" data-th-text="#{filter.label}">:</label>-->
+<!--            <input type="text" id="search-bar" data-th-placeholder="#{filter.placeholder}" class="form-control">-->
+<!--        </div>-->
+<!--        &lt;!&ndash; Recherche par catégorie : les données seront récupérées depuis la session plus tard, pour l'instant elles sont statiques &ndash;&gt;-->
+<!--        <div class="d-flex align-items-center mb-2">-->
+<!--            <label for="category-select" class="me-2 fw-bold" data-th-text="#{filter.category}">:</label>-->
+<!--            <select id="category-select" class="form-select">-->
+<!--                <option value="" data-th-text="#{filter.all_categories}"></option>-->
+<!--                <option value="1" data-th-text="#{filter.electronics}"></option>-->
+<!--                <option value="2" data-th-text="#{filter.clothing}"></option>-->
+<!--                <option value="3" data-th-text="#{filter.home}"></option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--        <div class="d-flex">-->
+<!--            <button id="search-btn" class="btn btn-primary me-2" data-th-text="#{filter.search_button}"></button>-->
+<!--            <button id="reset-btn" class="btn btn-secondary" data-th-text="#{filter.reset_button}"></button>-->
+<!--        </div>-->
+<!--    </form>-->
+
+    <form action="" th:object="${filterForm}">
+        <div class="d-flex align-items-center mb-2">
+            <label for="search-bar" class="me-2 fw-bold" data-th-text="#{filter.label}">:</label>
+            <input type="text" id="search-bar" th:field="*{nomArticle}" data-th-placeholder="#{filter.placeholder}" class="form-control">
+        </div>
+        <div class="d-flex align-items-center mb-2">
+            <label for="category-select" class="me-2 fw-bold" data-th-text="#{filter.category}">:</label>
+            <select id="category-select" th:field="*{categorie}" class="form-select">
+                <option value="" th:text="#{filter.all_categories}"></option>
+                <option th:each="categorie : ${categorieList}"
+                        th:value="${categorie.no_categorie}"
+                        th:text="${categorie.libelle}">
+                </option>
+            </select>
+        </div>
+        <div class="d-flex">
+            <button id="search-btn" class="btn btn-primary me-2" data-th-text="#{filter.search_button}"></button>
+            <button id="reset-btn" class="btn btn-secondary" data-th-text="#{filter.reset_button}"></button>
+        </div>
+    </form>
+</div>
