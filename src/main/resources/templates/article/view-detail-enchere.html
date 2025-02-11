@@ -13,6 +13,13 @@
     <div class="enchereBox">
         <h1 class="text-center mb-4" data-th-text="#{detail.title}"></h1>
 
+        <th:block data-th-if="${sold == true && acquereur == true && meilleur_enchereur.equals(#authentication.getName())}">
+            <h5 class="text-center mb-3 alert alert-success">Vous avez remporté cette enchère ! Félicitations.</h5>
+        </th:block>
+        <th:block data-th-if="${sold == true && acquereur == false && !meilleur_enchereur.equals(#authentication.getName())}">
+            <h5 class="text-center mb-3 alert alert-success" data-th-text="${'L''enchère a été remportée par : ' + meilleur_enchereur}"></h5>
+        </th:block>
+
         <form action="" method="post" class="mb-3">
             <div class="cards" th:if="${param.error}" th:text="Errors"></div>
 
@@ -20,15 +27,15 @@
                 <div class="col">
                     <fieldset data-th-object="${article}">
                         <div class="mb-2">
-                            <label for="article_name" class="form-label" data-th-text="#{detail.auction.item}"> :</label>
+                            <label for="article_name" class="form-label" data-th-text="#{detail.auction.item}"></label><span> :</span>
                             <input type="text" class="form-control" id="article_name" disabled data-th-field="*{nom_article}">
                         </div>
                         <div class="mb-2">
-                            <label for="categorie" class="form-label" data-th-text="#{detail.category}"> :</label>
+                            <label for="categorie" class="form-label" data-th-text="#{detail.category}"></label><span> :</span>
                             <input type="text" class="form-control" id="categorie" disabled data-th-field="*{categorie.libelle}">
                         </div>
                         <div class="mb-2">
-                            <label for="description" class="form-label" data-th-text="#{detail.description}">Description :</label>
+                            <label for="description" class="form-label" data-th-text="#{detail.description}"></label><span> :</span>
                             <input type="text" class="form-control" id="description" disabled data-th-field="*{description}">
                         </div>
                     </fieldset>
@@ -36,20 +43,23 @@
                 <div class="col">
                     <fieldset data-th-object="${article}">
                         <div class="mb-2">
-                            <label for="prix_initial" class="form-label" data-th-text="#{detail.startingPrice}"> :</label>
+                            <label for="prix_initial" class="form-label" data-th-text="#{detail.startingPrice}"></label><span> :</span>
                             <input type="text" class="form-control" id="prix_initial" disabled data-th-value="${article.prix_initial + ' €'}">
                         </div>
                         <div class="mb-2">
-                            <label for="meilleure_offre" class="form-label" data-th-text="#{detail.bestOffer}"> :</label>
+                            <label for="meilleure_offre" class="form-label" data-th-text="#{detail.bestOffer}"></label><span> :</span>
                             <th:block data-th-if="${article.meilleure_offre != 0}">
-                                <input type="text" class="form-control" id="meilleure_offre" disabled data-th-value="${article.meilleure_offre + ' €'}">
+                                <div class="d-flex">
+                                    <input type="text" class="form-control w-75" id="meilleure_offre" disabled data-th-value="${article.meilleure_offre + ' € ( de ' + meilleur_enchereur + ' )'}">
+                                    <a data-th-href="@{/utilisateurs/public/profil/{pseudo}(pseudo=${meilleur_enchereur})}" class="btn btn-primary ms-3"><img data-th-src="@{/images/profile-user.png}" height="20" alt=""> Voir profil</a>
+                                </div>
                             </th:block>
                             <th:block data-th-if="${article.meilleure_offre == 0}">
                                 <input type="text" class="form-control" id="meilleure_offre_null" disabled value="Aucune offre pour le moment.">
                             </th:block>
                         </div>
                         <div class="mb-2">
-                            <label for="fin_enchere" class="form-label" data-th-text="#{detail.endTime}"> :</label>
+                            <label for="fin_enchere" class="form-label" data-th-text="#{detail.endTime}"></label><span> :</span>
                             <input type="text" class="form-control" id="fin_enchere" disabled data-th-field="*{date_fin_encheres}">
                         </div>
                     </fieldset>
@@ -60,11 +70,11 @@
                 <div class="col-6">
                     <fieldset data-th-object="${article}">
                         <div class="mb-2">
-                            <label for="retrait" class="form-label" data-th-text="#{detail.pickup}"> : </label>
+                            <label for="retrait" class="form-label" data-th-text="#{detail.pickup}"></label><span> :</span>
                             <input type="text" class="form-control" id="retrait" disabled data-th-value="${article.retrait.rue + ', ' + article.retrait.code_postal + ', ' + article.retrait.ville}">
                         </div>
                         <div class="mb-2">
-                            <label for="vendeur" class="form-label" data-th-text="#{detail.seller}"> : </label>
+                            <label for="vendeur" class="form-label" data-th-text="#{detail.seller}"></label><span> :</span>
                             <input type="text" class="form-control" id="vendeur" disabled data-th-value="*{vendeur.pseudo}">
                         </div>
                     </fieldset>
@@ -80,48 +90,102 @@
             </div>
         </form>
 
-        <th:block data-th-if="${acquereur == true}">
+
             <div class="d-flex justify-content-center">
+                <th:block data-th-if="${acquereur == true && sold == false}">
                 <div class="w-75">
                     <hr>
-                    <h3 class="mb-3 d-flex justify-content-center" data-th-text="#{detail.status}"></h3>
-                    <form data-th-action="@{/articles/bid/{id}(id=${article.no_article})}" method="post" class="mb-3" data-th-object="${enchere}">
-                        <div class="row d-flex justify-content-center mb-3">
-                            <div class="col-2 d-flex justify-content-center align-item-center">
-                                <label for="enchere" class="form-label" data-th-text="#{detail.my.auction}"> : </label>
-                            </div>
-                            <div class="col-2">
-                                <th:block data-th-if="${article.meilleure_offre == 0}">
-                                    <input type="number" class="form-control" id="enchere" data-th-min="${article.prix_initial + 1}" data-th-field="*{montant}">
-                                </th:block>
-                                <th:block data-th-if="${article.meilleure_offre != 0}">
-                                    <input type="number" class="form-control" id="enchere1"
-                                           data-th-min="${article.meilleure_offre + 1}"
-                                           data-th-field="*{montant}">
-                                </th:block>
-                            </div>
-                            <div class="col-2 d-flex align-item-center">
-                                <button type="submit" class="btn btn-success"><img data-th-src="@{/images/bid.png}" height="25" width="25" alt=""></button>
-                            </div>
-                        </div>
-                        <th:block data-th-if="${enchere_lead == true}">
-                            <div class="row d-flex align-item-center justify-content-center mb-3">
-                                <div class="col-6 d-flex align-item-center justify-content-center">
-                                    <span class="alert alert-success">( Vous détenez actuellement la plus haute enchère )</span>
+                        <h3 class="mb-3 d-flex justify-content-center" data-th-text="#{detail.status}"></h3>
+                        <form data-th-action="@{/articles/bid/{id}(id=${article.no_article})}" method="post" class="mb-3" data-th-object="${enchere}">
+                            <div class="row d-flex justify-content-center mb-3">
+                                <div class="col-2 d-flex justify-content-center align-item-center">
+                                    <label for="enchere" class="form-label" data-th-text="#{detail.my.auction}"> : </label>
+                                </div>
+                                <div class="col-2">
+                                    <th:block data-th-if="${article.meilleure_offre == 0}">
+                                        <input type="number" class="form-control" id="enchere" data-th-min="${article.prix_initial + 1}" data-th-field="*{montant}">
+                                    </th:block>
+                                    <th:block data-th-if="${article.meilleure_offre != 0}">
+                                        <input type="number" class="form-control" id="enchere1"
+                                               data-th-min="${article.meilleure_offre + 1}"
+                                               data-th-field="*{montant}">
+                                    </th:block>
+                                </div>
+                                <div class="col-2 d-flex align-item-center">
+                                    <button type="submit" class="btn btn-success"><img data-th-src="@{/images/bid.png}" height="25" width="25" alt=""></button>
                                 </div>
                             </div>
-                        </th:block>
-                    </form>
+                            <th:block data-th-if="${enchere_lead == true}">
+                                <div class="row d-flex align-item-center justify-content-center mb-3">
+                                    <div class="col-6 d-flex align-item-center justify-content-center">
+                                        <span class="alert alert-success">( Vous détenez actuellement la plus haute enchère )</span>
+                                    </div>
+                                </div>
+                            </th:block>
+                        </form>
                     <hr>
                 </div>
+                </th:block>
+
+                <th:block data-th-if="${sold == true && acquereur == false && !meilleur_enchereur.equals(#authentication.getName())}">
+                    <div class="w-50">
+                        <hr>
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sellModal">Retrait effectué</button>
+                        </div>
+                        <hr>
+                    </div>
+                </th:block>
+
+                <th:block data-th-if="${sold == true && acquereur == true && meilleur_enchereur.equals(#authentication.getName())}">
+                    <div>
+                        <hr>
+                        <div class="alert alert-warning">En attente de validation du retrait de l'article par le vendeur...</div>
+                        <hr>
+                    </div>
+                </th:block>
             </div>
-        </th:block>
+
+        <!-- Modal -->
+        <div class="modal fade" id="sellModal" style="display: none"  aria-labelledby="sellModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header d-flex flex-column justify-content-center">
+                        <h1 class="modal-title fs-5">Retrait effectué ?</h1>
+                        <span>Il est temps de faire les comptes...</span>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col">
+                                <p><strong>Votre crédit : </strong></p>
+                                <p><strong>Prix de l'enchère : </strong></p>
+                                <hr style="opacity: 0">
+                                <p><strong>Crédits totaux : </strong></p>
+                            </div>
+                            <div class="col">
+                                <p data-th-text="${' ' + article.getVendeur().getCredit() + ' €'}"></p>
+                                <p data-th-text="${'+ ' + article.meilleure_offre + ' €'}"></p>
+                                <hr>
+                                <p data-th-text="${article.getVendeur().getCredit() + article.meilleure_offre + ' €'}"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                        <button type="button" class="btn btn-success" id="handleSell">Accepter</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <div class="d-flex justify-content-center align-item-center">
             <a data-th-href="@{/}" class="btn btn-danger w-25" data-th-text="#{detail.btn}"></a>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </main>
 </body>
 </html>
+
+

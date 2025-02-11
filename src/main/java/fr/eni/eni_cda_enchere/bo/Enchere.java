@@ -1,7 +1,11 @@
 package fr.eni.eni_cda_enchere.bo;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -9,9 +13,14 @@ public class Enchere implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @NotNull
     private LocalDateTime date_enchere;
+    @NotNull
+    @Min( value = 1, message = "Vous devez entrer une valeur supérieure à 0 !")
     private int montant;
+    @NotNull
     private Optional<Utilisateur> acquereur;
+    @NotNull
     private ArticleAVendre articleAVendre;
 
 

@@ -40,10 +40,10 @@
                 </div>
                 <div class="d-flex justify-content-evenly">
                     <div>
-                        <img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"><span data-th-text="#{index.legend.ongoing}"></span>
+                        <img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30" class="mx-2"><span data-th-text="#{index.legend.ongoing}"></span>
                     </div>
                     <div>
-                        <img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30"><span data-th-text="#{index.legend.finishd}"></span>
+                        <img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30" class="mx-2"><span data-th-text="#{index.legend.finishd}"></span>
                     </div>
                 </div>
             </div>
@@ -61,7 +61,12 @@
                             <h5 class="card-title" data-th-text="${item.nom_article}"></h5>
                         </div>
                         <div class="col-2">
-                            <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"></a>
+                            <th:block data-th-if="${item.prix_vente == 0}">
+                                <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"></a>
+                            </th:block>
+                            <th:block data-th-if="${item.prix_vente != 0}">
+                                <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30"></a>
+                            </th:block>
                         </div>
                     </div>
                     <div class="card-text">
