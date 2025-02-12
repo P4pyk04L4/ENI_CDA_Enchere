@@ -93,7 +93,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 
     @Override
     public List<ArticleAVendre> getFilteredArticleAVendre(String pseudo, int noCategorie, String nomArticle, String achatVente, int critere) {
-        String sql = "SELECT aav.no_article, aav.nom_article, aav.description, aav.photo, aav.date_debut_encheres, " +
+        String sql = "SELECT DISTINCT aav.no_article, aav.nom_article, aav.description, aav.photo, aav.date_debut_encheres, " +
                 "aav.date_fin_encheres, aav.statut_enchere, aav.prix_initial, aav.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit, " +
                 "c.libelle, c.no_categorie, " +
@@ -146,7 +146,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                     break;
                 // 3 = "Mes ventes terminées"
                 case 3:
-                    sql += " and aav.statut_enchere = 2";
+                    sql += " and aav.statut_enchere in (2,3)";
                     break;
             }
 
