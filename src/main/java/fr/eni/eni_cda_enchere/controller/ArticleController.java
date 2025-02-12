@@ -21,7 +21,7 @@ import java.util.*;
 @RequestMapping("/articles")
 @SessionAttributes({"sessionUser"})
 public class ArticleController {
-
+    //juste pour merge
     private final UtilisateurService utilisateurService;
     private final AdresseService adresseService;
     private final ArticleService articleService;
