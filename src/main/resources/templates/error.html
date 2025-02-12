@@ -3,12 +3,15 @@
 <html xmlns:th="http://www.thymeleaf.org"
       data-th-replace="~{layout/layout :: layout(titrePage=~{:: title},
 contenuPage=~{:: main},
-ressources=~{},
+ressources=~{:: #ressources-css},
 scripts=~{})}">
 <head>
     <meta charset="UTF-8">
     <title data-th-text="#{error.http.title}"></title>
     <!-- Ajout de CSS demo-form.css -->
+    <th:block id="ressources-css">
+        <link rel="stylesheet" data-th-href="@{/css/error-http.css}">
+    </th:block>
 </head>
 <body>
 <main>
