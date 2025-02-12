@@ -65,7 +65,7 @@ public class FilterController {
             articleARetourner.add(new ArticleFilteredResponse(a.getNo_article(),
                     a.getNom_article(), a.getPrix_initial(), a.getMeilleure_offre(),
                     a.getDate_fin_encheres(), a.getVendeur().getPseudo(),
-                    a.getCategorie().getNo_categorie(), estAuthentifie));
+                    a.getCategorie().getNo_categorie(), a.getStatut_enchere(), estAuthentifie));
         }
 
         return articleARetourner;
