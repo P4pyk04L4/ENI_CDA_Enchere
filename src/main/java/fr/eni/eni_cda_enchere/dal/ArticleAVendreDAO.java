@@ -16,6 +16,10 @@ public interface ArticleAVendreDAO {
 
     List<ArticleAVendre> getFilteredArticleAVendre(String pseudo, int noCategorie, String nom, String achatVente, int critere);
 
+    List<ArticleAVendre> cronGetAllArticles();
+
+    void cronUpdateArticleAVendre(ArticleAVendre articleAVendre);
+
     int createArticleAVendre(ArticleAVendre articleAVendre);
 
     void updateArticleAVendre(ArticleAVendre articleAVendre);

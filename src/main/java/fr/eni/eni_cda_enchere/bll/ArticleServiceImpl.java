@@ -13,11 +13,9 @@ import java.util.List;
 @Service
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleAVendreDAO articleAVendreDAO;
-    private final EnchereDAO enchereDAO;
 
-    public ArticleServiceImpl(ArticleAVendreDAO articleAVendreDAO, EnchereDAO enchereDAO) {
+    public ArticleServiceImpl(ArticleAVendreDAO articleAVendreDAO) {
         this.articleAVendreDAO = articleAVendreDAO;
-        this.enchereDAO = enchereDAO;
     }
 
     @Override
@@ -38,6 +36,16 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleAVendre> getFilteredArticleAVendre(String pseudo, int noCategorie, String nom, String achatVente, int critere) {
         return articleAVendreDAO.getFilteredArticleAVendre(pseudo, noCategorie, nom, achatVente, critere);
+    }
+
+    @Override
+    public List<ArticleAVendre> cronGetAllArticles() {
+        return articleAVendreDAO.cronGetAllArticles();
+    }
+
+    @Override
+    public void cronUpdateArticleAVendre(ArticleAVendre articleAVendre) {
+        articleAVendreDAO.cronUpdateArticleAVendre(articleAVendre);
     }
 
     @Override
