@@ -92,7 +92,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
 
 
     @Override
-    public List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nomArticle, String achatVente, int critere) {
+    public List<ArticleAVendre> getFilteredArticleAVendre(String pseudo, int noCategorie, String nomArticle, String achatVente, int critere) {
         String sql = "SELECT aav.no_article, aav.nom_article, aav.description, aav.photo, aav.date_debut_encheres, " +
                 "aav.date_fin_encheres, aav.statut_enchere, aav.prix_initial, aav.prix_vente, " +
                 "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit, " +
@@ -102,6 +102,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "LEFT JOIN utilisateurs AS u ON aav.id_utilisateur = u.pseudo " +
                 "LEFT JOIN categories AS c ON aav.no_categorie = c.no_categorie " +
                 "LEFT JOIN adresses AS a ON aav.no_adresse_retrait = a.no_adresse " +
+                "LEFT JOIN encheres AS e ON aav.no_article = e.no_article " +
                 "WHERE 1=1";
         MapSqlParameterSource params = new MapSqlParameterSource();
         if(noCategorie != 0){
@@ -111,6 +112,45 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
         if(nomArticle != null){
             sql += " and aav.nom_article like concat('%', :nomArticle, '%')";
             params.addValue("nomArticle", nomArticle);
+        }
+        if(achatVente.equals("achat")){
+            // CRITERES ACHAT
+            switch (critere) {
+                // 1 = "Enchères ouvertes"
+                case 1:
+                    sql += " and aav.statut_enchere = 1";
+                    break;
+                // 2 = "Mes enchères en cours"
+                case 2:
+                    sql += " and aav.statut_enchere = 1 and e.id_utilisateur = :pseudo";
+                    params.addValue("pseudo", pseudo);
+                    break;
+                // 3 = Mes enchères remportes
+                case 3:
+                    sql += " and aav.statut_enchere in (2, 3) and e.id_utilisateur = :pseudo";
+                    params.addValue("pseudo", pseudo);
+                    break;
+            }
+        } else if (achatVente.equals("vente")) {
+            sql += " and aav.id_utilisateur = :pseudo";
+            params.addValue("pseudo", pseudo);
+            // CRITERES VENTE
+            switch (critere) {
+                // 1 = "Mes ventes en cours"
+                case 1:
+                    sql += " and aav.statut_enchere = 1";
+                    break;
+                // 2 = "Mes ventes non débutées"
+                case 2:
+                    sql += " and aav.statut_enchere = 0";
+                    break;
+                // 3 = "Mes ventes terminées"
+                case 3:
+                    sql += " and aav.statut_enchere = 2";
+                    break;
+            }
+
+
         }
         return namedParameterJdbcTemplate.query(sql, params, new ArticleAVendreRowMapper());
     }

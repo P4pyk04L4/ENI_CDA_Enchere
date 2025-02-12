@@ -14,7 +14,7 @@ public interface ArticleAVendreDAO {
 
     List<ArticleAVendre> getAllUnactiveArticle();
 
-    List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nom, String achatVente, int critere);
+    List<ArticleAVendre> getFilteredArticleAVendre(String pseudo, int noCategorie, String nom, String achatVente, int critere);
 
     int createArticleAVendre(ArticleAVendre articleAVendre);
 

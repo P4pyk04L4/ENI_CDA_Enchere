@@ -2,11 +2,15 @@ package fr.eni.eni_cda_enchere.controller;
 
 import fr.eni.eni_cda_enchere.bll.ArticleService;
 import fr.eni.eni_cda_enchere.bll.EnchereService;
+import fr.eni.eni_cda_enchere.bll.UtilisateurService;
 import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
+import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import fr.eni.eni_cda_enchere.bo.custom.ArticleFilteredResponse;
 import fr.eni.eni_cda_enchere.bo.custom.ArticleRequest;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,30 +25,37 @@ public class FilterController {
 
     private final ArticleService articleService;
     private final EnchereService enchereService;
+    private final UtilisateurService utilisateurService;
 
-    public FilterController(ArticleService articleService, EnchereService enchereService) {
+    public FilterController(ArticleService articleService, EnchereService enchereService, UtilisateurService utilisateurService) {
         this.articleService = articleService;
         this.enchereService = enchereService;
+        this.utilisateurService = utilisateurService;
     }
 
     @PostMapping("/articles")
     public List<ArticleFilteredResponse> filterArticles(
-            @RequestBody ArticleRequest request
+            @RequestBody ArticleRequest request,
+            @AuthenticationPrincipal
+            UserDetails userDetails
             ) {
         // VERIFICATION AUTHENTIFICATION
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean estAuthentifie = auth != null && auth.isAuthenticated() && !(auth.getPrincipal() instanceof String && auth.getPrincipal().equals("anonymousUser"));
 
-        String achatVente = null;
+
+        String achatVente = "achat";
+        String pseudo = null;
         // VERIFICATION UTILISATEUR CONNECTE ET CRITERES
-        if (estAuthentifie && !request.isEstAchat() && request.isEstVente()) {
-            achatVente = "vente";
-        } else {
-            achatVente = "achat";
+        if (estAuthentifie){
+            pseudo = userDetails.getUsername();
+            if(!request.isEstAchat() && request.isEstVente()) {
+                achatVente = "vente";
+            }
         }
 
         // ENVOI DE LA RECHERCHE
-        List<ArticleAVendre> articlesFiltres = articleService.getFilteredArticleAVendre(request.getNoCategorie(), request.getSearchText(), achatVente, request.getCritere());
+        List<ArticleAVendre> articlesFiltres = articleService.getFilteredArticleAVendre(pseudo, request.getNoCategorie(), request.getSearchText(), achatVente, request.getCritere());
         List<ArticleFilteredResponse> articleARetourner = new ArrayList<>();
 
         for (ArticleAVendre a : articlesFiltres) {

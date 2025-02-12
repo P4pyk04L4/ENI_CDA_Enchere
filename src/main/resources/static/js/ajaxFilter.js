@@ -54,7 +54,7 @@ $(document).ready(function() {
             success: function(response) {
                 console.log("Réponse : " + JSON.stringify(response, null, 2));
                 $("#articles-cards").html("");
-                response.forEach(function(item, index){
+                response.forEach(function(item){
                     createTile(item.nom_article, item.prix_initial, item.meilleure_offre, item.date_fin_encheres, item.pseudo, item.no_article, item.chemin_vendeur);
                 })
             },

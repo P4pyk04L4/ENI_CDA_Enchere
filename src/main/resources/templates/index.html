@@ -2,7 +2,7 @@
 <html lang="fr" xmlns:th="http://www.thymeleaf.org"
       data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
                                                 , titrePage=~{:: title}
-                                                , ressources=~{:: ##ressources}
+                                                , ressources=~{:: #ressources}
                                                 , scripts=~{:: #scripts})}">
 <head>
     <!-- Accueil comme titre de page -->
@@ -88,7 +88,6 @@
 
     </main>
     <div id="scripts">
-
         <script th:src="@{/js/ajaxFilter.js}"></script>
     </div>
 
