@@ -2,7 +2,9 @@ package fr.eni.eni_cda_enchere.controller;
 
 import fr.eni.eni_cda_enchere.bll.*;
 import fr.eni.eni_cda_enchere.bo.*;
+import fr.eni.eni_cda_enchere.bo.custom.HandleSellRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -12,9 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 
 @Controller
@@ -112,6 +112,28 @@ public class ArticleController {
             }
         }
     }
+
+    @PostMapping("/bid/handle-sell")
+    public ResponseEntity<Map<String, String>> handleSell(
+            @RequestBody HandleSellRequest hsr
+    ) {
+        Utilisateur acquereur = utilisateurService.findByPseudo(hsr.getAcquereur()).get();
+        Utilisateur vendeur = utilisateurService.findByPseudo(hsr.getVendeur()).get();
+        ArticleAVendre article = articleService.getArticleAVendre(hsr.getNo_article());
+        int prix = hsr.getPrix();
+
+        acquereur.setCredit((acquereur.getCredit()) - prix);
+        utilisateurService.updateUser(acquereur);
+        vendeur.setCredit((vendeur.getCredit()) + prix);
+        utilisateurService.updateUser(vendeur);
+        article.setStatut_enchere(3);
+        articleService.updateArticleAVendre(article);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message" , "success");
+        return ResponseEntity.ok(response);
+    }
+
 
     @GetMapping("/creer")
     public String creerArticle(

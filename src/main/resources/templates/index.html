@@ -7,7 +7,7 @@
 <head>
     <!-- Accueil comme titre de page -->
     <title data-th-text="#{index.title}"></title>
-    <th:block id="#ressources">
+    <th:block id="ressources">
         <meta name="_csrf" th:content="${_csrf.token}"/>
         <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -54,11 +54,14 @@
                             <h5 class="card-title" data-th-text="${item.nom_article}"></h5>
                         </div>
                         <div class="col-2">
-                            <th:block data-th-if="${item.prix_vente == 0}">
+                            <th:block data-th-if="${item.statut_enchere == 1}">
                                 <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"></a>
                             </th:block>
-                            <th:block data-th-if="${item.prix_vente != 0}">
+                            <th:block data-th-if="${item.statut_enchere == 2}">
                                 <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30"></a>
+                            </th:block>
+                            <th:block data-th-if="${item.statut_enchere == 3}">
+                                <img data-th-src="@{/images/delivered.png}" alt="" height="30" width="30">
                             </th:block>
                         </div>
                     </div>

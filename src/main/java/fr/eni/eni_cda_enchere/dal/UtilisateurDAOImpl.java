@@ -138,6 +138,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
             utilisateur.setNom(rs.getString("nom"));
             utilisateur.setPrenom(rs.getString("prenom"));
             utilisateur.setEmail(rs.getString("email"));
+            utilisateur.setCredit(rs.getInt("credit"));
             utilisateur.setTelephone(rs.getString("telephone"));
             utilisateur.setMotDePasse(rs.getString("mot_de_passe"));
             utilisateur.setAdmin(rs.getBoolean("administrateur"));

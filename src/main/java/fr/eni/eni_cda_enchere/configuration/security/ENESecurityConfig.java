@@ -43,6 +43,7 @@ public class ENESecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> {
+            auth.requestMatchers("/articles/bid/handle-sell").permitAll(); // Autoriser l'endpoint
             auth.requestMatchers("/css/**", "/images/**", "/js/**").permitAll();
             auth.requestMatchers("/**").permitAll();
             auth.anyRequest().authenticated();
