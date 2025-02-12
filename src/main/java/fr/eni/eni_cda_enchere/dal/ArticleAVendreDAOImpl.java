@@ -194,7 +194,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 "id_utilisateur = :id_utilisateur, " +
                 "no_categorie = :no_categorie, " +
                 "no_adresse_retrait = :no_adresse_retrait " +
-                "WHERE id_utilisateur = :id_utilisateur";
+                "WHERE no_article = :no_article";
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("nom_article", articleAVendre.getNom_article());
         params.addValue("description", articleAVendre.getDescription());
@@ -206,6 +206,7 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
         params.addValue("id_utilisateur", articleAVendre.getVendeur().getPseudo());
         params.addValue("no_categorie", articleAVendre.getCategorie().getNo_categorie());
         params.addValue("no_adresse_retrait", articleAVendre.getRetrait().getNo_adresse());
+        params.addValue("no_article", articleAVendre.getNo_article());
         namedParameterJdbcTemplate.update(sql, params);
     }
 

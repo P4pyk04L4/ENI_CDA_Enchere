@@ -52,13 +52,13 @@ public class ArticleController {
             return "redirect:/";
         } else {
             String connected_username = utilisateurService.getConnectedUsername();
+            Utilisateur user = utilisateurService.findByPseudo(connected_username).get();
             int meilleur_prix = enchereService.getMeilleurPrix(noArticle);
             String meilleur_enchereur = enchereService.getMeilleurEnchereur(noArticle);
 
             a.setMeilleure_offre(meilleur_prix);
             model.addAttribute("article", a);
-            System.out.println(a);
-            System.out.println(a.getVendeur());
+            model.addAttribute("credit", user.getCredit());
 
             if(!Objects.equals(a.getVendeur().getPseudo(), connected_username)){
                 model.addAttribute("acquereur", true);
@@ -93,11 +93,11 @@ public class ArticleController {
     ){
         String connected_username = utilisateurService.getConnectedUsername();
         Optional<Utilisateur> connected_user = utilisateurService.findByPseudo(connected_username);
+        ArticleAVendre a = articleService.getArticleAVendre(noArticle);
 
         if(bindingResult.hasErrors()) {
             return "article/view-detail-enchere";
         } else {
-            ArticleAVendre a = articleService.getArticleAVendre(noArticle);
             if(a == null) {
                 return "article/view-detail-enchere";
             } else {
@@ -106,9 +106,15 @@ public class ArticleController {
                 enchere.setAcquereur(connected_user);
                 enchere.setDate(now);
                 System.out.println("Enchère créée : " + enchere);
-                enchereService.createEnchere(enchere);
 
-                return "redirect:/articles/detail_enchere/" + noArticle;
+                if(connected_user.get().getCredit() >= enchere.getMontant()){
+                    connected_user.get().setCredit(connected_user.get().getCredit() - enchere.getMontant());
+                    utilisateurService.updateUser(connected_user.get());
+                    enchereService.createEnchere(enchere);
+                    return "redirect:/articles/detail_enchere/" + noArticle;
+                } else {
+                    return "redirect:/articles/detail_enchere/" + noArticle + "?echecEnchere=true";
+                }
             }
         }
     }
@@ -127,6 +133,7 @@ public class ArticleController {
         vendeur.setCredit((vendeur.getCredit()) + prix);
         utilisateurService.updateUser(vendeur);
         article.setStatut_enchere(3);
+        article.setPrix_vente(prix);
         articleService.updateArticleAVendre(article);
 
         Map<String, String> response = new HashMap<>();
@@ -204,16 +211,22 @@ public class ArticleController {
     ) {
         ArticleAVendre articleAVendre = articleService.getArticleAVendre(idArticle);
 
-        List<Adresse> adressesList = adresseService.getEniAdresses();
-        adressesList.add(0, articleAVendre.getRetrait());
+        if(articleAVendre.getStatut_enchere() != 0){
+            return "redirect:/utilisateurs/myProfile?echecModifVente=true";
+        } else {
+            List<Adresse> adressesList = adresseService.getEniAdresses();
+            adressesList.add(0, articleAVendre.getRetrait());
 
-        List<Categorie> categorieList = categorieService.findAllCategories();
+            List<Categorie> categorieList = categorieService.findAllCategories();
 
-        model.addAttribute("article", articleAVendre);
-        model.addAttribute("adressesList", adressesList);
-        model.addAttribute("categorieList", categorieList);
+            model.addAttribute("article", articleAVendre);
+            model.addAttribute("adressesList", adressesList);
+            model.addAttribute("categorieList", categorieList);
 
-        return "article/view-article-creation";
+            return "article/view-article-creation";
+        }
+
+
     }
 
     @PostMapping({"/modifier/", "/modifier/{idArticle}"})

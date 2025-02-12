@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr" xmlns:th="http://www.thymeleaf.org" data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      data-th-replace="~{layout/layout :: layout(contenuPage=~{:: .container}
                                                                         , titrePage=~{:: title}
-                                                                        , ressources=~{:: #ressources},
-scripts=~{})}">
+                                                                        , ressources=~{:: #ressources}
+                                                                        , scripts=~{:: script})}">
 <head>
     <title th:text="${#authentication.name}"></title>
     <th:block id="ressources">
@@ -18,7 +19,9 @@ scripts=~{})}">
 
         <div th:replace="~{profil/fragments/fragment-view-ventes :: frag-view-ventes}"></div>
 
+        <div id="alert"></div>
     </div>
 </main>
+<script th:src="@{/js/fadeout.js}"></script>
 </body>
 </html>
