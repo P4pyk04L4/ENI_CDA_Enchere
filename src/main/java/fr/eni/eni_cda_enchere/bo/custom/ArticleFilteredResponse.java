@@ -11,6 +11,7 @@ public class ArticleFilteredResponse {
     String pseudo;
     long no_categorie;
     String chemin_vendeur;
+    int statut_enchere;
 
     public ArticleFilteredResponse(int no_article ,String nom_article,
                                    int prix_initial,
@@ -18,6 +19,7 @@ public class ArticleFilteredResponse {
                                    LocalDate date_fin_encheres,
                                    String pseudo,
                                    long no_categorie,
+                                   int statut_enchere,
                                    boolean estAuthentifie) {
         this.no_article = no_article;
         this.nom_article = nom_article;
@@ -26,6 +28,7 @@ public class ArticleFilteredResponse {
         this.date_fin_encheres = date_fin_encheres;
         this.pseudo = pseudo;
         this.no_categorie = no_categorie;
+        this.statut_enchere = statut_enchere;
         if(estAuthentifie){
             this.chemin_vendeur = estAuthentifie ? "/utilisateurs/public/profil/" + pseudo : null;
         }

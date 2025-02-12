@@ -149,10 +149,25 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                     sql += " and aav.statut_enchere in (2,3)";
                     break;
             }
-
-
         }
         return namedParameterJdbcTemplate.query(sql, params, new ArticleAVendreRowMapper());
+    }
+
+    @Override
+    public List<ArticleAVendre> cronGetAllArticles() {
+        String sql = "SELECT aav.no_article, aav.statut_enchere, aav.date_debut_encheres, aav.date_fin_encheres " +
+                "FROM articles_a_vendre AS aav " +
+                "WHERE aav.statut_enchere IN (0, 1)";
+        return namedParameterJdbcTemplate.query(sql, new CronArticleAVendreRowMapper());
+    }
+
+    @Override
+    public void cronUpdateArticleAVendre(ArticleAVendre articleAVendre) {
+        String sql = "UPDATE ARTICLES_A_VENDRE SET statut_enchere = :statut_enchere WHERE no_article = :no_article";
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        params.addValue("statut_enchere", articleAVendre.getStatut_enchere());
+        params.addValue("no_article", articleAVendre.getNo_article());
+        namedParameterJdbcTemplate.update(sql, params);
     }
 
     @Override
@@ -253,6 +268,19 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
             a.setNo_adresse(rs.getLong("no_adresse"));
             aav.setRetrait(a);
 
+            return aav;
+        }
+    }
+
+    static class CronArticleAVendreRowMapper implements RowMapper<ArticleAVendre> {
+
+        @Override
+        public ArticleAVendre mapRow(ResultSet rs, int rowNum) throws SQLException {
+            ArticleAVendre aav = new ArticleAVendre();
+            aav.setNo_article(rs.getInt("no_article"));
+            aav.setStatut_enchere(rs.getInt("statut_enchere"));
+            aav.setDate_debut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
+            aav.setDate_fin_encheres(rs.getDate("date_fin_encheres").toLocalDate());
             return aav;
         }
     }

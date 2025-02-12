@@ -55,7 +55,7 @@ $(document).ready(function() {
                 console.log("Réponse : " + JSON.stringify(response, null, 2));
                 $("#articles-cards").html("");
                 response.forEach(function(item){
-                    createTile(item.nom_article, item.prix_initial, item.meilleure_offre, item.date_fin_encheres, item.pseudo, item.no_article, item.chemin_vendeur);
+                    createTile(item.nom_article, item.prix_initial, item.meilleure_offre, item.date_fin_encheres, item.pseudo, item.no_article, item.statut_enchere, item.chemin_vendeur);
                 })
             },
             error: function(xhr, status, error) {
@@ -64,7 +64,7 @@ $(document).ready(function() {
         })
     })
 
-    function createTile(nomArticle, prixDepart, offreActuelle, dateFinEnchere, vendeur, articleId, cheminVendeur){
+    function createTile(nomArticle, prixDepart, offreActuelle, dateFinEnchere, vendeur, articleId, statutEnchere, cheminVendeur){
         const cardBlock = document.createElement('div');
         cardBlock.classList.add('col-lg-4', 'col-md-6', 'col-sm-12', 'p-3');
 
@@ -92,7 +92,20 @@ $(document).ready(function() {
         link.setAttribute('href', `/articles/detail_enchere/${articleId}`);
         const img = document.createElement('img');
         img.classList.add('image-path');
-        img.setAttribute('src', '/images/dollar-green-d83d6d7f8fb2946b655c9a8529449d45.png');
+        switch (statutEnchere){
+            case 0:
+                img.setAttribute('src', '/images/hourglass.png');
+                break
+            case 1:
+                img.setAttribute('src', '/images/dollar-green.png');
+                break;
+            case 2:
+                img.setAttribute('src', '/images/dollar-red.png');
+                break;
+            case 3:
+                img.setAttribute('src', '/images/delivered.png');
+                break;
+        }
         img.setAttribute('alt', '');
         img.setAttribute('height', '30');
         img.setAttribute('width', '30');
