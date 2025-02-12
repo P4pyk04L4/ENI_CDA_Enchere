@@ -12,7 +12,7 @@ public interface ArticleService {
 
     List<ArticleAVendre> getAllActiveArticleAVendre();
 
-    List<ArticleAVendre> getFilteredArticleAVendre(int noCategorie, String nom, String achatVente, int critere);
+    List<ArticleAVendre> getFilteredArticleAVendre(String pseudo, int noCategorie, String nom, String achatVente, int critere);
 
     int createArticleAVendre(ArticleAVendre articleAVendre);
 

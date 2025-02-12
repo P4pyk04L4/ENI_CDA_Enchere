@@ -101,7 +101,7 @@ public class UtilisateurController {
         // VOIR POUR AFFICHER LES VENTES DE L'UTILISATEUR CONNECTE !!!
 
         if(utilisateur.isPresent()) {
-            List<ArticleAVendre> articlesEnVente = articleService.getFilteredArticleAVendre(0, null, "vente", 1);
+            List<ArticleAVendre> articlesEnVente = articleService.getFilteredArticleAVendre(userDetails.getUsername() ,0, null, "vente", 1);
             model.addAttribute("articlesEnVente", articlesEnVente);
         }
 
