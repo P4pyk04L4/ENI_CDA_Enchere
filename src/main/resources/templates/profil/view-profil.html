@@ -15,9 +15,11 @@
     <div class="profilBox">
         <h1 class="text-center mb-4" th:text="${#authentication.name}"></h1>
 
-        <div th:replace="~{profil/fragments/fragment-view-profil :: frag-view-profil}"></div>
+        <h2 data-th-text="#{my.info}"></h2>
+        <div th:replace="~{fragments/forms/fragment-full-profil-form :: frag-form-profil(true)}"></div>
 
-        <div th:replace="~{profil/fragments/fragment-view-ventes :: frag-view-ventes}"></div>
+        <h2 data-th-text="#{frag.my.sell.title}"></h2>
+        <div th:replace="~{fragments/profil/fragment-view-ventes :: frag-view-ventes}"></div>
 
         <div id="alert"></div>
     </div>

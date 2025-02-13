@@ -88,7 +88,9 @@ scripts=~{})}">
         </div>
         <input type="hidden" th:field="*{no_article}"/>
         <div class="d-flex justify-content-end">
-            <button type="reset" class="btn btn-outline-secondary me-2" data-th-text="#{filter.reset_button}">Annuler</button>
+            <button type="reset" class="btn btn-outline-secondary me-2"
+                    data-th-text="#{filter.reset_button}" onclick="window.history.back()">Annuler
+            </button>
             <button type="submit" class="btn btn-primary" data-th-text="#{save_button}"></button>
         </div>
     </form>

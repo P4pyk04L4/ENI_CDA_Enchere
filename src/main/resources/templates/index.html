@@ -7,7 +7,7 @@
 <head>
     <!-- Accueil comme titre de page -->
     <title data-th-text="#{index.title}"></title>
-    <th:block id="ressources">
+    <th:block th:id="ressources">
         <meta name="_csrf" th:content="${_csrf.token}"/>
         <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -34,13 +34,13 @@
                 </div>
                 <div class="d-flex justify-content-evenly m-3">
                     <div>
-                        <img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30" class="me-2"><span data-th-text="#{index.legend.ongoing}"></span>
+                        <img th:src="@{/images/dollar-green.png}" alt="" height="30" width="30" class="me-2"><span data-th-text="#{index.legend.ongoing}"></span>
                     </div>
                     <div>
-                        <img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30" class="me-2"><span data-th-text="#{index.legend.finishd}"></span>
+                        <img th:src="@{/images/dollar-red.png}" alt="" height="30" width="30" class="me-2"><span data-th-text="#{index.legend.finishd}"></span>
                     </div>
                     <div>
-                        <img data-th-src="@{/images/hourglass.png}" alt="" height="30" width="30" class="me-2"><span data-th-text="#{index.legend.comingsoon}"></span>
+                        <img th:src="@{/images/hourglass.png}" alt="" height="30" width="30" class="me-2"><span data-th-text="#{index.legend.comingsoon}"></span>
                     </div>
                 </div>
             </div>
@@ -48,46 +48,55 @@
 
         <div class="row my-3" id="articles-cards">
             <!--ajouté "data-th-attr" pour js-->
-        <div data-th-each="item : ${articleAVendreList}" class="col-lg-4 col-md-6 col-sm-12 p-3" >
-            <div class="card customZoom" data-th-attr="data-category=${item.categorie}">
+        <div th:each="item : ${articleAVendreList}" class="col-lg-4 col-md-6 col-sm-12 p-3" >
+            <div class="card customZoom" th:attr="data-category=${item.categorie}">
 
                 <div class="card-body">
                     <div class="row">
                         <div class="col-10">
-                            <h5 class="card-title" data-th-text="${item.nom_article}"></h5>
+                            <h5 class="card-title" th:text="${item.nom_article}"></h5>
                         </div>
                         <div class="col-2">
-                            <th:block data-th-if="${item.statut_enchere == 0}">
-                                <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}">
-                                    <img data-th-src="@{/images/hourglass.png}" alt="" height="30" width="30">
+                            <th:block th:if="${item.statut_enchere == 0}">
+                                <a th:href="@{/articles/detail_enchere/{id}(id=${item.no_article})}">
+                                    <img th:src="@{/images/hourglass.png}" alt="" height="30" width="30">
                                 </a>
                             </th:block>
-                            <th:block data-th-if="${item.statut_enchere == 1}">
-                                <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"></a>
+                            <th:block th:if="${item.statut_enchere == 1}">
+                                <a th:href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"></a>
                             </th:block>
-                            <th:block data-th-if="${item.statut_enchere == 2}">
-                                <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30"></a>
+                            <th:block th:if="${item.statut_enchere == 2}">
+                                <a th:href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30"></a>
                             </th:block>
-                            <th:block data-th-if="${item.statut_enchere == 3}">
-                                <img data-th-src="@{/images/delivered.png}" alt="" height="30" width="30">
+                            <th:block th:if="${item.statut_enchere == 3}">
+                                <img th:src="@{/images/delivered.png}" alt="" height="30" width="30">
                             </th:block>
                         </div>
                     </div>
                     <div class="card-text">
-                        <span>Prix de départ : <span id="first-price" data-th-text="${item.prix_initial}"></span >€</span><br>
-                        <th:block data-th-if="${item.meilleure_offre == 0}">
-                            <span class="actual-offer">Offre actuelle : Pas d'offres pour l'instant.</span><br>
+                        <span th:text="#{auction.price}"></span>
+                        <span id="first-price" th:text="${item.prix_initial}"></span>
+                        <span th:text="#{auction.currency}"></span>
+                        <br>
+                        <span class="actual-offer" th:text="#{auction.actual.offer}"></span>
+                        <th:block th:if="${item.meilleure_offre == 0}">
+                            <span th:text="#{auction.nooffer}"></span>
+                            <br>
                         </th:block>
-                        <th:block data-th-if="${item.meilleure_offre != 0}">
-                            <span class="actual-offer">Offre actuelle : <span data-th-text="${item.meilleure_offre}"></span>€</span><br>
+                        <th:block th:if="${item.meilleure_offre != 0}">
+                            <span th:text="${item.meilleure_offre}"></span>
+                            <span th:text="#{auction.currency}"></span>
+                            <br>
                         </th:block>
-                        <span> Fin de l'enchère : <span class="final-date" data-th-text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span></span><br>
-                        <span>Vendeur :
+                        <span th:text="#{auction.endDate}"></span>
+                        <span class="final-date" th:text="${#temporals.format(item.date_fin_encheres, 'dd/MM/yyyy')}"></span>
+                        <br>
+                        <span th:text="#{auction.seller}"></span>
                         <a class="seller-name" th:href="@{/utilisateurs/public/profil/{pseudo}(pseudo=${item.vendeur.Pseudo})}"
                            th:if="${#authorization.expression('isAuthenticated()')}"
                            th:text="${item.vendeur.pseudo}"></a>
                         <span class="seller-name" th:if="${!#authorization.expression('isAuthenticated()')}"
-                              th:text="${item.vendeur.pseudo}"></span></span>
+                              th:text="${item.vendeur.pseudo}"></span>
 
                     </div>
                 </div>

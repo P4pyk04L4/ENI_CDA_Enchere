@@ -116,7 +116,7 @@ public class UtilisateurController {
             UserDetails userDetails)
     {
         Optional<Utilisateur> utilisateur = utilisateurService.findByPseudo(userDetails.getUsername());
-        model.addAttribute("utilisateurAModifier", utilisateur.orElse(null));
+        model.addAttribute("utilisateur", utilisateur.orElse(null));
 
         return "profil/view-editProfil";
     }
@@ -124,8 +124,8 @@ public class UtilisateurController {
     @PostMapping("/edit/myProfile")
     public String updateMyProfile(
             @Valid
-            @ModelAttribute("utilisateurAModifier")
-            Utilisateur utilisateurAModifier,
+            @ModelAttribute("utilisateur")
+            Utilisateur utilisateur,
             BindingResult bindingResult,
             @AuthenticationPrincipal
             UserDetails userDetails)
@@ -133,7 +133,7 @@ public class UtilisateurController {
         if (bindingResult.hasErrors()) {
             return "profil/view-editProfil";
         }
-        utilisateurService.updateByUser(utilisateurAModifier);
+        utilisateurService.updateByUser(utilisateur);
         return "redirect:/utilisateurs/profilpseudo?pseudo=" + userDetails.getUsername();
     }
 
