@@ -86,6 +86,25 @@ public class EnchereDAOImpl implements EnchereDAO {
     }
 
     @Override
+    public Enchere getLastEnchereFromUserAndArticle(String id_utilisateur, int no_article){
+        String sql = "SELECT TOP 1 e.id_utilisateur, e.no_article, e.montant_enchere, e.date_enchere, " +
+                "a.nom_article, a.description, a.photo, a.date_debut_encheres, a.date_fin_encheres, a.statut_enchere, " +
+                "a.prix_initial, a.prix_vente, " +
+                "u.pseudo, u.nom, u.prenom, u.email, u.telephone, u.credit " +
+                "FROM encheres AS e " +
+                "LEFT JOIN articles_a_vendre AS a ON e.no_article = a.no_article " +
+                "LEFT JOIN utilisateurs AS u ON e.id_utilisateur = u.pseudo " +
+                "WHERE e.id_utilisateur = 'coach_titi' " +
+                "AND e.no_article = 3 " +
+                "ORDER BY e.date_enchere DESC";
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("id_utilisateur", id_utilisateur);
+        namedParameters.addValue("no_article", no_article);
+        Enchere e = jdbc.queryForObject(sql, namedParameters, new EnchereRowMapper());
+        return e;
+    }
+
+    @Override
     public void create(Enchere enchere) {
         String sql = "INSERT INTO Encheres(id_utilisateur, no_article, montant_enchere, date_enchere) " +
                 "VALUES (:id_utilisateur, :no_article, :montant, :date_enchere)";
@@ -134,6 +153,7 @@ public class EnchereDAOImpl implements EnchereDAO {
 
             ArticleAVendre a = new ArticleAVendre();
             a.setNo_article(rs.getInt("no_article"));
+            a.setNom_article(rs.getString("nom_article"));
             a.setDescription(rs.getString("description"));
             a.setPhoto(rs.getString("photo"));
             a.setDate_debut_encheres(rs.getDate("date_debut_encheres").toLocalDate());
@@ -151,6 +171,17 @@ public class EnchereDAOImpl implements EnchereDAO {
             u.setTelephone(rs.getString("telephone"));
             u.setCredit(rs.getInt("credit"));
             e.setAcquereur(Optional.of(u));
+
+            return e;
+        }
+    }
+
+    static class EnchereDeConRowMapper implements RowMapper<Enchere> {
+
+        @Override
+        public Enchere mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Enchere e = new Enchere();
+            e.setMontant(rs.getInt("montant_enchere"));
 
             return e;
         }

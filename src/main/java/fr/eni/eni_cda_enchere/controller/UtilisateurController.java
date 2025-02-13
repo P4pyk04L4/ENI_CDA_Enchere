@@ -241,6 +241,7 @@ public class UtilisateurController {
                 try{
                     user.setAdresse(address);
                     user.setMotDePasse(passwordEncoder.encode(user.getMotDePasse()));
+                    user.setCredit(10);
                     utilisateurService.createUser(user);
                     System.out.println(user);
                 } catch (BusinessException e){
