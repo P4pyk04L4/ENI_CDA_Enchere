@@ -19,10 +19,7 @@ public class ArticleAVendre implements Serializable {
     private String nom_article;
 
     @NotBlank(message = "{validation.article.descr.blank}")
-    @Size(min = 5, max = 300
-            , message = "{validation.article.descr.longueur}"
-            //, message = "Vous devez entrer une description comportant plus de 5 caractères et ne devant pas excéder 300 caractères."
-    )
+    @Size(min = 5, max = 300, message = "{validation.article.descr.longueur}")
     private String description;
 
     private String photo;
