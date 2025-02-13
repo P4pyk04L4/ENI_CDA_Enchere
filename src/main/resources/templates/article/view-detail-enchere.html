@@ -23,7 +23,7 @@
             <h5 class="text-center mb-3 alert alert-success" data-th-text="${'L''enchère a été remportée par : ' + meilleur_enchereur}"></h5>
         </th:block>
 
-        <form action="" method="post" class="mb-3">
+
             <div class="cards" th:if="${param.error}" th:text="Errors"></div>
 
             <div class="row mb-3">
@@ -91,7 +91,7 @@
                     </th:block>
                 </div>
             </div>
-        </form>
+
 
 
             <div class="d-flex justify-content-center">
@@ -100,6 +100,13 @@
                     <hr>
                         <h3 class="mb-3 d-flex justify-content-center" data-th-text="#{detail.status}"></h3>
                         <form data-th-action="@{/articles/bid/{id}(id=${article.no_article})}" method="post" class="mb-3" data-th-object="${enchere}">
+                            <div th:if="${errors}" class="alert alert-danger">
+                                <p><strong>Une erreur est survenue :</strong></p>
+                                <ul>
+                                    <li th:each="error : ${errors}" th:text="${error}"></li>
+                                </ul>
+                            </div>
+
                             <div class="row d-flex justify-content-center mb-3">
                                 <div class="col-2 d-flex justify-content-center align-item-center">
                                     <label for="enchere" class="form-label" data-th-text="#{detail.my.auction}"></label><span> :</span>
@@ -196,57 +203,8 @@
 </main>
 <div id="scripts">
     <script th:src="@{/js/fadeout.js}"></script>
+    <script th:src="@{/js/ajaxHandleSell.js}"></script>
 </div>
 </body>
 </html>
 
-<script>
-
-    document.addEventListener('DOMContentLoaded', () => {
-        let handleSell = document.getElementById("handleSell");
-        handleSell.addEventListener('click', () => {
-            handleSellFunction();
-            console.log('click');
-        })
-    })
-
-
-    function handleSellFunction() {
-        let handleSell = document.getElementById("handleSell");
-        let acquereur = document.getElementById("nomAcquereur").value;
-        let prix = document.getElementById("prixItem").value;
-        let vendeur = document.getElementById("nomVendeur").value;
-        let no_article = document.getElementById("noItem").value;
-        let bodyModal = document.getElementById('bodyModal');
-        let csrfToken = document.querySelector("meta[name='_csrf']").getAttribute("content");
-        let csrfHeader = document.querySelector("meta[name='_csrf_header']").getAttribute("content");
-        let confirmRetrait = document.getElementById('retraitConfirm');
-
-        fetch('http://localhost:8080/articles/bid/handle-sell' , {
-            method: "POST",
-            headers: {
-                'Content-Type' : 'application/json',
-                [csrfHeader] : csrfToken
-            },
-            body: JSON.stringify({
-                acquereur: acquereur,
-                vendeur: vendeur,
-                prix: prix,
-                no_article: no_article,
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                handleSell.style.display = 'none';
-                bodyModal.innerHTML = "";
-                bodyModal.innerHTML = `
-                    <div class="alert alert-success"> Transaction effectuée ! Merci d'utiliser notre site. </div>
-                `
-                confirmRetrait.disabled = true;
-                confirmRetrait.innerText = "Retrait confirmé"
-            })
-            .catch(err => {
-                console.log('Erreur Ajax : ' + err);
-            })
-    }
-</script>
