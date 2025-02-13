@@ -3,6 +3,7 @@ package fr.eni.eni_cda_enchere.controller;
 import fr.eni.eni_cda_enchere.bll.*;
 import fr.eni.eni_cda_enchere.bo.*;
 import fr.eni.eni_cda_enchere.bo.custom.HandleSellRequest;
+import fr.eni.eni_cda_enchere.exceptions.BusinessException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -174,6 +176,7 @@ public class ArticleController {
             Model model) {
 
         if (bindingResult.hasErrors()) {
+
             System.out.println("Erreur = " + bindingResult.getAllErrors());
             Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
 
@@ -189,21 +192,42 @@ public class ArticleController {
             model.addAttribute("categorieList", categorieList);
             model.addAttribute("adressesList", adressesList);
             return "article/view-article-creation";
+
+        } else {
+
+            if(article.getDate_debut_encheres().isEqual(LocalDate.now())){
+                article.setStatut_enchere(1);
+            }
+
+            // Récupère l'utilisateur connecté
+            Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
+            article.setVendeur(utilisateur);
+
+            // Crée l'article dans la base de données
+            try {
+                int no_Article = articleService.createArticleAVendre(article);
+                return "redirect:/articles/detail_enchere/" + no_Article;
+            } catch (BusinessException be) {
+                be.getClefsExternalisations().forEach(key -> {
+                    ObjectError error = new ObjectError("globalError", key);
+                    bindingResult.addError(error);
+                });
+                System.out.println("Erreur = " + bindingResult.getAllErrors());
+                article.setRetrait(utilisateur.getAdresse());
+                article.setVendeur(utilisateur);
+
+                List<Categorie> categorieList = categorieService.findAllCategories();
+
+                List<Adresse> adressesList = adresseService.getEniAdresses();
+                adressesList.add(0, utilisateur.getAdresse());
+
+                model.addAttribute("article", article);
+                model.addAttribute("categorieList", categorieList);
+                model.addAttribute("adressesList", adressesList);
+                return "article/view-article-creation";
+            }
         }
 
-
-        if(article.getDate_debut_encheres().isEqual(LocalDate.now())){
-            article.setStatut_enchere(1);
-        }
-
-        // Récupère l'utilisateur connecté
-        Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
-        article.setVendeur(utilisateur);
-
-        // Crée l'article dans la base de données
-        int no_Article = articleService.createArticleAVendre(article);
-
-        return "redirect:/articles/detail_enchere/" + no_Article;
     }
 
     @GetMapping({"/modifier/", "/modifier/{idArticle}"})

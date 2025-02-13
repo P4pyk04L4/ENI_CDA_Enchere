@@ -100,8 +100,6 @@ public class UtilisateurController {
     ) {
         Optional<Utilisateur> utilisateur = utilisateurService.findByPseudo(userDetails.getUsername());
 
-        // VOIR POUR AFFICHER LES VENTES DE L'UTILISATEUR CONNECTE !!!
-
         if(utilisateur.isPresent()) {
             List<ArticleAVendre> articlesEnVente = articleService.getFilteredArticleAVendre(userDetails.getUsername() ,0, null, "vente", 0);
             model.addAttribute("articlesEnVente", articlesEnVente);
