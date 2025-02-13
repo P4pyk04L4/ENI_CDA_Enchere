@@ -9,6 +9,7 @@ import fr.eni.eni_cda_enchere.bo.Utilisateur;
 import fr.eni.eni_cda_enchere.exceptions.BusinessException;
 import fr.eni.eni_cda_enchere.form.UserPasswordForm;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -98,10 +100,8 @@ public class UtilisateurController {
     ) {
         Optional<Utilisateur> utilisateur = utilisateurService.findByPseudo(userDetails.getUsername());
 
-        // VOIR POUR AFFICHER LES VENTES DE L'UTILISATEUR CONNECTE !!!
-
         if(utilisateur.isPresent()) {
-            List<ArticleAVendre> articlesEnVente = articleService.getFilteredArticleAVendre(userDetails.getUsername() ,0, null, "vente", 1);
+            List<ArticleAVendre> articlesEnVente = articleService.getFilteredArticleAVendre(userDetails.getUsername() ,0, null, "vente", 0);
             model.addAttribute("articlesEnVente", articlesEnVente);
         }
 

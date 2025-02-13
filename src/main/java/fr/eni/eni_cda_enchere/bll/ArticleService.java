@@ -25,6 +25,4 @@ public interface ArticleService {
     void deleteArticleAVendre(int id);
 
     List<ArticleAVendre> getAllUnactiveArticles();
-
-    void updateEnchereClosedStatus(ArticleAVendre a);
 }

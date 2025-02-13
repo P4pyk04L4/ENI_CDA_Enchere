@@ -14,27 +14,30 @@ public class ArticleAVendre implements Serializable {
 
     private int no_article;
 
-    @NotBlank(message = "Veuillez entrer un nom d'article.")
-    @Size(min = 5, max = 30, message = "Le nom doit être compris entre 5 et 30 caractères.")
+    @NotBlank(message = "{validation.article.nom.blank}")
+    @Size(min = 5, max = 30, message = "{validation.article.nom.longueur}")
     private String nom_article;
 
-    @NotBlank(message = "Veuillez entrer une description pour votre vente.")
-    @Size(min = 5, max = 300, message = "Vous devez entrer une description comportant plus de 5 caractères et ne devant pas excéder 300 caractères.")
+    @NotBlank(message = "{validation.article.descr.blank}")
+    @Size(min = 5, max = 300
+            , message = "{validation.article.descr.longueur}"
+            //, message = "Vous devez entrer une description comportant plus de 5 caractères et ne devant pas excéder 300 caractères."
+    )
     private String description;
 
     private String photo;
 
-    @NotNull(message = "Veuillez indiquer une date de début d'enchère.")
+    @NotNull(message = "{validation.article.date.debut}")
     @FutureOrPresent
     private LocalDate date_debut_encheres;
 
     @Future
-    @NotNull(message = "Veuillez indiquer une date de fin d'enchère.")
+    @NotNull(message = "{validation.article.date.fin}")
     private LocalDate date_fin_encheres;
 
     private int statut_enchere;
 
-    @NotNull(message = "Veuillez indiquer un prix de vente.")
+    @NotNull(message = "{validation.article.prix.vente}")
     private int prix_initial;
 
     private Integer prix_vente;

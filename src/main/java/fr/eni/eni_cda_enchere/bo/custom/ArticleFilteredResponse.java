@@ -97,4 +97,12 @@ public class ArticleFilteredResponse {
     public void setChemin_vendeur(String chemin_vendeur) {
         this.chemin_vendeur = chemin_vendeur;
     }
+
+    public int getStatut_enchere() {
+        return statut_enchere;
+    }
+
+    public void setStatut_enchere(int statut_enchere) {
+        this.statut_enchere = statut_enchere;
+    }
 }

@@ -3,9 +3,6 @@ package fr.eni.eni_cda_enchere.validations;
 import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 
 import java.time.LocalDate;
 
