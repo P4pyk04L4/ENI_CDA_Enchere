@@ -8,25 +8,36 @@ scripts=~{})}">
 <head>
     <meta charset="UTF-8">
     <title data-th-text="#{error.http.title}"></title>
-    <!-- Ajout de CSS demo-form.css -->
     <th:block id="ressources-css">
         <link rel="stylesheet" data-th-href="@{/css/error-http.css}">
     </th:block>
 </head>
 <body>
-<main>
-    <h1 class="cards" data-th-text="Erreur + ${status}"></h1>
-    <form>
-        <ul class="flex-outer cards">
-            <li data-th-switch="${status}">
-                <label data-th-case="403" data-th-text="#{error.http.label.403}"></label>
-                <label data-th-case="404" data-th-text="#{error.http.label.404}"></label>
-                <label data-th-case="500" data-th-text="#{error.http.label.500}"></label>
-                <label data-th-case="*" data-th-text="#{error.http.label.other}"></label>
-            </li>
-            <li><a data-th-href="@{/}" data-th-text="#{error.http.button}"></a></li>
-        </ul>
-    </form>
+<main class="container my-4 pt-4 d-flex justify-content-center">
+    <div class="boxError">
+        <h1 class="cards" data-th-text="'Erreur ' + ${status}"></h1>
+
+        <div class="cards">
+            <div data-th-switch="${status}">
+                <div data-th-case="403" data-th-text="#{error.http.label.403}"></div>
+                <div data-th-case="404" class="col d-flex flex-column justify-content-center align-items-center">
+                    <h2 class="text-center" th:text="#{error.http.label.404}"></h2>
+                    <div id="img-404-container">
+                        <img id="img-404" th:src="@{/images/dribbble_1.gif}" alt="Error 404" class="img-fluid">
+                    </div>
+                </div>
+                <div data-th-case="500" data-th-text="#{error.http.label.500}"></div>
+                <div data-th-case="*">
+                    <div class="col d-flex flex-column justify-content-center align-items-center">
+                        <strong class="text-center" th:text="#{error.http.label.other}"></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center m-3">
+                <a data-th-href="@{/}" data-th-text="#{error.http.button}" class="btn btn-primary"></a>
+            </div>
+        </div>
+    </div>
 </main>
 </body>
 </html>

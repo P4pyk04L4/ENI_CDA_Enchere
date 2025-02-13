@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -150,7 +151,7 @@ public class ArticleController {
             @Valid @ModelAttribute("article") ArticleAVendre article,
             BindingResult bindingResult,
             @AuthenticationPrincipal UserDetails userDetails,
-            Model model) {
+            Model model, Locale locale) {
 
         if (bindingResult.hasErrors()) {
             System.out.println("Erreur = " + bindingResult.getAllErrors());
@@ -184,7 +185,7 @@ public class ArticleController {
                 return "redirect:/articles/detail_enchere/" + no_Article;
             } catch (BusinessException be) {
                 be.getClefsExternalisations().forEach(key -> {
-                    ObjectError error = new ObjectError("globalError", key);
+                    ObjectError error = new ObjectError("globalError", ResourceBundle.getBundle("messages", locale).getString(key));
                     bindingResult.addError(error);
                 });
                 System.out.println("Erreur = " + bindingResult.getAllErrors());
