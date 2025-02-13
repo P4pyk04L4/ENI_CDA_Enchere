@@ -41,7 +41,7 @@ public class IndexController {
             Model model,
             @AuthenticationPrincipal UserDetails userDetails
             ){
-        List<ArticleAVendre> articleAVendreList = articleService.getAllArticleAVendre();
+        List<ArticleAVendre> articleAVendreList = articleService.getAllActiveArticleAVendre();
         for (ArticleAVendre articleAVendre : articleAVendreList) {
             int meilleure_offre = enchereService.getMeilleurPrix(articleAVendre.getNo_article());
             articleAVendre.setMeilleure_offre(meilleure_offre);

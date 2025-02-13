@@ -148,6 +148,8 @@ public class ArticleAVendreDAOImpl implements ArticleAVendreDAO {
                 case 3:
                     sql += " and aav.statut_enchere in (2,3)";
                     break;
+                default:
+                    break;
             }
         }
         return namedParameterJdbcTemplate.query(sql, params, new ArticleAVendreRowMapper());

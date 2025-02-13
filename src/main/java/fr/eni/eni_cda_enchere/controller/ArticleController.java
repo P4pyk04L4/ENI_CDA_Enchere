@@ -4,6 +4,7 @@ import fr.eni.eni_cda_enchere.bll.*;
 import fr.eni.eni_cda_enchere.bo.*;
 import fr.eni.eni_cda_enchere.bo.custom.HandleSellRequest;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -21,7 +24,6 @@ import java.util.*;
 @RequestMapping("/articles")
 @SessionAttributes({"sessionUser"})
 public class ArticleController {
-    //juste pour merge
     private final UtilisateurService utilisateurService;
     private final AdresseService adresseService;
     private final ArticleService articleService;
@@ -207,9 +209,16 @@ public class ArticleController {
     @GetMapping({"/modifier/", "/modifier/{idArticle}"})
     public String modifierArticle(
             @PathVariable int idArticle,
+            @AuthenticationPrincipal UserDetails userDetails,
             Model model
-    ) {
+    ){
         ArticleAVendre articleAVendre = articleService.getArticleAVendre(idArticle);
+        Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
+
+        if(!utilisateur.getPseudo().equals(articleAVendre.getVendeur().getPseudo())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas autorisé à modifier cet article.");
+        }
+
 
         if(articleAVendre.getStatut_enchere() != 0){
             return "redirect:/utilisateurs/myProfile?echecModifVente=true";
@@ -253,6 +262,11 @@ public class ArticleController {
 
         // Récupère l'utilisateur connecté
         Utilisateur utilisateur = utilisateurService.findByPseudo(userDetails.getUsername()).get();
+
+        if(!utilisateur.getPseudo().equals(article.getVendeur().getPseudo())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Vous n'êtes pas autorisé à modifier cet article.");
+        }
+
         article.setVendeur(utilisateur);
 
         articleService.updateArticleAVendre(article);
