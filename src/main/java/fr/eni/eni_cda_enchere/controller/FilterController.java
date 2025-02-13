@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/filter")
@@ -54,7 +55,9 @@ public class FilterController {
             }
         }
 
-        // ENVOI DE LA RECHERCHE
+        // RECUPERATION DES LABELS INTERNATIONAUX
+
+        // RECHERCHE DES ARTICLES
         List<ArticleAVendre> articlesFiltres = articleService.getFilteredArticleAVendre(pseudo, request.getNoCategorie(), request.getSearchText(), achatVente, request.getCritere());
         List<ArticleFilteredResponse> articleARetourner = new ArrayList<>();
 

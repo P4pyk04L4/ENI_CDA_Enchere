@@ -1,30 +1,27 @@
 @charset "UTF-8";
-h1 {
-    margin: 15px;
-}
-
-.flex-outer li {
+.boxError{
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     align-items: center;
-    margin: 5px;
+    gap: 2rem;
+    border : 1px solid whitesmoke;
+    border-radius: 15px;
+    padding: 10px;
+    width: 80vw;
+    height: fit-content;
+    background-color: white;
+    -webkit-box-shadow: 0px 5px 12px 4px rgba(0,0,0,0.37);
+    box-shadow: 0px 5px 12px 4px rgba(0,0,0,0.37);
 }
 
-.flex-outer>li>label {
-    flex: 1 0 120px;
-    max-width: 220px;
+#img-404-container {
+    width: 600px;
+    height: 300px;
+    overflow: hidden;
 }
 
-
-.flex-outer li a {
-    text-decoration:none;
-    margin-left: auto;
-    margin-bottom: 5px; padding : 8px 16px;
-    border: none;
-    background: #333;
-    color: #f2f2f2;
-    text-transform: uppercase;
-    letter-spacing: .09em;
-    border-radius: 2px;
-    padding: 8px 16px
+#img-404 {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
