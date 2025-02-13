@@ -68,4 +68,13 @@ public class Enchere implements Serializable {
                 ", articleAVendre=" + articleAVendre.toString() +
                 '}';
     }
+
+    public LocalDateTime getDate_enchere() {
+        return date_enchere;
+    }
+
+    public void setDate_enchere(LocalDateTime date_enchere) {
+        this.date_enchere = date_enchere;
+    }
+
 }

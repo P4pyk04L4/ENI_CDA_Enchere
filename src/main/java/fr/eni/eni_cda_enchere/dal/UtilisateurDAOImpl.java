@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
@@ -32,7 +31,7 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
                         "telephone = :telephone, mot_de_passe = :motDePasse, credit = :credit, administrateur = :admin, no_adresse = :noAdresse "+
                         "WHERE pseudo = :pseudo";
     private final String UPDATE_BY_USER = "UPDATE UTILISATEURS SET nom = :nom, prenom = :prenom, email = :email, " +
-            "telephone = :telephone, no_adresse = :noAdresse "+
+            "telephone = :telephone, no_adresse = :noAdresse"+
             "WHERE pseudo = :pseudo";
     private final String UPDATE_PASSWORD = "UPDATE UTILISATEURS set mot_de_passe = :motDePasse WHERE pseudo = :pseudo";
     private final String FIND_BY_PSEUDO_ALL_INCLUSIVE = "SELECT pseudo, nom, prenom, email, telephone, mot_de_passe, credit, administrateur, u.no_adresse, " +
@@ -95,11 +94,16 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         namedParameters.addValue("admin", utilisateur.isAdmin() ? 1 : 0);
         namedParameters.addValue("noAdresse", utilisateur.getAdresse().getNo_adresse());
 
+
+
         namedParameterJdbcTemplate.update(UPDATE_UTILISATEUR, namedParameters);
     }
 
     @Override
     public void updateByUser(Utilisateur utilisateur) {
+        String sql = "UPDATE UTILISATEURS SET nom = :nom, prenom = :prenom, email = :email, " +
+                "telephone = :telephone, mot_de_passe = :motDePasse, credit = :credit, administrateur = :admin, no_adresse = :noAdresse "+
+                "WHERE pseudo = :pseudo";
         MapSqlParameterSource namedParameters = new MapSqlParameterSource();
 
         namedParameters.addValue("pseudo", utilisateur.getPseudo());
@@ -109,7 +113,17 @@ public class UtilisateurDAOImpl implements UtilisateurDAO {
         namedParameters.addValue("telephone", utilisateur.getTelephone());
         namedParameters.addValue("noAdresse", utilisateur.getAdresse().getNo_adresse());
 
-        namedParameterJdbcTemplate.update(UPDATE_BY_USER, namedParameters);
+        namedParameterJdbcTemplate.update(sql, namedParameters);
+    }
+
+    @Override
+    public void updateCredit(Utilisateur utilisateur) {
+        String sql = "UPDATE utilisateurs SET credit = :credit " +
+                "WHERE pseudo = :pseudo ";
+        MapSqlParameterSource namedParameters = new MapSqlParameterSource();
+        namedParameters.addValue("pseudo", utilisateur.getPseudo());
+        namedParameters.addValue("credit", utilisateur.getCredit());
+        namedParameterJdbcTemplate.update(sql, namedParameters);
     }
 
     @Override

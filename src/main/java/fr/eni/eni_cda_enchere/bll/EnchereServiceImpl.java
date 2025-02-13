@@ -3,18 +3,26 @@ package fr.eni.eni_cda_enchere.bll;
 import fr.eni.eni_cda_enchere.bo.ArticleAVendre;
 import fr.eni.eni_cda_enchere.bo.Enchere;
 import fr.eni.eni_cda_enchere.bo.Utilisateur;
+import fr.eni.eni_cda_enchere.dal.ArticleAVendreDAO;
 import fr.eni.eni_cda_enchere.dal.EnchereDAO;
+import fr.eni.eni_cda_enchere.dal.UtilisateurDAO;
 import fr.eni.eni_cda_enchere.exceptions.BusinessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class EnchereServiceImpl implements EnchereService {
     private final EnchereDAO enchereDAO;
+    private final UtilisateurDAO utilisateurDAO;
 
-    public EnchereServiceImpl(EnchereDAO enchereDAO) {
+    public EnchereServiceImpl(EnchereDAO enchereDAO,
+                              UtilisateurDAO utilisateurDAO) {
         this.enchereDAO = enchereDAO;
+        this.utilisateurDAO = utilisateurDAO;
     }
 
     @Override
@@ -37,21 +45,30 @@ public class EnchereServiceImpl implements EnchereService {
         return enchereDAO.readAllFromArticle(no_article);
     }
 
+    @Transactional
     @Override
-    public void createEnchere(Enchere enchere) {
+    public void createEnchere(Enchere enchere, int no_article, int ancien_montant) {
+        System.out.println("Passage dans la BLL, test validation.");
         BusinessException be = new BusinessException();
+        String pseudo_ancien_enchereur = enchereDAO.getMeilleurEnchereur(no_article);
+        Utilisateur last_enchereur = utilisateurDAO.findByPseudo(pseudo_ancien_enchereur).get();
+        last_enchereur.setCredit(last_enchereur.getCredit() + ancien_montant);
+
         boolean isValid = true;
         isValid &= validerEnchere(enchere, be);
         isValid &= validerUser(enchere.getAcquereur().get(), be);
         isValid &= validerArticle(enchere.getArticleAVendre(), be);
-        isValid &= validerDate(enchere.getDate(), be);
+        isValid &= validerDate(enchere.getArticleAVendre().getDate_fin_encheres().atStartOfDay(), be);
         isValid &= validerMontant(enchere, be);
-        if (isValid) {
+        if (be.isValid()) {
+            System.out.println("Enchère validée, pas de BE levée.");
             enchereDAO.create(enchere);
+            utilisateurDAO.updateCredit(last_enchereur);
         } else {
+            System.out.println("BE levée.");
             be.add("Erreur lors de la création d'une nouvelle enchère.");
+            throw be;
         }
-
     }
 
     @Override
@@ -96,13 +113,18 @@ public class EnchereServiceImpl implements EnchereService {
     }
 
     private boolean validerDate(LocalDateTime d, BusinessException be){
+        System.out.println("Date f-e " + d);
+        System.out.println("Date ajd " + LocalDateTime.now());
         if(d == null){
+            System.out.println("Date null.");
             be.add("Date null.");
             return false;
         } else if (d.isBefore(LocalDateTime.now())){
-            be.add("Date invalide.");
+            be.add("On ne peut pas enchérir sur une enchère qui a déjà été clotûrée.");
+            System.out.println("Date invalide.");
             return false;
         } else {
+            System.out.println("Date validée.");
             return true;
         }
     }
