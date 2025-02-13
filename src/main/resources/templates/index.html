@@ -27,17 +27,20 @@
 
 
 
-            <div class="col-md-3"></div>
-            <div class="col-md-3 customBox legende">
+            <div class="col-md-1"></div>
+            <div class="col-md-5 customBox legende">
                 <div class="d-flex justify-content-center">
                     <h5 data-th-text="#{index.legend.h5}"></h5>
                 </div>
-                <div class="d-flex justify-content-evenly">
+                <div class="d-flex justify-content-evenly m-3">
                     <div>
-                        <img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"><span data-th-text="#{index.legend.ongoing}"></span>
+                        <img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30" class="me-2"><span data-th-text="#{index.legend.ongoing}"></span>
                     </div>
                     <div>
-                        <img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30"><span data-th-text="#{index.legend.finishd}"></span>
+                        <img data-th-src="@{/images/dollar-red.png}" alt="" height="30" width="30" class="me-2"><span data-th-text="#{index.legend.finishd}"></span>
+                    </div>
+                    <div>
+                        <img data-th-src="@{/images/hourglass.png}" alt="" height="30" width="30" class="me-2"><span data-th-text="#{index.legend.comingsoon}"></span>
                     </div>
                 </div>
             </div>
@@ -55,7 +58,9 @@
                         </div>
                         <div class="col-2">
                             <th:block data-th-if="${item.statut_enchere == 0}">
-                                <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/hourglass.png}" alt="" height="30" width="30"></a>
+                                <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}">
+                                    <img data-th-src="@{/images/hourglass.png}" alt="" height="30" width="30">
+                                </a>
                             </th:block>
                             <th:block data-th-if="${item.statut_enchere == 1}">
                                 <a data-th-href="@{/articles/detail_enchere/{id}(id=${item.no_article})}"><img data-th-src="@{/images/dollar-green.png}" alt="" height="30" width="30"></a>
