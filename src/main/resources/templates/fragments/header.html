@@ -31,7 +31,6 @@
                     <span><strong data-th-text="#{header.title.today}"></strong><span th:text="${' : ' + #dates.format(#dates.createNow(), 'dd/MM/yyyy')}"></span></span>
                     <th:block th:if="${#authorization.expression('isAuthenticated()')}">
                         <span><strong data-th-text="#{header.title.user}"> :</strong><span data-th-text="${' : ' + #authentication.name}"></span></span>
-                        <span><strong data-th-text="#{header.title.credit}"> :</strong><span data-th-text="${' : '}"></span></span>
                     </th:block>
                 </div>
 
